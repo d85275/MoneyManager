@@ -1,6 +1,9 @@
 package com.example.demo
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -8,7 +11,7 @@ import kotlin.math.abs
 
 object CommonUtils {
 
-    fun getGesture(activity:Activity, action: ()->Unit, isEnter:Boolean):GestureDetector{
+    fun getGesture(activity: Activity, action: () -> Unit, isEnter: Boolean): GestureDetector {
         return GestureDetector(
             activity,
             object : GestureDetector.SimpleOnGestureListener() {
@@ -30,11 +33,11 @@ object CommonUtils {
                             && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
                         ) {
                             Log.e("SWIPE", "Right to Left")
-                            if (isEnter)action.invoke()
+                            if (isEnter) action.invoke()
                         } else if (e2.x - e1.x > SWIPE_MIN_DISTANCE
                             && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
                         ) {
-                            if (!isEnter)action.invoke()
+                            if (!isEnter) action.invoke()
                             Log.e("SWIPE", "Left to Right")
                         }
                     } catch (e: Exception) {
@@ -43,5 +46,17 @@ object CommonUtils {
                     return super.onFling(e1, e2, velocityX, velocityY)
                 }
             })
+    }
+
+    const val FROM_CASH = 0
+    const val FROM_BANK = 1
+    const val KEY_FROM = "KEY_FROM"
+    fun goHistory(context: Context, from: Int) {
+        val intent = Intent()
+        val bundle = Bundle()
+        intent.setClass(context,HistoryActivity::class.java)
+        bundle.putInt(KEY_FROM,from)
+        intent.putExtras(bundle)
+        context.startActivity(intent)
     }
 }

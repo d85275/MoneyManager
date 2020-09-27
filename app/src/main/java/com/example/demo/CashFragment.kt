@@ -60,7 +60,7 @@ class CashFragment : Fragment() {
 
     private fun setListener(){
         llHistory.setOnClickListener {
-
+            CommonUtils.goHistory(requireContext(),CommonUtils.FROM_CASH)
         }
     }
 }

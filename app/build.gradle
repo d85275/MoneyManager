@@ -77,4 +77,9 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "android.arch.navigation:navigation-ui-ktx:1.0.0"
 
+    // calendar
+    implementation "com.github.sundeepk:compact-calendar-view:3.0.0"
+
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+
 }
