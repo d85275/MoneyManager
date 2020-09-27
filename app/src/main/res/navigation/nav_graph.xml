@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/cashFragment">
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.demo.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/cashFragment"
+        android:name="com.example.demo.CashFragment"
+        android:label="fragment_cash"
+        tools:layout="@layout/fragment_cash" >
+        <action
+            android:id="@+id/action_cashFragment_to_bankFragment2"
+            app:destination="@id/bankFragment"
+            app:enterAnim="@anim/slide_in_right_to_left"
+            app:popExitAnim="@anim/slide_out_left_to_right" />
+        <action
+            android:id="@+id/action_cashFragment_to_historyYearFragment"
+            app:destination="@id/historyYearFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bankFragment"
+        android:name="com.example.demo.BankFragment"
+        android:label="fragment_bank"
+        tools:layout="@layout/fragment_bank">
+        <action
+            android:id="@+id/action_bankFragment_to_historyYearFragment"
+            app:destination="@id/historyYearFragment"
+            app:enterAnim="@anim/slide_in_right_to_left"
+            app:exitAnim="@anim/slide_out_left_to_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/historyYearFragment"
+        android:name="com.example.demo.HistoryYearFragment"
+        android:label="fragment_history_year"
+        tools:layout="@layout/activity_history" />
+</navigation>
