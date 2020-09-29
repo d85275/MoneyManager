@@ -122,22 +122,23 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/btAdd"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="end"
         android:layout_marginEnd="20dp"
         android:translationY="-100dp"
+        android:background="@drawable/add_light_red"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
     <LinearLayout
