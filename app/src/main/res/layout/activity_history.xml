@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="300dp"
         android:fitsSystemWindows="true"
         android:theme="@style/Widget.AppCompat.ActionBar"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior">
@@ -19,36 +19,26 @@
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#ffe95451"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvCurrentDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="#ffe95451"
-                    android:paddingStart="20dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_collapseMode="pin"
-                    tools:text="2020/09" />
 
                 <com.github.sundeepk.compactcalendarview.CompactCalendarView
                     android:id="@+id/compactcalendar_view"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:layout_marginTop="?attr/actionBarSize"
                     app:compactCalendarBackgroundColor="#ffe95451"
                     app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
                     app:compactCalendarCurrentSelectedDayBackgroundColor="#E57373"
@@ -57,9 +47,13 @@
                     app:compactCalendarTargetHeight="250dp"
                     app:compactCalendarTextColor="#fff"
                     app:compactCalendarTextSize="12sp"
-                    app:layout_collapseMode="pin" />
+                    app:layout_collapseMode="pin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -67,7 +61,52 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="" />
+                app:title="">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/ivPreMonth"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="15dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="@drawable/pre_arrow_white"
+                        app:layout_constraintBottom_toBottomOf="@id/tvCurrentDate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvCurrentDate" />
+
+                    <ImageView
+                        android:id="@+id/ivNextMonth"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="15dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="@drawable/next_arrow_white"
+                        app:layout_constraintBottom_toBottomOf="@id/tvCurrentDate"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvCurrentDate" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentDate"
+                        android:layout_width="0dp"
+                        android:layout_height="65dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/ivNextMonth"
+                        app:layout_constraintStart_toEndOf="@id/ivPreMonth"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="2020/09" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -106,28 +145,28 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="#ffe95451"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/tvMonthBalance"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="本月損益\n$10000"
+            android:layout_weight="1"
             android:gravity="center"
+            android:text="本月損益\n$10000"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvTotal"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="總餘額\n$10000"
             android:textColor="@android:color/white"
@@ -137,10 +176,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
             android:gravity="center"
-            android:text="圖表"/>
+            android:text="圖表"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
