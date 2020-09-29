@@ -1,7 +1,6 @@
-package com.example.demo
+package com.example.demo.views
 
 import ZoomOutPageTransformer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,15 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.demo.viewmodels.MainViewModel
+import com.example.demo.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : FragmentActivity() {
 
 
-    private lateinit var viewModel:MainViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var viewPager: ViewPager2
     //private lateinit var navController:NavController
     private companion object{
@@ -88,12 +88,13 @@ class MainActivity : FragmentActivity() {
      * sequence.
      */
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
-        override fun getItemCount(): Int = NUM_PAGES
+        override fun getItemCount(): Int =
+            NUM_PAGES
 
         override fun createFragment(position: Int): Fragment {
             return when(position){
                 0-> CashFragment()
-                else->BankFragment()
+                else-> BankFragment()
             }
         }
     }

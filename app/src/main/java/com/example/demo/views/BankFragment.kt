@@ -1,24 +1,19 @@
-package com.example.demo
+package com.example.demo.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.demo.utils.AnimHandler
+import com.example.demo.utils.CommonUtils
+import com.example.demo.R
 import kotlinx.android.synthetic.main.fragment_cash.*
 
+class BankFragment : Fragment() {
 
-class CashFragment : Fragment() {
-
-    private companion object{
-        private const val ANIM_DELAY:Long = 2 *1000
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -27,24 +22,25 @@ class CashFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_cash,container,false)
-        val gesture = CommonUtils.getGesture(requireActivity(),{
-            findNavController().navigate(R.id.action_cashFragment_to_bankFragment2)
-        },true)
+        val view = inflater.inflate(R.layout.fragment_bank, container, false)
+        val gesture =
+            CommonUtils.getGesture(requireActivity(), {
+                findNavController().popBackStack()
+            }, false)
         view.setOnTouchListener { _, event -> gesture.onTouchEvent(event) }
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setListener()
         initView()
     }
-
     private lateinit var animHandler: AnimHandler
     override fun onResume() {
         super.onResume()
-        animHandler.sendEmptyMessageDelayed(0,AnimHandler.ANIM_DELAY)
+        animHandler.sendEmptyMessageDelayed(0,
+            AnimHandler.ANIM_DELAY
+        )
 
     }
 
@@ -55,12 +51,5 @@ class CashFragment : Fragment() {
 
     private fun initView(){
         animHandler = AnimHandler(ivMoney)
-    }
-
-
-    private fun setListener(){
-        llHistory.setOnClickListener {
-            CommonUtils.goHistory(requireContext(),CommonUtils.FROM_CASH)
-        }
     }
 }

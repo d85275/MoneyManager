@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.demo.utils
 
 import android.os.Handler
 import android.os.Message
@@ -25,6 +25,8 @@ class AnimHandler(private val v:View): Handler(){
 
                 }
             ).start()
-        sendEmptyMessageDelayed(0, ANIM_DELAY)
+        sendEmptyMessageDelayed(0,
+            ANIM_DELAY
+        )
     }
 }

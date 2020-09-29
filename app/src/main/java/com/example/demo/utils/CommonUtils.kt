@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.demo.utils
 
 import android.app.Activity
 import android.content.Context
@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
+import com.example.demo.views.HistoryActivity
 import kotlin.math.abs
 
 object CommonUtils {
@@ -54,7 +55,7 @@ object CommonUtils {
     fun goHistory(context: Context, from: Int) {
         val intent = Intent()
         val bundle = Bundle()
-        intent.setClass(context,HistoryActivity::class.java)
+        intent.setClass(context, HistoryActivity::class.java)
         bundle.putInt(KEY_FROM,from)
         intent.putExtras(bundle)
         context.startActivity(intent)
