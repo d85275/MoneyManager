@@ -1,6 +1,9 @@
 package com.example.demo.viewmodels
 
 import android.util.Log
+import android.view.animation.AlphaAnimation
+import android.view.animation.AnimationSet
+import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +15,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class HistoryViewModel : ViewModel() {
+    private companion object{
+        private const val ANIM_DURATION = 150L
+    }
     private val dateFormatForMonth: SimpleDateFormat =
         SimpleDateFormat("MMM - yyyy", Locale.getDefault())
     private val dateFormatForDay: SimpleDateFormat =
@@ -61,5 +67,15 @@ class HistoryViewModel : ViewModel() {
                 selectedMonth.value = firstDayOfNewMonth
             }
         }
+    }
+
+    fun getAnimationSetAlpha(): AnimationSet? {
+        val animationSet = AnimationSet(true)
+        val alphaAnimation = AlphaAnimation(0.1f, 1.0f)
+        alphaAnimation.interpolator = DecelerateInterpolator()
+        alphaAnimation.duration = ANIM_DURATION
+        animationSet.addAnimation(alphaAnimation)
+        animationSet.duration = ANIM_DURATION
+        return animationSet
     }
 }
