@@ -119,28 +119,37 @@ class HistoryActivity : AppCompatActivity() {
             //vBlocker.visibility = View.GONE
             //viewModel.showAddBtn(btAdd)
             // todo clear data and add item to the database
-            Toast.makeText(this,"The item has been saved into database",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "The item has been saved into database", Toast.LENGTH_SHORT).show()
         }
 
-        vAddItem.setOnTouchListener(object :OnSwipeTouchListener(this){
+        vAddItem.setOnTouchListener(object : OnSwipeTouchListener(this) {
             override fun onSwipeBottom() {
                 super.onSwipeBottom()
                 cancelAddItem()
             }
         })
         tvPrice.setOnClickListener {
-            if (vKeyboard.visibility != View.VISIBLE){
+            if (vKeyboard.visibility != View.VISIBLE) {
                 tvAddItemDate.text = viewModel.getAddDate()
-                viewModel.showKeyboard(vKeyboard,btConfirm)
-            }else{
-                viewModel.hideKeyboard(vKeyboard,btConfirm)
+                viewModel.showKeyboard(vKeyboard, btConfirm)
+            } else {
+                viewModel.hideKeyboard(vKeyboard, btConfirm)
             }
         }
     }
-    private fun cancelAddItem(){
+
+    private fun cancelAddItem() {
         viewModel.hideAddItemView(vAddItem)
         vBlocker.visibility = View.GONE
         viewModel.showAddBtn(btAdd)
-        viewModel.hideKeyboard(vKeyboard,btConfirm)
+        viewModel.hideKeyboard(vKeyboard, btConfirm)
+    }
+
+    override fun onBackPressed() {
+        if (vAddItem.visibility == View.VISIBLE) {
+            cancelAddItem()
+        } else {
+            super.onBackPressed()
+        }
     }
 }
