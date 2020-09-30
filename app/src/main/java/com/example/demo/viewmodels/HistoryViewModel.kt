@@ -1,6 +1,7 @@
 package com.example.demo.viewmodels
 
 import android.util.Log
+import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
 import android.view.animation.DecelerateInterpolator
@@ -8,20 +9,28 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.demo.model.HistoryData
+import com.example.demo.utils.AnimHandler
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import kotlinx.android.synthetic.main.activity_history.*
+import kotlinx.android.synthetic.main.view_add_item.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class HistoryViewModel : ViewModel() {
-    private companion object{
+    private companion object {
         private const val ANIM_DURATION = 150L
+        private const val ADD_ANIM_DURATION = 300L
+        private const val ALPHA_SHOW = 1F
+        private const val ALPHA_HIDE = 0F
     }
+
     private val dateFormatForMonth: SimpleDateFormat =
         SimpleDateFormat("MMM - yyyy", Locale.getDefault())
     private val dateFormatForDay: SimpleDateFormat =
         SimpleDateFormat("MM/dd", Locale.getDefault())
+    private val dateFormatForAdd: SimpleDateFormat =
+        SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
 
     val historyData = MutableLiveData<List<HistoryData>>()
 
@@ -31,6 +40,11 @@ class HistoryViewModel : ViewModel() {
 
     fun getDate(date: Date): String {
         return dateFormatForMonth.format(date)
+    }
+
+    fun getAddDate(): String {
+        if (selectedDay.value == null) return ""
+        return dateFormatForAdd.format(selectedDay.value!!)
     }
 
     fun loadData(date: Date?) {
@@ -77,5 +91,76 @@ class HistoryViewModel : ViewModel() {
         animationSet.addAnimation(alphaAnimation)
         animationSet.duration = ANIM_DURATION
         return animationSet
+    }
+
+    fun hideAddBtn(btAdd: View) {
+        val x = btAdd.width.toFloat()
+        btAdd.animate()
+            .translationX(x + 40)
+            .setDuration(ADD_ANIM_DURATION)
+            .start()
+    }
+
+    fun showAddBtn(btAdd: View) {
+        val x = btAdd.width.toFloat()
+        btAdd.animate()
+            .translationX(0 - 40f)
+            .setDuration(ADD_ANIM_DURATION)
+            .start()
+    }
+
+    fun hideAddItemView(vAddItem: View) {
+        val y = vAddItem.height.toFloat()
+        vAddItem.animate()
+            .translationY(y)
+            .alpha(ALPHA_HIDE)
+            .setDuration(ADD_ANIM_DURATION)
+            .start()
+    }
+
+    fun showAddItemView(vAddItem: View) {
+        if (vAddItem.visibility != View.VISIBLE) {
+            val y = vAddItem.height.toFloat()
+            vAddItem.animate()
+                .translationY(y)
+                .alpha(ALPHA_HIDE)
+                .setDuration(200)
+                .withEndAction {
+                    vAddItem.visibility = View.VISIBLE
+
+                    vAddItem.animate()
+                        .translationY(0f)
+                        .setDuration(ADD_ANIM_DURATION)
+                        .alpha(ALPHA_SHOW)
+                        .start()
+                }
+                .start()
+        } else {
+            vAddItem.animate()
+                .translationY(0f)
+                .setDuration(ADD_ANIM_DURATION)
+                .alpha(ALPHA_SHOW)
+                .start()
+        }
+    }
+
+    fun showKeyboard(vKeyboard: View, btConfirm: View) {
+        vKeyboard.visibility = View.VISIBLE
+        vKeyboard.alpha = 0f
+        btConfirm.visibility = View.INVISIBLE
+        vKeyboard.animate()
+            .alpha(1f)
+            .setDuration(300)
+            .start()
+    }
+
+    fun hideKeyboard(vKeyboard: View, btConfirm: View){
+        vKeyboard.animate()
+            .alpha(0f)
+            .setDuration(300)
+            .withEndAction{
+                vKeyboard.visibility = View.INVISIBLE
+                btConfirm.visibility = View.VISIBLE
+            }.start()
     }
 }

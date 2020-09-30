@@ -3,10 +3,12 @@ package com.example.demo.utils
 import android.os.Handler
 import android.os.Message
 import android.view.View
+import com.example.demo.views.HistoryActivity
+import kotlinx.android.synthetic.main.activity_history.*
 
-class AnimHandler(private val v:View): Handler(){
-     companion object{
-        const val ANIM_DELAY:Long = 2000
+class AnimHandler(private val v: View) : Handler() {
+    companion object {
+        const val ANIM_DELAY: Long = 2000
     }
 
     override fun handleMessage(msg: Message) {
@@ -25,7 +27,8 @@ class AnimHandler(private val v:View): Handler(){
 
                 }
             ).start()
-        sendEmptyMessageDelayed(0,
+        sendEmptyMessageDelayed(
+            0,
             ANIM_DELAY
         )
     }
