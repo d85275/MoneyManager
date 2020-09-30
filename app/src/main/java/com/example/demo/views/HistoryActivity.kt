@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.R
+import com.example.demo.utils.OnSwipeTouchListener
 import com.example.demo.viewmodels.HistoryViewModel
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_history.*
@@ -118,6 +119,13 @@ class HistoryActivity : AppCompatActivity() {
             vBlocker.visibility = View.GONE
             viewModel.showAddBtn(btAdd)
         }
+
+        vAddItem.setOnTouchListener(object :OnSwipeTouchListener(this){
+            override fun onSwipeBottom() {
+                super.onSwipeBottom()
+                cancelAddItem()
+            }
+        })
         tvPrice.setOnClickListener {
             if (vKeyboard.visibility != View.VISIBLE){
                 tvAddItemDate.text = viewModel.getAddDate()
