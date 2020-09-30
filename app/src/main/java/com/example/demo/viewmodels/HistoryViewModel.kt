@@ -67,8 +67,8 @@ class HistoryViewModel : ViewModel() {
         isAddItem.value = true
     }
 
-    val selectedDay = MutableLiveData<Date>()
-    val selectedMonth = MutableLiveData<Date>()
+    val selectedDay = MutableLiveData<Date>(Calendar.getInstance().time)
+    val selectedMonth = MutableLiveData<Date>(Calendar.getInstance().time)
     fun getCalendarListener(): CompactCalendarView.CompactCalendarViewListener {
         return object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date?) {
@@ -79,6 +79,7 @@ class HistoryViewModel : ViewModel() {
             override fun onMonthScroll(firstDayOfNewMonth: Date?) {
                 if (firstDayOfNewMonth == null) return
                 selectedMonth.value = firstDayOfNewMonth
+                selectedDay.value = firstDayOfNewMonth
             }
         }
     }

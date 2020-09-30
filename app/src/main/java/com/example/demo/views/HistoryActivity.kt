@@ -6,6 +6,7 @@ import android.view.View
 import android.view.animation.LayoutAnimationController
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -115,9 +116,11 @@ class HistoryActivity : AppCompatActivity() {
             cancelAddItem()
         }
         vAddItem.findViewById<Button>(R.id.btConfirm).setOnClickListener {
-            viewModel.hideAddItemView(vAddItem)
-            vBlocker.visibility = View.GONE
-            viewModel.showAddBtn(btAdd)
+            //viewModel.hideAddItemView(vAddItem)
+            //vBlocker.visibility = View.GONE
+            //viewModel.showAddBtn(btAdd)
+            // todo clear data and add item to the database
+            Toast.makeText(this,"The item has been saved into database",Toast.LENGTH_SHORT).show()
         }
 
         vAddItem.setOnTouchListener(object :OnSwipeTouchListener(this){
