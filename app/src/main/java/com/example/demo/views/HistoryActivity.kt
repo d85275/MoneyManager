@@ -146,7 +146,7 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (vAddItem.visibility == View.VISIBLE) {
+        if (viewModel.isAddViewShown) {
             cancelAddItem()
         } else {
             super.onBackPressed()

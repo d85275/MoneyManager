@@ -34,6 +34,8 @@ class HistoryViewModel : ViewModel() {
 
     val historyData = MutableLiveData<List<HistoryData>>()
 
+    var isAddViewShown = false
+
     fun getDay(date: Date): String {
         return dateFormatForDay.format(date)
     }
@@ -111,6 +113,7 @@ class HistoryViewModel : ViewModel() {
     }
 
     fun hideAddItemView(vAddItem: View) {
+        isAddViewShown = false
         val y = vAddItem.height.toFloat()
         vAddItem.animate()
             .translationY(y)
@@ -120,6 +123,7 @@ class HistoryViewModel : ViewModel() {
     }
 
     fun showAddItemView(vAddItem: View) {
+        isAddViewShown = true
         if (vAddItem.visibility != View.VISIBLE) {
             val y = vAddItem.height.toFloat()
             vAddItem.animate()
