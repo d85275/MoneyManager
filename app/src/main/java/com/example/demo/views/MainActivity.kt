@@ -15,6 +15,7 @@ import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.R
 import com.example.demo.utils.CommonUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_cash.*
 
 class MainActivity : FragmentActivity() {
 
@@ -87,6 +88,7 @@ class MainActivity : FragmentActivity() {
         for (i in list.indices) {
             if (list[i] is CashFragment) {
                 handled = (list[i] as CashFragment).onBackPressed()
+                break
             }
         }
         if (!handled) {
