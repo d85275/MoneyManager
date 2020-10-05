@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -20,10 +21,12 @@ class MainActivity : FragmentActivity() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var viewPager: ViewPager2
+
     //private lateinit var navController:NavController
-    private companion object{
+    private companion object {
         private const val NUM_PAGES = 2
     }
+
     private val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
         // react on change
         // you can check destination.id or destination.label and act based on that
@@ -38,25 +41,35 @@ class MainActivity : FragmentActivity() {
         getViewModel()
         //navController = findNavController(R.id.nav_host_fragment)
         setListener()
+        initObservers()
     }
 
-    override fun onResume() {
-        super.onResume()
-        //navController.addOnDestinationChangedListener(listener)
+    override fun onDestroy() {
+        super.onDestroy()
+        viewPager.unregisterOnPageChangeCallback(viewModel.getChangeCallback())
     }
 
-    override fun onPause() {
-        super.onPause()
-        //navController.removeOnDestinationChangedListener(listener)
-    }
-
-    private fun initViewPager(){
+    private fun initViewPager() {
         viewPager = findViewById(R.id.pager)
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
         viewPager.setPageTransformer(ZoomOutPageTransformer())
     }
 
+    private fun initObservers() {
+        viewModel.curPage.observe(this, Observer { curPage ->
+            when(curPage){
+                0->{
+                    ivCashDot.setImageResource(R.drawable.dot_selected)
+                    ivBankDot.setImageResource(R.drawable.dot_default)
+                }
+                else->{
+                    ivCashDot.setImageResource(R.drawable.dot_default)
+                    ivBankDot.setImageResource(R.drawable.dot_selected)
+                }
+            }
+        })
+    }
 
     override fun onBackPressed() {
         if (viewPager.currentItem == 0) {
@@ -69,20 +82,24 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-        private fun getViewModel() {
-            viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        }
+    private fun getViewModel() {
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+    }
 
-        private fun setListener() {
-            ivSearch.setOnClickListener {
-                if (llSearch.visibility == View.GONE) {
-                    llSearch.visibility = View.VISIBLE
-                } else {
-                    llSearch.visibility = View.GONE
-                }
+    private fun setListener() {
+        ivSearch.setOnClickListener {
+            if (llSearch.visibility == View.GONE) {
+                llSearch.visibility = View.VISIBLE
+            } else {
+                llSearch.visibility = View.GONE
             }
-            CommonUtils.goHistory(this,0)
         }
+        ivHistory.setOnClickListener {
+            CommonUtils.goHistory(this, 0)
+        }
+        viewPager.registerOnPageChangeCallback(viewModel.getChangeCallback())
+    }
+
     /**
      * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
      * sequence.
@@ -92,9 +109,9 @@ class MainActivity : FragmentActivity() {
             NUM_PAGES
 
         override fun createFragment(position: Int): Fragment {
-            return when(position){
-                0-> CashFragment()
-                else-> BankFragment()
+            return when (position) {
+                0 -> CashFragment()
+                else -> BankFragment()
             }
         }
     }
