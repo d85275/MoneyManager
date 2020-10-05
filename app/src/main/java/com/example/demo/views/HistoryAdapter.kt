@@ -20,7 +20,7 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.tvName.text = alHistoryData[position].name
-        holder.itemView.tvType.text = alHistoryData[position].type
+        holder.itemView.tvDate.text = alHistoryData[position].date
         holder.itemView.tvPrice.text = "$ ${alHistoryData[position].price}"
     }
 

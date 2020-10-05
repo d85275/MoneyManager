@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="58dp"
     android:layout_gravity="center_horizontal"
     android:layout_marginBottom="20dp"
     android:background="@android:color/white">
@@ -11,12 +10,12 @@
 
     <ImageView
         android:id="@+id/ivImage"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintTop_toTopOf="@id/tvName"
-        app:layout_constraintBottom_toBottomOf="@id/tvType"
+        android:layout_width="39dp"
+        android:layout_height="39dp"
+        android:background="@drawable/rounded_bg_grey"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/rounded_bg_grey" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -24,29 +23,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:textColor="@color/calendar_text_colour"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.12"
+        android:lineSpacingExtra="9sp"
+        android:text="海鮮麵"
+        android:textColor="#de000000"
         android:textSize="15sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/ivImage"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Name" />
+        app:layout_constraintBottom_toTopOf="@id/tvDate"
+        app:layout_constraintTop_toTopOf="@id/ivImage" />
 
     <TextView
-        android:id="@+id/tvType"
+        android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:fontFamily="sans-serif"
+        android:letterSpacing="0.14"
+        android:lineSpacingExtra="6sp"
+        android:text="2020-10/03"
+        android:textColor="#8b000000"
+        android:textSize="14sp"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="@id/tvName"
         app:layout_constraintTop_toBottomOf="@id/tvName"
-        tools:text="type" />
+        app:layout_constraintBottom_toBottomOf="@id/ivImage" />
 
     <TextView
         android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="@id/tvType"
+        app:layout_constraintBottom_toBottomOf="@id/tvDate"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textColor="#8b000000"
+        android:letterSpacing="0.14"
         app:layout_constraintTop_toTopOf="@id/tvName"
-        tools:text="$300" />
+        android:text="$190" />
 </androidx.constraintlayout.widget.ConstraintLayout>

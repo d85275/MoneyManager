@@ -1,4 +1,4 @@
 package com.example.demo.model
 
-data class HistoryData(val name: String, val type: String, val price: Int) {
+data class HistoryData(val name: String, val type: String, val price: Int, val date:String) {
 }

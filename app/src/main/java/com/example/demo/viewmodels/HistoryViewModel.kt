@@ -53,7 +53,7 @@ class HistoryViewModel : ViewModel() {
         if (date == null) return
         val list = arrayListOf<HistoryData>()
         for (i in 0..20) {
-            val data = HistoryData("test $i", "food", 500)
+            val data = HistoryData("test $i", "food", 500,"2020-10/03")
             list.add(data)
         }
         historyData.value = list
@@ -62,7 +62,7 @@ class HistoryViewModel : ViewModel() {
     val isAddItem = MutableLiveData(false)
     fun addItem(date: Date?) {
         if (date == null) return
-        val data = HistoryData("test ${historyData.value!!.size}", "food", 500)
+        val data = HistoryData("test ${historyData.value!!.size}", "food", 500,"2020-10/03")
         val list = (historyData.value as ArrayList)
         list.add(data)
         historyData.value = list
