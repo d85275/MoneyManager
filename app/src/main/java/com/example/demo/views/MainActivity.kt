@@ -12,6 +12,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.R
+import com.example.demo.utils.CommonUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : FragmentActivity() {
@@ -73,15 +74,14 @@ class MainActivity : FragmentActivity() {
         }
 
         private fun setListener() {
-            Log.e("123", "set listener")
             ivSearch.setOnClickListener {
-                Log.e("main", "on search clicked")
                 if (llSearch.visibility == View.GONE) {
                     llSearch.visibility = View.VISIBLE
                 } else {
                     llSearch.visibility = View.GONE
                 }
             }
+            CommonUtils.goHistory(this,0)
         }
     /**
      * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
