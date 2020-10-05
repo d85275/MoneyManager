@@ -15,6 +15,7 @@ import com.example.demo.utils.OnSwipeTouchListener
 import kotlinx.android.synthetic.main.view_add_item.view.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.util.*
 
 class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private var view: View =
@@ -31,8 +32,14 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         private const val BACK = 12
     }
 
+    private var date: Date? = null
+
     init {
         setListeners()
+    }
+
+    fun setDate(date: Date?) {
+        this.date = date
     }
 
     fun getTotal(): Long {
@@ -40,11 +47,8 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     private fun setListeners() {
-        tvAddItemDate.setOnClickListener {
-            Log.e(TAG, "date clicked")
-        }
+
         etName.setOnClickListener {
-            Log.e("123", "on click")
             dismissKeyboard()
         }
         tvPrice.setOnClickListener {

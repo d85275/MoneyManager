@@ -29,19 +29,49 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/tvAddItemDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:textColor="@color/calendar_text_colour"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    tools:text="2020/09/30" />
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:id="@+id/ivPreDay"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/pre_arrow_black"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintBottom_toBottomOf="@id/tvCurrentDate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvCurrentDate" />
+
+                    <TextView
+                        android:id="@+id/tvAddItemDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:textColor="@color/calendar_text_colour"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="2020/09/30" />
+
+                    <ImageView
+                        android:id="@+id/ivNextDay"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/next_arrow_black"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintBottom_toBottomOf="@id/tvCurrentDate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvCurrentDate" />
+
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/etName"
