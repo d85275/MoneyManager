@@ -38,7 +38,7 @@
                     android:id="@+id/compactcalendar_view"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="65dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     app:compactCalendarBackgroundColor="@color/main_colour"
@@ -60,7 +60,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="65dp"
                 app:layout_collapseMode="pin"
                 android:background="@android:color/white"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -70,24 +70,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:id="@+id/llClose"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="@color/calendar_text_colour" />
-                    </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/ivPreMonth"
+                        android:id="@+id/llClose"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginStart="15dp"
                         android:background="@drawable/pre_arrow_black"
                         android:clickable="true"
                         android:focusable="true"
@@ -99,10 +86,10 @@
                         android:id="@+id/ivNextMonth"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginEnd="15dp"
                         android:background="@drawable/next_arrow_black"
                         android:clickable="true"
                         android:focusable="true"
+                        android:visibility="invisible"
                         app:layout_constraintBottom_toBottomOf="@id/tvCurrentDate"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/tvCurrentDate" />
@@ -111,7 +98,6 @@
                         android:id="@+id/tvCurrentDate"
                         android:layout_width="0dp"
                         android:layout_height="65dp"
-                        android:layout_marginTop="40dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center"
@@ -119,7 +105,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/ivNextMonth"
-                        app:layout_constraintStart_toEndOf="@id/ivPreMonth"
+                        app:layout_constraintStart_toEndOf="@id/llClose"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="2020/09" />
 

@@ -76,9 +76,7 @@ class HistoryActivity : AppCompatActivity() {
             adapter.setList(historyData)
         })
         viewModel.isAddItem.observe(this, Observer { isAdded ->
-            Log.e("123", "add item. is added: $isAdded")
             if (isAdded) {
-                Log.e("123", "position: ${adapter.itemCount}")
                 //recyclerView.smoothScrollToPosition(adapter.itemCount)
             }
         })
@@ -103,8 +101,6 @@ class HistoryActivity : AppCompatActivity() {
         llClose.setOnClickListener {
             finish()
         }
-        ivPreMonth.setOnClickListener { compactcalendar_view.scrollLeft() }
-        ivNextMonth.setOnClickListener { compactcalendar_view.scrollRight() }
         btAdd.setOnClickListener {
             tvAddItemDate.text = viewModel.getAddDate()
             viewModel.showAddItemView(vAddItem)
