@@ -58,12 +58,12 @@ class MainActivity : FragmentActivity() {
 
     private fun initObservers() {
         viewModel.curPage.observe(this, Observer { curPage ->
-            when(curPage){
-                0->{
+            when (curPage) {
+                0 -> {
                     ivCashDot.setImageResource(R.drawable.dot_selected)
                     ivBankDot.setImageResource(R.drawable.dot_default)
                 }
-                else->{
+                else -> {
                     ivCashDot.setImageResource(R.drawable.dot_default)
                     ivBankDot.setImageResource(R.drawable.dot_selected)
                 }
@@ -72,6 +72,7 @@ class MainActivity : FragmentActivity() {
     }
 
     override fun onBackPressed() {
+        /*
         if (viewPager.currentItem == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
@@ -79,6 +80,17 @@ class MainActivity : FragmentActivity() {
         } else {
             // Otherwise, select the previous step.
             viewPager.currentItem = viewPager.currentItem - 1
+        }
+         */
+        var handled = false
+        val list = supportFragmentManager.fragments
+        for (i in list.indices) {
+            if (list[i] is CashFragment) {
+                handled = (list[i] as CashFragment).onBackPressed()
+            }
+        }
+        if (!handled) {
+            super.onBackPressed()
         }
     }
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.R
 import com.example.demo.utils.OnSwipeTouchListener
+import com.example.demo.viewmodels.AddItemViewModel
 import com.example.demo.viewmodels.HistoryViewModel
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_history.*
@@ -24,6 +25,7 @@ class HistoryActivity : AppCompatActivity() {
     private var isShow = true
     private var scrollRange = -1
     private lateinit var viewModel: HistoryViewModel
+    private lateinit var addItemViewModel: AddItemViewModel
     private lateinit var adapter: HistoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +63,7 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun getViewModel() {
         viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
+        addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
     }
 
     private fun initObservers() {
@@ -103,14 +106,14 @@ class HistoryActivity : AppCompatActivity() {
         }
         btAdd.setOnClickListener {
             tvAddItemDate.text = viewModel.getAddDate()
-            viewModel.showAddItemView(vAddItem)
+            addItemViewModel.showAddItemView(vAddItem)
             vBlocker.visibility = View.VISIBLE
-            viewModel.hideAddBtn(btAdd)
+            addItemViewModel.hideAddBtn(btAdd)
         }
-        vAddItem.findViewById<Button>(R.id.btCancel).setOnClickListener {
+        btCancel.setOnClickListener {
             cancelAddItem()
         }
-        vAddItem.findViewById<Button>(R.id.btConfirm).setOnClickListener {
+        btConfirm.setOnClickListener {
             //viewModel.hideAddItemView(vAddItem)
             //vBlocker.visibility = View.GONE
             //viewModel.showAddBtn(btAdd)
@@ -127,22 +130,22 @@ class HistoryActivity : AppCompatActivity() {
         tvPrice.setOnClickListener {
             if (vKeyboard.visibility != View.VISIBLE) {
                 tvAddItemDate.text = viewModel.getAddDate()
-                viewModel.showKeyboard(vKeyboard, btConfirm)
+                addItemViewModel.showKeyboard(vKeyboard, btConfirm)
             } else {
-                viewModel.hideKeyboard(vKeyboard, btConfirm)
+                addItemViewModel.hideKeyboard(vKeyboard, btConfirm)
             }
         }
     }
 
     private fun cancelAddItem() {
-        viewModel.hideAddItemView(vAddItem)
+        addItemViewModel.hideAddItemView(vAddItem)
         vBlocker.visibility = View.GONE
-        viewModel.showAddBtn(btAdd)
-        viewModel.hideKeyboard(vKeyboard, btConfirm)
+        addItemViewModel.showAddBtn(btAdd)
+        addItemViewModel.hideKeyboard(vKeyboard, btConfirm)
     }
 
     override fun onBackPressed() {
-        if (viewModel.isAddViewShown) {
+        if (addItemViewModel.isAddViewShown) {
             cancelAddItem()
         } else {
             super.onBackPressed()

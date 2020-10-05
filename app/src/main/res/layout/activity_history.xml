@@ -137,12 +137,13 @@
 
     <Button
         android:id="@+id/btAdd"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="81dp"
+        android:layout_height="81dp"
         android:layout_gravity="end"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/add_light_red"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/add"
         android:translationY="-100dp"
+        android:alpha="0.7"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
     <LinearLayout

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,9 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
 import com.example.demo.R
+import com.example.demo.utils.OnSwipeTouchListener
+import com.example.demo.viewmodels.AddItemViewModel
 import com.example.demo.viewmodels.CashViewModel
 import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.fragment_cash.*
+import kotlinx.android.synthetic.main.fragment_cash.vAddItem
+import kotlinx.android.synthetic.main.fragment_cash.vBlocker
+import kotlinx.android.synthetic.main.view_add_item.*
+import kotlinx.android.synthetic.main.view_add_item.tvPrice
 
 
 class CashFragment : Fragment() {
@@ -25,6 +32,7 @@ class CashFragment : Fragment() {
     }
 
     private lateinit var viewModel: CashViewModel
+    private lateinit var addItemViewModel: AddItemViewModel
     private lateinit var animHandler: AnimHandler
     private lateinit var adapter: HistoryAdapter
 
@@ -75,11 +83,46 @@ class CashFragment : Fragment() {
 
 
     private fun setListener() {
+        ivAdd.setOnClickListener {
+            tvAddItemDate.text = "current date"
+            addItemViewModel.showAddItemView(vAddItem)
+            //vBlocker.visibility = View.VISIBLE
+            addItemViewModel.hideAddBtn(ivAdd)
+        }
+        btCancel.setOnClickListener {
+            cancelAddItem()
+        }
+        btConfirm.setOnClickListener {
+            //viewModel.hideAddItemView(vAddItem)
+            //vBlocker.visibility = View.GONE
+            //viewModel.showAddBtn(btAdd)
+            // todo clear data and add item to the database
+            Toast.makeText(
+                requireContext(),
+                "The item has been saved into database",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
+        vAddItem.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
+            override fun onSwipeBottom() {
+                super.onSwipeBottom()
+                cancelAddItem()
+            }
+        })
+        tvPrice.setOnClickListener {
+            if (vKeyboard.visibility != View.VISIBLE) {
+                tvAddItemDate.text = "current Date"
+                addItemViewModel.showKeyboard(vKeyboard, btConfirm)
+            } else {
+                addItemViewModel.hideKeyboard(vKeyboard, btConfirm)
+            }
+        }
     }
 
     private fun getViewModel() {
         viewModel = ViewModelProvider(this).get(CashViewModel::class.java)
+        addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
     }
 
     private fun initObservers() {
@@ -87,4 +130,24 @@ class CashFragment : Fragment() {
             adapter.setList(recentData)
         })
     }
+
+    private fun cancelAddItem() {
+        addItemViewModel.hideAddItemView(vAddItem)
+        //vBlocker.visibility = View.GONE
+        addItemViewModel.showAddBtn(ivAdd)
+        addItemViewModel.hideKeyboard(vKeyboard, btConfirm)
+    }
+
+    /**
+     * Could handle back press.
+     * @return true if back press was handled
+     */
+    fun onBackPressed(): Boolean {
+        if (addItemViewModel.isAddViewShown) {
+            cancelAddItem()
+            return true
+        }
+        return false
+    }
+
 }
