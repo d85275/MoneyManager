@@ -126,9 +126,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <include
+        <com.example.demo.views.AddItemView
             android:id="@+id/vAddItem"
-            layout="@layout/view_add_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,15 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
 import com.example.demo.R
-import com.example.demo.utils.OnSwipeTouchListener
 import com.example.demo.viewmodels.AddItemViewModel
 import com.example.demo.viewmodels.CashViewModel
-import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.fragment_cash.*
 import kotlinx.android.synthetic.main.fragment_cash.vAddItem
-import kotlinx.android.synthetic.main.fragment_cash.vBlocker
-import kotlinx.android.synthetic.main.view_add_item.*
-import kotlinx.android.synthetic.main.view_add_item.tvPrice
 
 
 class CashFragment : Fragment() {
@@ -84,39 +78,8 @@ class CashFragment : Fragment() {
 
     private fun setListener() {
         ivAdd.setOnClickListener {
-            tvAddItemDate.text = "current date"
-            addItemViewModel.showAddItemView(vAddItem)
-            //vBlocker.visibility = View.VISIBLE
-            addItemViewModel.hideAddBtn(ivAdd)
-        }
-        btCancel.setOnClickListener {
-            cancelAddItem()
-        }
-        btConfirm.setOnClickListener {
-            //viewModel.hideAddItemView(vAddItem)
-            //vBlocker.visibility = View.GONE
-            //viewModel.showAddBtn(btAdd)
-            // todo clear data and add item to the database
-            Toast.makeText(
-                requireContext(),
-                "The item has been saved into database",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-        vAddItem.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
-            override fun onSwipeBottom() {
-                super.onSwipeBottom()
-                cancelAddItem()
-            }
-        })
-        tvPrice.setOnClickListener {
-            if (vKeyboard.visibility != View.VISIBLE) {
-                tvAddItemDate.text = "current Date"
-                addItemViewModel.showKeyboard(vKeyboard, btConfirm)
-            } else {
-                addItemViewModel.hideKeyboard(vKeyboard, btConfirm)
-            }
+            vAddItem.setDate("current date")
+            vAddItem.show()
         }
     }
 
@@ -129,13 +92,13 @@ class CashFragment : Fragment() {
         viewModel.recentData.observe(viewLifecycleOwner, Observer { recentData ->
             adapter.setList(recentData)
         })
-    }
-
-    private fun cancelAddItem() {
-        addItemViewModel.hideAddItemView(vAddItem)
-        //vBlocker.visibility = View.GONE
-        addItemViewModel.showAddBtn(ivAdd)
-        addItemViewModel.hideKeyboard(vKeyboard, btConfirm)
+        vAddItem.isShow().observe(viewLifecycleOwner, Observer { isShow ->
+            if (isShow) {
+                addItemViewModel.hideAddBtn(ivAdd)
+            } else {
+                addItemViewModel.showAddBtn(ivAdd)
+            }
+        })
     }
 
     /**
@@ -143,8 +106,8 @@ class CashFragment : Fragment() {
      * @return true if back press was handled
      */
     fun onBackPressed(): Boolean {
-        if (addItemViewModel.isAddViewShown) {
-            cancelAddItem()
+        if (vAddItem.isShow().value == true) {
+            vAddItem.dismiss()
             return true
         }
         return false
