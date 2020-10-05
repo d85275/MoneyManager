@@ -6,26 +6,36 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.demo.R
 import com.example.demo.utils.OnSwipeTouchListener
 import kotlinx.android.synthetic.main.view_add_item.view.*
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private var view: View =
         LayoutInflater.from(context).inflate(R.layout.view_add_item, this, true)
+
+    private var total = 0L
 
     private companion object {
         private const val ADD_ANIM_DURATION = 300L
         private const val ALPHA_SHOW = 1F
         private const val ALPHA_HIDE = 0F
         private const val TAG = "ADD_VIEW"
-
+        private const val DOT = 10
+        private const val BACK = 12
     }
 
     init {
         setListeners()
+    }
+
+    fun getTotal(): Long {
+        return total
     }
 
     private fun setListeners() {
@@ -48,10 +58,49 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
                 dismiss()
             }
         })
+        val count = vKeyboard.childCount
+        for (i in 0 until count) {
+            vKeyboard.getChildAt(i).setOnClickListener {
+                Log.e("123", "$i is clicked")
+                val num = i + 1
+
+                when {
+                    num < 10 -> {
+                        if (total >= Int.MAX_VALUE) {
+                            Toast.makeText(context, "the number is too large", Toast.LENGTH_SHORT)
+                                .show()
+                            return@setOnClickListener
+                        }
+                        total = total * 10 + num
+                    }
+                    num == BACK -> {
+                        if (total > 0) {
+                            total /= 10
+                        }
+                    }
+                    num == DOT -> {
+
+                    }
+                    else -> {
+                        if (total >= Int.MAX_VALUE) {
+                            Toast.makeText(context, "the number is too large", Toast.LENGTH_SHORT)
+                                .show()
+                            return@setOnClickListener
+                        }
+                        total *= 10
+                    }
+                }
+
+                if (total > 0) tvPrice.text = formatter.format(total)
+                else tvPrice.text = "請輸入價格"
+            }
+        }
     }
 
+    private val formatter: NumberFormat = DecimalFormat("#,###")
+
     fun setDate(date: String) {
-        tvAddItemDate.text
+        tvAddItemDate.text = date
     }
 
     private var isShow = MutableLiveData(false)

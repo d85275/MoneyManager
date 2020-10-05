@@ -37,10 +37,10 @@
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    tools:text="2020/09/30"
-                    android:textStyle="bold"
                     android:textColor="@color/calendar_text_colour"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="2020/09/30" />
 
 
                 <EditText
@@ -94,17 +94,72 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <include
+            <GridLayout
                 android:id="@+id/vKeyboard"
-                layout="@layout/view_keyboard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
                 android:layout_marginTop="15dp"
+                android:columnCount="3"
+                android:orientation="horizontal"
                 android:visibility="invisible"
+                android:weightSum="3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llContent" />
+                app:layout_constraintTop_toBottomOf="@id/llContent">
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="1" />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="2" />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="3" />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="4" />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="5" />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="6" />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="7" />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="8" />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="9" />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="." />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="0" />
+
+                <Button
+                    android:layout_columnWeight="1"
+                    android:text="&lt;" />
+            </GridLayout>
 
             <Button
                 android:id="@+id/btConfirm"
