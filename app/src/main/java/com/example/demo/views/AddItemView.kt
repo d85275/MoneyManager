@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -42,6 +43,10 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         tvAddItemDate.setOnClickListener {
             Log.e(TAG, "date clicked")
         }
+        etName.setOnClickListener {
+            Log.e("123", "on click")
+            dismissKeyboard()
+        }
         tvPrice.setOnClickListener {
             if (isKeyboardShow) {
                 dismissKeyboard()
@@ -52,12 +57,14 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         btCancel.setOnClickListener {
             dismiss()
         }
+        /*
         view.setOnTouchListener(object : OnSwipeTouchListener(context) {
             override fun onSwipeBottom() {
                 super.onSwipeBottom()
                 dismiss()
             }
         })
+         */
         val count = vKeyboard.childCount
         for (i in 0 until count) {
             vKeyboard.getChildAt(i).setOnClickListener {
@@ -140,6 +147,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     fun dismiss() {
         isShow.value = false
         dismissKeyboard()
+        hideSoftKeyboard()
         val y = view.height.toFloat()
         view.animate()
             .translationY(y)
@@ -160,6 +168,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     private fun showKeyboard() {
+        hideSoftKeyboard()
         isKeyboardShow = true
         vKeyboard.visibility = View.VISIBLE
         vKeyboard.alpha = 0f
@@ -170,4 +179,8 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             .start()
     }
 
+    fun View.hideSoftKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
 }
