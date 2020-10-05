@@ -129,6 +129,15 @@
                 android:text="新增收支"/>
 
         </LinearLayout>
+
+        <com.example.demo.views.AddItemView
+            android:id="@+id/vAddItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -8,7 +8,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
 import com.example.demo.R
-import kotlinx.android.synthetic.main.fragment_cash.*
+import kotlinx.android.synthetic.main.fragment_bank.*
+import kotlinx.android.synthetic.main.fragment_cash.ivMoney
 
 class BankFragment : Fragment() {
 
@@ -34,6 +35,7 @@ class BankFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        setListeners()
     }
     private lateinit var animHandler: AnimHandler
     override fun onResume() {
@@ -51,5 +53,12 @@ class BankFragment : Fragment() {
 
     private fun initView(){
         animHandler = AnimHandler(ivMoney)
+    }
+
+    private fun setListeners(){
+        llAdd.setOnClickListener {
+            vAddItem.show()
+            vAddItem.setDate("test")
+        }
     }
 }

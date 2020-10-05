@@ -61,8 +61,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                app:layout_collapseMode="pin"
                 android:background="@android:color/white"
+                app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:title="">
 
@@ -141,9 +141,9 @@
         android:layout_height="81dp"
         android:layout_gravity="end"
         android:layout_marginEnd="15dp"
+        android:alpha="0.7"
         android:background="@drawable/add"
         android:translationY="-100dp"
-        android:alpha="0.7"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
     <LinearLayout
@@ -198,6 +198,13 @@
         android:focusable="true"
         android:visibility="gone" />
 
+    <com.example.demo.views.AddItemView
+        android:id="@+id/vAddItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="invisible" />
+    <!--
     <include
         android:id="@+id/vAddItem"
         layout="@layout/view_add_item"
@@ -205,4 +212,5 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"
         android:layout_gravity="bottom"/>
+        -->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

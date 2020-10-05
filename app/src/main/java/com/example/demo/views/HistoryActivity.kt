@@ -83,6 +83,15 @@ class HistoryActivity : AppCompatActivity() {
                 //recyclerView.smoothScrollToPosition(adapter.itemCount)
             }
         })
+        vAddItem.isShow().observe(this, Observer { isShow ->
+            if (isShow) {
+                vBlocker.visibility = View.VISIBLE
+                addItemViewModel.hideAddBtn(btAdd)
+            } else {
+                vBlocker.visibility = View.GONE
+                addItemViewModel.showAddBtn(btAdd)
+            }
+        })
     }
 
     private fun setListeners() {
@@ -92,12 +101,8 @@ class HistoryActivity : AppCompatActivity() {
                 scrollRange = barLayout?.totalScrollRange!!
             }
             if (scrollRange + verticalOffset == 0) {
-                //ivPreMonth.setImageResource(R.drawable.pre_arrow_black)
-                //ivNextMonth.setImageResource(R.drawable.next_arrow_black)
                 isShow = true
             } else if (isShow) {
-                //ivPreMonth.setImageResource(R.drawable.pre_arrow_white)
-                //ivNextMonth.setImageResource(R.drawable.next_arrow_white)
                 isShow = false
             }
         })
@@ -105,48 +110,14 @@ class HistoryActivity : AppCompatActivity() {
             finish()
         }
         btAdd.setOnClickListener {
-            tvAddItemDate.text = viewModel.getAddDate()
-            addItemViewModel.showAddItemView(vAddItem)
-            vBlocker.visibility = View.VISIBLE
-            addItemViewModel.hideAddBtn(btAdd)
+            vAddItem.setDate(viewModel.getAddDate())
+            vAddItem.show()
         }
-        btCancel.setOnClickListener {
-            cancelAddItem()
-        }
-        btConfirm.setOnClickListener {
-            //viewModel.hideAddItemView(vAddItem)
-            //vBlocker.visibility = View.GONE
-            //viewModel.showAddBtn(btAdd)
-            // todo clear data and add item to the database
-            Toast.makeText(this, "The item has been saved into database", Toast.LENGTH_SHORT).show()
-        }
-
-        vAddItem.setOnTouchListener(object : OnSwipeTouchListener(this) {
-            override fun onSwipeBottom() {
-                super.onSwipeBottom()
-                cancelAddItem()
-            }
-        })
-        tvPrice.setOnClickListener {
-            if (vKeyboard.visibility != View.VISIBLE) {
-                tvAddItemDate.text = viewModel.getAddDate()
-                addItemViewModel.showKeyboard(vKeyboard, btConfirm)
-            } else {
-                addItemViewModel.hideKeyboard(vKeyboard, btConfirm)
-            }
-        }
-    }
-
-    private fun cancelAddItem() {
-        addItemViewModel.hideAddItemView(vAddItem)
-        vBlocker.visibility = View.GONE
-        addItemViewModel.showAddBtn(btAdd)
-        addItemViewModel.hideKeyboard(vKeyboard, btConfirm)
     }
 
     override fun onBackPressed() {
-        if (addItemViewModel.isAddViewShown) {
-            cancelAddItem()
+        if (vAddItem.isShow().value == true) {
+            vAddItem.dismiss()
         } else {
             super.onBackPressed()
         }
