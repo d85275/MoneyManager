@@ -1,9 +1,14 @@
 package com.example.demo.views
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
@@ -64,10 +69,27 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
 
     class EmptyViewHolder(itemView: View) : BaseBankViewHolder(itemView) {
         override fun bindView(position: Int, list: List<String?>) {
-            Log.e("123","bind")
             itemView.ivAddBank.setOnClickListener {
-                Log.e("123","clicked")
+                showDialog()
             }
+        }
+
+        private fun showDialog() {
+            val dialog = Dialog(itemView.context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.view_add_bank)
+            dialog.setCanceledOnTouchOutside(true)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialog.show()
         }
     }
 }

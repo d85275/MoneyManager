@@ -64,11 +64,13 @@ class MainActivity : FragmentActivity() {
                     ivCashDot.setImageResource(R.drawable.dot_selected)
                     ivBankDot.setImageResource(R.drawable.dot_default)
                     vBackground.setBackgroundResource(R.drawable.cash_background)
+                    llSearch.visibility = View.GONE
                 }
                 else -> {
                     ivCashDot.setImageResource(R.drawable.dot_default)
                     ivBankDot.setImageResource(R.drawable.dot_selected)
                     vBackground.setBackgroundResource(R.drawable.bank_background)
+                    llSearch.visibility = View.GONE
                 }
             }
         })
