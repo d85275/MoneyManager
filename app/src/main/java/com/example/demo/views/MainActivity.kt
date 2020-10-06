@@ -63,10 +63,12 @@ class MainActivity : FragmentActivity() {
                 0 -> {
                     ivCashDot.setImageResource(R.drawable.dot_selected)
                     ivBankDot.setImageResource(R.drawable.dot_default)
+                    vBackground.setBackgroundResource(R.drawable.cash_background)
                 }
                 else -> {
                     ivCashDot.setImageResource(R.drawable.dot_default)
                     ivBankDot.setImageResource(R.drawable.dot_selected)
+                    vBackground.setBackgroundResource(R.drawable.bank_background)
                 }
             }
         })
@@ -88,6 +90,9 @@ class MainActivity : FragmentActivity() {
         for (i in list.indices) {
             if (list[i] is CashFragment) {
                 handled = (list[i] as CashFragment).onBackPressed()
+                break
+            } else if (list[i] is BankFragment) {
+                handled = (list[i] as BankFragment).onBackPressed()
                 break
             }
         }

@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <ImageView
             android:id="@+id/ivBackground"
             android:layout_width="239dp"
@@ -28,8 +27,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,47 +59,67 @@
                 app:layout_constraintEnd_toEndOf="@id/ivBackground"
                 app:layout_constraintStart_toEndOf="@id/ivMoney"
                 app:layout_constraintTop_toTopOf="@id/ivMoney" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="320dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rectangle"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llMoney">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="26dp"
-                android:gravity="center_horizontal"
-                android:letterSpacing="0.13"
-                android:text="近期消費"
+                android:letterSpacing="0.14"
+                android:lineSpacingExtra="6sp"
+                android:layout_marginStart="10dp"
                 android:textColor="#b87463"
-                android:textSize="19sp" />
+                android:textSize="14sp"
+                android:text="總餘額" />
 
-            <TextView
-                android:id="@+id/tvEmpty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="No Data!"
-                android:textColor="@android:color/darker_gray"
-                android:visibility="gone" />
+        </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRecent"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="32dp" />
-        </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rectangle"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="26dp"
+                    android:gravity="center_horizontal"
+                    android:letterSpacing="0.13"
+                    android:text="近期消費"
+                    android:textColor="#b87463"
+                    android:textSize="19sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="No Data!"
+                    android:textColor="@android:color/darker_gray"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRecent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="35dp"
+                    android:layout_marginEnd="32dp" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
         <ImageView
             android:id="@+id/ivAdd"
@@ -130,10 +149,10 @@
             android:id="@+id/vAddItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_gravity="bottom"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

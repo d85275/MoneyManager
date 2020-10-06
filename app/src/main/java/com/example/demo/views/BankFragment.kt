@@ -2,16 +2,31 @@ package com.example.demo.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
+import com.example.demo.R
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
-import com.example.demo.R
+import com.example.demo.viewmodels.AddItemViewModel
+import com.example.demo.viewmodels.BankViewModel
 import kotlinx.android.synthetic.main.fragment_bank.*
-import kotlinx.android.synthetic.main.fragment_cash.ivMoney
+import kotlin.math.abs
+import kotlin.math.max
 
 class BankFragment : Fragment() {
+
+    private lateinit var addItemViewModel: AddItemViewModel
+    private lateinit var viewModel: BankViewModel
+    private lateinit var animHandler: AnimHandler
+    private lateinit var adapter: HistoryAdapter
+    private lateinit var bankAdapter: BankAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,22 +40,25 @@ class BankFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_bank, container, false)
         val gesture =
-            CommonUtils.getGesture(requireActivity(), {
-                findNavController().popBackStack()
-            }, false)
+            CommonUtils.getGesture(requireActivity(), { findNavController().popBackStack() }, false)
         view.setOnTouchListener { _, event -> gesture.onTouchEvent(event) }
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getViewModel()
         initView()
         setListeners()
+        initObservers()
+        viewModel.loadRecentData()
+        viewModel.loadBankData()
     }
-    private lateinit var animHandler: AnimHandler
+
     override fun onResume() {
         super.onResume()
-        animHandler.sendEmptyMessageDelayed(0,
+        animHandler.sendEmptyMessageDelayed(
+            0,
             AnimHandler.ANIM_DELAY
         )
 
@@ -51,14 +69,63 @@ class BankFragment : Fragment() {
         animHandler.removeMessages(0)
     }
 
-    private fun initView(){
+    private fun initView() {
         animHandler = AnimHandler(ivMoney)
+        adapter = HistoryAdapter()
+        rvRecent.layoutManager = LinearLayoutManager(requireContext())
+        rvRecent.setHasFixedSize(true)
+        rvRecent.adapter = adapter
+
+        bankAdapter = BankAdapter()
+        vpBank.orientation = ViewPager2.ORIENTATION_VERTICAL
+        vpBank.adapter = bankAdapter
+        vpBank.clipChildren = false
+        vpBank.offscreenPageLimit = 3
+        vpBank.setPageTransformer(viewModel.getTransformer())
+        /*
+        rvBank.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        rvBank.setHasFixedSize(true)
+        rvBank.adapter = bankAdapter
+         */
     }
 
-    private fun setListeners(){
-        llAdd.setOnClickListener {
+    private fun initObservers() {
+        viewModel.recentData.observe(viewLifecycleOwner, Observer { recentData ->
+            adapter.setList(recentData)
+        })
+        viewModel.bankData.observe(viewLifecycleOwner, Observer { bankData ->
+            bankAdapter.setList(bankData)
+        })
+        vAddItem.isShow().observe(viewLifecycleOwner, Observer { isShow ->
+            if (isShow) {
+                addItemViewModel.hideAddBtn(ivAdd)
+            } else {
+                addItemViewModel.showAddBtn(ivAdd)
+            }
+        })
+    }
+
+    private fun getViewModel() {
+        viewModel = ViewModelProvider(this).get(BankViewModel::class.java)
+        addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
+    }
+
+    private fun setListeners() {
+        ivAdd.setOnClickListener {
             vAddItem.show()
-            vAddItem.setDate("test")
         }
+    }
+
+    /**
+     * Could handle back press.
+     * @return true if back press was handled
+     */
+    fun onBackPressed(): Boolean {
+        if (vAddItem.isShow().value == true) {
+            vAddItem.dismiss()
+            return true
+        }
+        return false
     }
 }

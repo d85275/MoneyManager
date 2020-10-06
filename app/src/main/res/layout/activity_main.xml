@@ -7,10 +7,11 @@
     android:background="@android:color/white"
     tools:context=".views.MainActivity">
 
-    <View
+    <ImageView
+        android:id="@+id/vBackground"
         android:layout_width="0dp"
         android:layout_height="455dp"
-        android:background="@drawable/background"
+        android:background="@drawable/bank_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
