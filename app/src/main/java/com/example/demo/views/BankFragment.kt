@@ -72,6 +72,7 @@ class BankFragment : Fragment() {
     private fun initView() {
         animHandler = AnimHandler(ivMoney)
         adapter = HistoryAdapter()
+        adapter.setType(1)
         rvRecent.layoutManager = LinearLayoutManager(requireContext())
         rvRecent.setHasFixedSize(true)
         rvRecent.adapter = adapter

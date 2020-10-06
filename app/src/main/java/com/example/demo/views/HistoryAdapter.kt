@@ -25,14 +25,27 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         holder.itemView.tvDate.text = alHistoryData[position].date
         holder.itemView.tvPrice.text = "$ ${alHistoryData[position].price}"
         if (alHistoryData[position].type == TYPE_INCOME) {
-            holder.itemView.tvName.setTextColor(Color.parseColor("#4a7c51"))
-            holder.itemView.tvDate.setTextColor(Color.parseColor("#77127100"))
-            holder.itemView.tvPrice.setTextColor(Color.parseColor("#77127100"))
+            holder.itemView.tvName.setTextColor(getDarkColor())
+            holder.itemView.tvDate.setTextColor(getLightColor())
+            holder.itemView.tvPrice.setTextColor(getLightColor())
         }
     }
 
     fun setList(list: List<HistoryData>) {
         alHistoryData = list as ArrayList
         notifyDataSetChanged()
+    }
+
+    fun setType(type: Int) {
+        this.type = type
+    }
+
+    private var type = 0
+    private fun getDarkColor(): Int {
+        return if (type == 0) Color.parseColor("#93513f") else Color.parseColor("#4a7c51")
+    }
+
+    private fun getLightColor(): Int {
+        return if (type == 0) Color.parseColor("#b87463") else Color.parseColor("#77127100")
     }
 }
