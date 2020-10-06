@@ -110,7 +110,7 @@ class HistoryActivity : AppCompatActivity() {
             finish()
         }
         btAdd.setOnClickListener {
-            vAddItem.setDate(viewModel.getAddDate())
+            vAddItem.setDate(viewModel.selectedDay.value)
             vAddItem.show()
         }
     }

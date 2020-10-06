@@ -11,10 +11,10 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.demo.R
-import com.example.demo.utils.OnSwipeTouchListener
 import kotlinx.android.synthetic.main.view_add_item.view.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
@@ -32,21 +32,45 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         private const val BACK = 12
     }
 
+    private val dateFormatForAdd: SimpleDateFormat =
+        SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+
     private var date: Date? = null
 
     init {
+        setDate(Calendar.getInstance().time)
         setListeners()
     }
 
     fun setDate(date: Date?) {
         this.date = date
+        if (date != null) tvAddItemDate.text = dateFormatForAdd.format(date)
     }
 
     fun getTotal(): Long {
         return total
     }
 
+    private fun goPreDay() {
+        if (date == null) return
+        val calendar = Calendar.getInstance()
+        calendar.time = date!!
+        calendar.add(Calendar.DAY_OF_YEAR, -1)
+        setDate(calendar.time)
+    }
+
+    private fun goNextDay() {
+        if (date == null) return
+        val calendar = Calendar.getInstance()
+        calendar.time = date!!
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        date = calendar.time
+        setDate(calendar.time)
+    }
+
     private fun setListeners() {
+        ivPreDay.setOnClickListener { goPreDay() }
+        ivNextDay.setOnClickListener { goNextDay() }
 
         etName.setOnClickListener {
             dismissKeyboard()

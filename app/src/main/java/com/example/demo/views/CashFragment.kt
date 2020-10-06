@@ -80,7 +80,6 @@ class CashFragment : Fragment() {
 
     private fun setListener() {
         ivAdd.setOnClickListener {
-            vAddItem.setDate("current date")
             vAddItem.show()
         }
     }
