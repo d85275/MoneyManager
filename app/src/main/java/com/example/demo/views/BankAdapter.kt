@@ -3,13 +3,11 @@ package com.example.demo.views
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import kotlinx.android.synthetic.main.item_bank_card_add.view.*
@@ -88,7 +86,6 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
             dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {
                 dialog.dismiss()
             }
-
             dialog.show()
         }
     }

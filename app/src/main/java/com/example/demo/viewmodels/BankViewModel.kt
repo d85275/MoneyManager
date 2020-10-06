@@ -14,6 +14,20 @@ import kotlin.math.max
 class BankViewModel : ViewModel() {
     val recentData = MutableLiveData<List<HistoryData>>()
     val bankData = MutableLiveData<List<String?>>()
+
+    val curBank = MutableLiveData<String>()
+    fun getChangeCallback() = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            if (bankData.value == null) return
+            curBank.value = bankData.value!![position]
+        }
+    }
+
+    fun getBankData(curBank:String){
+
+    }
+
     fun loadRecentData() {
         val list = arrayListOf<HistoryData>()
         val data1 = HistoryData("薪水", TYPE_INCOME, 32000, "2020-10/05")

@@ -2,6 +2,7 @@ package com.example.demo.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,6 +70,11 @@ class BankFragment : Fragment() {
         animHandler.removeMessages(0)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        vpBank.unregisterOnPageChangeCallback(viewModel.getChangeCallback())
+    }
+
     private fun initView() {
         animHandler = AnimHandler(ivMoney)
         adapter = HistoryAdapter()
@@ -105,6 +111,22 @@ class BankFragment : Fragment() {
                 addItemViewModel.showAddBtn(ivAdd)
             }
         })
+        viewModel.curBank.observe(viewLifecycleOwner, Observer { curBank ->
+            if (curBank == null) {
+                hideRecentData()
+            } else {
+                getRecentData(curBank)
+            }
+        })
+    }
+
+    private fun hideRecentData() {
+        rvRecent.visibility = View.INVISIBLE
+    }
+
+    private fun getRecentData(curBank: String) {
+        rvRecent.visibility = View.VISIBLE
+        viewModel.getBankData(curBank)
     }
 
     private fun getViewModel() {
@@ -116,6 +138,7 @@ class BankFragment : Fragment() {
         ivAdd.setOnClickListener {
             vAddItem.show()
         }
+        vpBank.registerOnPageChangeCallback(viewModel.getChangeCallback())
     }
 
     /**

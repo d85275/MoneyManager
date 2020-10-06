@@ -13,18 +13,11 @@ class MainViewModel : ViewModel() {
         desId = id
     }
 
-    private var pageChangeCallback: ViewPager2.OnPageChangeCallback? = null
     val curPage = MutableLiveData(0)
-
-    fun getChangeCallback(): ViewPager2.OnPageChangeCallback {
-        if (pageChangeCallback == null) {
-            pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    curPage.value = position
-                }
-            }
+    fun getChangeCallback() = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            curPage.value = position
         }
-        return pageChangeCallback!!
     }
 }
