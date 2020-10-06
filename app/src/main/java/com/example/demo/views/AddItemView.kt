@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.demo.R
 import kotlinx.android.synthetic.main.view_add_item.view.*
+import java.lang.StringBuilder
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -30,6 +31,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         private const val TAG = "ADD_VIEW"
         private const val DOT = 10
         private const val BACK = 12
+        private const val ZERO = 11
     }
 
     private val dateFormatForAdd: SimpleDateFormat =
@@ -96,43 +98,46 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         val count = vKeyboard.childCount
         for (i in 0 until count) {
             vKeyboard.getChildAt(i).setOnClickListener {
-                Log.e("123", "$i is clicked")
                 val num = i + 1
+                val tmp = tvPrice.text.toString()
 
+                val sb = StringBuilder(tmp)
                 when {
-                    num < 10 -> {
-                        if (total >= Int.MAX_VALUE) {
-                            Toast.makeText(context, "the number is too large", Toast.LENGTH_SHORT)
-                                .show()
-                            return@setOnClickListener
-                        }
-                        total = total * 10 + num
+                    num < 10 || num == ZERO || num == DOT -> {
+                        setPrice(sb, num)
                     }
                     num == BACK -> {
-                        if (total > 0) {
-                            total /= 10
-                        }
-                    }
-                    num == DOT -> {
-
-                    }
-                    else -> {
-                        if (total >= Int.MAX_VALUE) {
-                            Toast.makeText(context, "the number is too large", Toast.LENGTH_SHORT)
-                                .show()
-                            return@setOnClickListener
-                        }
-                        total *= 10
+                        if (tmp.isEmpty()) return@setOnClickListener
+                        tvPrice.text = sb.deleteCharAt(tmp.lastIndex)
                     }
                 }
-
-                if (total > 0) tvPrice.text = formatter.format(total)
-                else tvPrice.text = "請輸入價格"
+                //if (total > 0) tvPrice.text = formatter.format(total)
+                //else tvPrice.text = "請輸入價格"
             }
         }
     }
 
-    private val formatter: NumberFormat = DecimalFormat("#,###")
+    private fun setPrice(sb: StringBuilder, num: Int) {
+        if (sb.toString().length > 10) {
+            Toast.makeText(context, "the number is too large", Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
+        when {
+            num < 10 -> {
+                tvPrice.text = sb.append(num).toString()
+            }
+            num == ZERO -> {
+                tvPrice.text = sb.append(0).toString()
+            }
+            num == DOT -> {
+                if (sb.toString().contains(".")) return
+                tvPrice.text = sb.append('.').toString()
+            }
+        }
+    }
+
+    private val formatter: NumberFormat = DecimalFormat("#,###.##")
 
     fun setDate(date: String) {
         tvAddItemDate.text = date
