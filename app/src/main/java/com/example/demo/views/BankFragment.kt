@@ -139,6 +139,7 @@ class BankFragment : Fragment() {
             vAddItem.show()
         }
         vpBank.registerOnPageChangeCallback(viewModel.getChangeCallback())
+        
     }
 
     /**
