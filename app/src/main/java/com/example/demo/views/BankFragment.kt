@@ -93,7 +93,6 @@ class BankFragment : Fragment() {
         bankAdapter.setViewModel(mainViewModel)
         vpBank.orientation = ViewPager2.ORIENTATION_VERTICAL
         vpBank.adapter = bankAdapter
-        vpBank.clipChildren = false
         vpBank.offscreenPageLimit = 3
         vpBank.setPageTransformer(bankViewModel.getTransformer())
         /*

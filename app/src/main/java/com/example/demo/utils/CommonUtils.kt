@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
+import com.example.demo.R
+import com.example.demo.model.BankData
 import com.example.demo.views.HistoryActivity
 import kotlin.math.abs
 
@@ -59,5 +61,25 @@ object CommonUtils {
         bundle.putInt(KEY_FROM,from)
         intent.putExtras(bundle)
         context.startActivity(intent)
+    }
+
+    fun getBankCardTheme(color: Int, context: Context): Int {
+        return when (color) {
+            BankData.COLOR_BLUE -> {
+                R.drawable.icon_bank_blue
+            }
+            BankData.COLOR_BLUE_2 -> {
+                R.drawable.icon_card_blue_2
+            }
+            BankData.COLOR_PURPLE -> {
+                R.drawable.icon_card_purple
+            }
+            BankData.COLOR_RED -> {
+                R.drawable.icon_card_red
+            }
+            else -> {
+                R.drawable.icon_bank_green
+            }
+        }
     }
 }

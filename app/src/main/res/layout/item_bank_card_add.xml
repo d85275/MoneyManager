@@ -6,13 +6,10 @@
     android:layout_gravity="center_horizontal">
 
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="300dp"
+    <LinearLayout
+        android:layout_width="254dp"
         android:layout_height="170dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        app:cardCornerRadius="22dp"
-        app:cardElevation="3dp"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,18 +17,18 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/icon_empty_bank">
 
             <ImageView
                 android:id="@+id/ivAddBank"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/add_bank"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

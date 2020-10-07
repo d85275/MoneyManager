@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.BankData
+import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.BankViewModel
 import com.example.demo.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.item_bank_card.view.*
@@ -77,6 +78,11 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
     class BankViewHolder(itemView: View, mainViewModel: MainViewModel) :
         BaseBankViewHolder(itemView, mainViewModel) {
         override fun bindView(position: Int, list: List<BankData?>) {
+            itemView.clBackground.setBackgroundResource(
+                CommonUtils.getBankCardTheme(
+                    list[position]?.color ?: 0, itemView.context
+                )
+            )
             itemView.tvName.text = list[position]?.name
             itemView.ivRemove.setOnClickListener {
                 showDialog()
@@ -95,7 +101,7 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
                 itemView.context.getString(R.string.remove_bank_msg, name)
 
             dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
-                mainViewModel.removeBank(BankData(name))
+                mainViewModel.removeBank(BankData.create(name))
                 dialog.dismiss()
             }
             dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {
@@ -127,7 +133,7 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
                 if (name.isEmpty()) {
                     return@setOnClickListener
                 }
-                mainViewModel.addBank(BankData(name))
+                mainViewModel.addBank(BankData.create(name))
                 dialog.dismiss()
             }
             dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {

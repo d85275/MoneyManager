@@ -37,12 +37,11 @@ class MainActivity : FragmentActivity() {
 
     override fun onPause() {
         super.onPause()
-        viewPager.registerOnPageChangeCallback(viewModel.getChangeCallback())
     }
 
     override fun onStop() {
         super.onStop()
-        viewPager.unregisterOnPageChangeCallback(viewModel.getChangeCallback())
+        //viewPager.unregisterOnPageChangeCallback(viewModel.getChangeCallback())
     }
 
     private fun initViewPager() {
@@ -120,6 +119,8 @@ class MainActivity : FragmentActivity() {
         ivHistory.setOnClickListener {
             CommonUtils.goHistory(this, 0)
         }
+        viewPager.registerOnPageChangeCallback(viewModel.getChangeCallback())
+
     }
 
     /**
