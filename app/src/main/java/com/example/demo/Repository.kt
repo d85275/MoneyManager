@@ -14,7 +14,11 @@ class Repository(context: Context) {
         return db.bankDao().getAll()
     }
 
-    fun addBank(bankData: BankData):Completable {
+    fun addBank(bankData: BankData): Completable {
         return db.bankDao().insertAll(bankData)
+    }
+
+    fun removeBank(bankData: BankData): Completable {
+        return db.bankDao().delete(bankData)
     }
 }

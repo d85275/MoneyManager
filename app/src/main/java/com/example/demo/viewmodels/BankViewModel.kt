@@ -29,12 +29,19 @@ class BankViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun addBank(bankData: BankData) {
-        Log.e("123", "add bank: ${bankData.name}")
         repository.addBank(bankData).doOnComplete {
-            Log.e("123", "add bank complete")
             loadBankData()
         }.doOnError {
             Log.e("123", "add bank error, ${it.toString()}")
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
+    fun removeBank(bankData: BankData) {
+        repository.removeBank(bankData).doOnComplete {
+            loadBankData()
+        }.doOnError {
+            Log.e("123", "remove bank error, ${it.toString()}")
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
@@ -46,7 +53,7 @@ class BankViewModel(private val repository: Repository) : ViewModel() {
                 AndroidSchedulers.mainThread()
             ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
                 .subscribe { list ->
-                    Log.e("123", "bank list size: ${list.size}")
+                    list.reversed()
                     (list as ArrayList).add(null)
                     bankData.postValue(list)
                 }

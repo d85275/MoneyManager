@@ -1,6 +1,7 @@
 package com.example.demo.views
 
 import android.annotation.SuppressLint
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -68,10 +69,11 @@ class BankFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         animHandler.removeMessages(0)
+        vpBank.registerOnPageChangeCallback(viewModel.getChangeCallback())
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         vpBank.unregisterOnPageChangeCallback(viewModel.getChangeCallback())
     }
 
@@ -103,6 +105,7 @@ class BankFragment : Fragment() {
             adapter.setList(recentData)
         })
         viewModel.bankData.observe(viewLifecycleOwner, Observer { bankData ->
+            vpBank.visibility = View.VISIBLE
             bankAdapter.setList(bankData)
         })
         vAddItem.isShow().observe(viewLifecycleOwner, Observer { isShow ->
@@ -142,8 +145,6 @@ class BankFragment : Fragment() {
         ivAdd.setOnClickListener {
             vAddItem.show()
         }
-        vpBank.registerOnPageChangeCallback(viewModel.getChangeCallback())
-
     }
 
     /**

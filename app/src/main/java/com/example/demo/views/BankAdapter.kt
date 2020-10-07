@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.BankData
@@ -32,14 +33,15 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
                 val holder = EmptyViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.item_bank_card_add, parent, false)
+                    , bankViewModel
                 )
-                holder.setViewModel(bankViewModel)
                 holder
             }
             else -> {
                 BankViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.item_bank_card, parent, false)
+                    , bankViewModel
                 )
             }
         }
@@ -66,22 +68,44 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
         return if (alNames[position] == null) EMPTY else BANK
     }
 
-    open class BaseBankViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    open class BaseBankViewHolder(itemView: View, val bankViewModel: BankViewModel) :
+        RecyclerView.ViewHolder(itemView) {
         open fun bindView(position: Int, list: List<BankData?>) {}
     }
 
-    class BankViewHolder(itemView: View) : BaseBankViewHolder(itemView) {
+    class BankViewHolder(itemView: View, bankViewModel: BankViewModel) :
+        BaseBankViewHolder(itemView, bankViewModel) {
         override fun bindView(position: Int, list: List<BankData?>) {
             itemView.tvName.text = list[position]?.name
+            itemView.ivRemove.setOnClickListener {
+                showDialog()
+            }
+        }
+
+        private fun showDialog() {
+            val dialog = Dialog(itemView.context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.view_remove_bank)
+            dialog.setCanceledOnTouchOutside(true)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val name = itemView.tvName.text.toString().trim()
+            dialog.findViewById<TextView>(R.id.tvMsg).text =
+                itemView.context.getString(R.string.remove_bank_msg, name)
+
+            dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
+                bankViewModel.removeBank(BankData(name))
+                dialog.dismiss()
+            }
+            dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
         }
     }
 
-    class EmptyViewHolder(itemView: View) : BaseBankViewHolder(itemView) {
-        private lateinit var bankViewModel: BankViewModel
-
-        fun setViewModel(bankViewModel: BankViewModel) {
-            this.bankViewModel = bankViewModel
-        }
+    class EmptyViewHolder(itemView: View, bankViewModel: BankViewModel) :
+        BaseBankViewHolder(itemView, bankViewModel) {
 
         override fun bindView(position: Int, list: List<BankData?>) {
             itemView.ivAddBank.setOnClickListener {
@@ -99,7 +123,7 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
 
             dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
                 val name = dialog.findViewById<EditText>(R.id.etName).text.toString().trim()
-                if (name.isEmpty()){
+                if (name.isEmpty()) {
                     return@setOnClickListener
                 }
                 bankViewModel.addBank(BankData(name))
