@@ -8,31 +8,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.R
 import com.example.demo.utils.CommonUtils
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_cash.*
 
 class MainActivity : FragmentActivity() {
-
 
     private lateinit var viewModel: MainViewModel
     private lateinit var viewPager: ViewPager2
 
-    //private lateinit var navController:NavController
     private companion object {
         private const val NUM_PAGES = 2
-    }
-
-    private val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
-        // react on change
-        // you can check destination.id or destination.label and act based on that
-        viewModel.setDesId(destination.id)
-        invalidateOptionsMenu()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +29,13 @@ class MainActivity : FragmentActivity() {
         setContentView(R.layout.activity_main)
         initViewPager()
         getViewModel()
-        //navController = findNavController(R.id.nav_host_fragment)
         setListener()
         initObservers()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        if (viewPager == null) return
         viewPager.unregisterOnPageChangeCallback(viewModel.getChangeCallback())
     }
 

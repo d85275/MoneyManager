@@ -43,6 +43,7 @@
                 app:layout_goneMarginStart="30dp" />
 
             <EditText
+                android:id="@+id/etName"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"

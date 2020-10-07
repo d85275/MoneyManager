@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.demo.R
+import com.example.demo.utils.OnSwipeTouchListener
 import kotlinx.android.synthetic.main.view_add_item.view.*
 import java.lang.StringBuilder
 import java.text.DecimalFormat
@@ -87,14 +88,14 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         btCancel.setOnClickListener {
             dismiss()
         }
-        /*
+
         view.setOnTouchListener(object : OnSwipeTouchListener(context) {
             override fun onSwipeBottom() {
                 super.onSwipeBottom()
                 dismiss()
             }
         })
-         */
+
         val count = vKeyboard.childCount
         for (i in 0 until count) {
             vKeyboard.getChildAt(i).setOnClickListener {
@@ -212,7 +213,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             .start()
     }
 
-    fun View.hideSoftKeyboard() {
+    private fun View.hideSoftKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
     }

@@ -2,7 +2,6 @@ package com.example.demo.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.demo.R
+import com.example.demo.Repository
+import com.example.demo.model.BankData
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.AddItemViewModel
+import com.example.demo.viewmodels.BankVMFactory
 import com.example.demo.viewmodels.BankViewModel
 import kotlinx.android.synthetic.main.fragment_bank.*
-import kotlin.math.abs
-import kotlin.math.max
 
 class BankFragment : Fragment() {
 
@@ -84,6 +84,7 @@ class BankFragment : Fragment() {
         rvRecent.adapter = adapter
 
         bankAdapter = BankAdapter()
+        bankAdapter.setViewModel(viewModel)
         vpBank.orientation = ViewPager2.ORIENTATION_VERTICAL
         vpBank.adapter = bankAdapter
         vpBank.clipChildren = false
@@ -124,13 +125,16 @@ class BankFragment : Fragment() {
         rvRecent.visibility = View.INVISIBLE
     }
 
-    private fun getRecentData(curBank: String) {
+    private fun getRecentData(curBank: BankData) {
         rvRecent.visibility = View.VISIBLE
         viewModel.getBankData(curBank)
     }
 
     private fun getViewModel() {
-        viewModel = ViewModelProvider(this).get(BankViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            BankVMFactory(Repository(requireContext()))
+        ).get(BankViewModel::class.java)
         addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
     }
 
@@ -139,7 +143,7 @@ class BankFragment : Fragment() {
             vAddItem.show()
         }
         vpBank.registerOnPageChangeCallback(viewModel.getChangeCallback())
-        
+
     }
 
     /**
