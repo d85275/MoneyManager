@@ -15,12 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.BankData
 import com.example.demo.viewmodels.BankViewModel
+import com.example.demo.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.item_bank_card.view.*
 import kotlinx.android.synthetic.main.item_bank_card_add.view.*
 
 class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
     private var alNames = arrayListOf<BankData?>(null)
-    private lateinit var bankViewModel: BankViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     private companion object {
         private const val EMPTY = 0
@@ -33,7 +34,7 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
                 val holder = EmptyViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.item_bank_card_add, parent, false)
-                    , bankViewModel
+                    , mainViewModel
                 )
                 holder
             }
@@ -41,7 +42,7 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
                 BankViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.item_bank_card, parent, false)
-                    , bankViewModel
+                    , mainViewModel
                 )
             }
         }
@@ -55,8 +56,8 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
         holder.bindView(position, alNames)
     }
 
-    fun setViewModel(bankViewModel: BankViewModel) {
-        this.bankViewModel = bankViewModel
+    fun setViewModel(mainViewModel: MainViewModel) {
+        this.mainViewModel = mainViewModel
     }
 
     fun setList(list: List<BankData?>) {
@@ -68,13 +69,13 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
         return if (alNames[position] == null) EMPTY else BANK
     }
 
-    open class BaseBankViewHolder(itemView: View, val bankViewModel: BankViewModel) :
+    open class BaseBankViewHolder(itemView: View, val mainViewModel: MainViewModel) :
         RecyclerView.ViewHolder(itemView) {
         open fun bindView(position: Int, list: List<BankData?>) {}
     }
 
-    class BankViewHolder(itemView: View, bankViewModel: BankViewModel) :
-        BaseBankViewHolder(itemView, bankViewModel) {
+    class BankViewHolder(itemView: View, mainViewModel: MainViewModel) :
+        BaseBankViewHolder(itemView, mainViewModel) {
         override fun bindView(position: Int, list: List<BankData?>) {
             itemView.tvName.text = list[position]?.name
             itemView.ivRemove.setOnClickListener {
@@ -94,7 +95,7 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
                 itemView.context.getString(R.string.remove_bank_msg, name)
 
             dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
-                bankViewModel.removeBank(BankData(name))
+                mainViewModel.removeBank(BankData(name))
                 dialog.dismiss()
             }
             dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {
@@ -104,8 +105,8 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
         }
     }
 
-    class EmptyViewHolder(itemView: View, bankViewModel: BankViewModel) :
-        BaseBankViewHolder(itemView, bankViewModel) {
+    class EmptyViewHolder(itemView: View, mainViewModel: MainViewModel) :
+        BaseBankViewHolder(itemView, mainViewModel) {
 
         override fun bindView(position: Int, list: List<BankData?>) {
             itemView.ivAddBank.setOnClickListener {
@@ -126,7 +127,7 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
                 if (name.isEmpty()) {
                     return@setOnClickListener
                 }
-                bankViewModel.addBank(BankData(name))
+                mainViewModel.addBank(BankData(name))
                 dialog.dismiss()
             }
             dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {

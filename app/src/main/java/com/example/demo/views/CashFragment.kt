@@ -2,7 +2,6 @@ package com.example.demo.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import com.example.demo.utils.CommonUtils
 import com.example.demo.R
 import com.example.demo.viewmodels.AddItemViewModel
 import com.example.demo.viewmodels.CashViewModel
+import com.example.demo.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_cash.*
 import kotlinx.android.synthetic.main.fragment_cash.vAddItem
 
@@ -26,7 +26,8 @@ class CashFragment : Fragment() {
         private const val ANIM_DELAY: Long = 2 * 1000
     }
 
-    private lateinit var viewModel: CashViewModel
+    private lateinit var cashViewModel: CashViewModel
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var addItemViewModel: AddItemViewModel
     private lateinit var animHandler: AnimHandler
     private lateinit var adapter: HistoryAdapter
@@ -51,7 +52,6 @@ class CashFragment : Fragment() {
         initView()
         getViewModel()
         initObservers()
-        viewModel.loadRecentData()
     }
 
     override fun onResume() {
@@ -60,7 +60,6 @@ class CashFragment : Fragment() {
             0,
             AnimHandler.ANIM_DELAY
         )
-
     }
 
     override fun onPause() {
@@ -86,12 +85,13 @@ class CashFragment : Fragment() {
     }
 
     private fun getViewModel() {
-        viewModel = ViewModelProvider(this).get(CashViewModel::class.java)
+        cashViewModel = ViewModelProvider(this).get(CashViewModel::class.java)
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
     }
 
     private fun initObservers() {
-        viewModel.recentData.observe(viewLifecycleOwner, Observer { recentData ->
+        mainViewModel.recentCashData.observe(viewLifecycleOwner, Observer { recentData ->
             adapter.setList(recentData)
         })
         vAddItem.isShow().observe(viewLifecycleOwner, Observer { isShow ->

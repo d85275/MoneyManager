@@ -2,7 +2,6 @@ package com.example.demo.views
 
 import ZoomOutPageTransformer
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -12,7 +11,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.R
+import com.example.demo.Repository
 import com.example.demo.utils.CommonUtils
+import com.example.demo.viewmodels.MainVMFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : FragmentActivity() {
@@ -31,11 +32,16 @@ class MainActivity : FragmentActivity() {
         getViewModel()
         setListener()
         initObservers()
+        loadRecentData()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (viewPager == null) return
+    override fun onPause() {
+        super.onPause()
+        viewPager.registerOnPageChangeCallback(viewModel.getChangeCallback())
+    }
+
+    override fun onStop() {
+        super.onStop()
         viewPager.unregisterOnPageChangeCallback(viewModel.getChangeCallback())
     }
 
@@ -44,6 +50,12 @@ class MainActivity : FragmentActivity() {
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
         viewPager.setPageTransformer(ZoomOutPageTransformer())
+    }
+
+    private fun loadRecentData() {
+        viewModel.loadRecentBankData()
+        viewModel.loadBankData()
+        viewModel.loadRecentCashData()
     }
 
     private fun initObservers() {
@@ -93,7 +105,8 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun getViewModel() {
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, MainVMFactory(Repository(this))).get(MainViewModel::class.java)
     }
 
     private fun setListener() {
@@ -107,7 +120,6 @@ class MainActivity : FragmentActivity() {
         ivHistory.setOnClickListener {
             CommonUtils.goHistory(this, 0)
         }
-        viewPager.registerOnPageChangeCallback(viewModel.getChangeCallback())
     }
 
     /**

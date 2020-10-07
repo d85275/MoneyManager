@@ -1,7 +1,6 @@
 package com.example.demo.views
 
 import android.annotation.SuppressLint
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,14 +17,20 @@ import com.example.demo.model.BankData
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.AddItemViewModel
-import com.example.demo.viewmodels.BankVMFactory
 import com.example.demo.viewmodels.BankViewModel
+import com.example.demo.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_bank.*
+import kotlinx.android.synthetic.main.fragment_bank.ivAdd
+import kotlinx.android.synthetic.main.fragment_bank.ivMoney
+import kotlinx.android.synthetic.main.fragment_bank.rvRecent
+import kotlinx.android.synthetic.main.fragment_bank.vAddItem
+import kotlinx.android.synthetic.main.fragment_cash.*
 
 class BankFragment : Fragment() {
 
     private lateinit var addItemViewModel: AddItemViewModel
-    private lateinit var viewModel: BankViewModel
+    private lateinit var bankViewModel: BankViewModel
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var animHandler: AnimHandler
     private lateinit var adapter: HistoryAdapter
     private lateinit var bankAdapter: BankAdapter
@@ -53,8 +58,6 @@ class BankFragment : Fragment() {
         initView()
         setListeners()
         initObservers()
-        viewModel.loadRecentData()
-        viewModel.loadBankData()
     }
 
     override fun onResume() {
@@ -69,12 +72,13 @@ class BankFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         animHandler.removeMessages(0)
-        vpBank.registerOnPageChangeCallback(viewModel.getChangeCallback())
+        vAddItem.dismiss()
+        vpBank.registerOnPageChangeCallback(mainViewModel.getBankChangeCallback())
     }
 
     override fun onStop() {
         super.onStop()
-        vpBank.unregisterOnPageChangeCallback(viewModel.getChangeCallback())
+        vpBank.unregisterOnPageChangeCallback(mainViewModel.getBankChangeCallback())
     }
 
     private fun initView() {
@@ -86,12 +90,12 @@ class BankFragment : Fragment() {
         rvRecent.adapter = adapter
 
         bankAdapter = BankAdapter()
-        bankAdapter.setViewModel(viewModel)
+        bankAdapter.setViewModel(mainViewModel)
         vpBank.orientation = ViewPager2.ORIENTATION_VERTICAL
         vpBank.adapter = bankAdapter
         vpBank.clipChildren = false
         vpBank.offscreenPageLimit = 3
-        vpBank.setPageTransformer(viewModel.getTransformer())
+        vpBank.setPageTransformer(bankViewModel.getTransformer())
         /*
         rvBank.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -101,10 +105,10 @@ class BankFragment : Fragment() {
     }
 
     private fun initObservers() {
-        viewModel.recentData.observe(viewLifecycleOwner, Observer { recentData ->
+        mainViewModel.recentData.observe(viewLifecycleOwner, Observer { recentData ->
             adapter.setList(recentData)
         })
-        viewModel.bankData.observe(viewLifecycleOwner, Observer { bankData ->
+        mainViewModel.bankData.observe(viewLifecycleOwner, Observer { bankData ->
             vpBank.visibility = View.VISIBLE
             bankAdapter.setList(bankData)
         })
@@ -115,7 +119,7 @@ class BankFragment : Fragment() {
                 addItemViewModel.showAddBtn(ivAdd)
             }
         })
-        viewModel.curBank.observe(viewLifecycleOwner, Observer { curBank ->
+        mainViewModel.curBank.observe(viewLifecycleOwner, Observer { curBank ->
             if (curBank == null) {
                 hideRecentData()
             } else {
@@ -130,15 +134,13 @@ class BankFragment : Fragment() {
 
     private fun getRecentData(curBank: BankData) {
         rvRecent.visibility = View.VISIBLE
-        viewModel.getBankData(curBank)
+        mainViewModel.getBankData(curBank)
     }
 
     private fun getViewModel() {
-        viewModel = ViewModelProvider(
-            this,
-            BankVMFactory(Repository(requireContext()))
-        ).get(BankViewModel::class.java)
+        bankViewModel = ViewModelProvider(this).get(BankViewModel::class.java)
         addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
     private fun setListeners() {
