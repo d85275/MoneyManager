@@ -72,7 +72,7 @@
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -113,7 +113,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvRecent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="240dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="35dp"

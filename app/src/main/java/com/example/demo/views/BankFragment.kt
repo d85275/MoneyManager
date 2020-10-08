@@ -108,6 +108,11 @@ class BankFragment : Fragment() {
         mainViewModel.bankList.observe(viewLifecycleOwner, Observer { bankData ->
             vpBank.visibility = View.VISIBLE
             bankAdapter.setList(bankData)
+            if (bankData.size == 1) {
+                ivAdd.visibility = View.GONE
+            } else {
+                ivAdd.visibility = View.VISIBLE
+            }
         })
         vAddItem.isShow().observe(viewLifecycleOwner, Observer { isShow ->
             if (isShow) {
