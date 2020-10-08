@@ -14,7 +14,9 @@ import com.example.demo.R
 import com.example.demo.model.HistoryData
 import com.example.demo.utils.OnSwipeTouchListener
 import com.example.demo.viewmodels.MainViewModel
+import kotlinx.android.synthetic.main.item_history.view.*
 import kotlinx.android.synthetic.main.view_add_item.view.*
+import kotlinx.android.synthetic.main.view_add_item.view.tvPrice
 import java.lang.StringBuilder
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -96,6 +98,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             dismissKeyboard()
         }
         tvPrice.setOnClickListener {
+            etName.clearFocus()
             if (isKeyboardShow) {
                 dismissKeyboard()
             } else {
@@ -103,21 +106,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             }
         }
         btConfirm.setOnClickListener {
-            val name = etName.text.toString().trim()
-            if (name.isEmpty()) {
-                return@setOnClickListener
-            }
-            val tmp = tvPrice.text.toString().trim()
-            if (tmp.isEmpty()) {
-                return@setOnClickListener
-            }
-            val price = formatter.format(tmp.replace(",", "").toDouble()).toDouble()
-            val type = HistoryData.TYPE_EXPENSE
-            val source = this.source
-            val date = tvAddItemDate.text.toString()
-            val icon = 0
-            val historyData = HistoryData.create(name, type, price, date, source, icon)
-            mainViewModel.addItem(historyData, source)
+            addItem()
         }
 
         btCancel.setOnClickListener {
@@ -151,6 +140,46 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
                 //else tvPrice.text = "請輸入價格"
             }
         }
+    }
+
+    private fun addItem() {
+        if (!isInputValid()) {
+            return
+        }
+        val name = etName.text.toString().trim()
+        val price = tvPrice.text.toString().trim().replace(",", "").toDouble()
+        val type = HistoryData.TYPE_EXPENSE
+        val source = this.source
+        val date = tvAddItemDate.text.toString()
+        val icon = 0
+        val historyData = HistoryData.create(name, type, price, date, source, icon)
+        mainViewModel.addItem(historyData, source)
+        clearData()
+    }
+
+    private fun isInputValid(): Boolean {
+        val name = etName.text.toString().trim()
+        if (name.isEmpty()) {
+            return false
+        }
+        val price: String = tvPrice.text.toString().trim()
+        if (price.isEmpty()) {
+            return false
+        }
+        return true
+    }
+
+    private fun clearData() {
+        etName.setText("")
+        tvPrice.text = ""
+    }
+
+    fun resumeData(historyData: HistoryData) {
+        //tvAddItemDate.text = historyData.date
+        setDate(dateFormatForAdd.parse(historyData.date))
+        tvPrice.text = formatter.format(historyData.price)
+        etName.setText(historyData.name)
+        show()
     }
 
     private fun setPrice(sb: StringBuilder, num: Int) {
@@ -223,6 +252,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             .alpha(ALPHA_HIDE)
             .setDuration(ADD_ANIM_DURATION)
             .start()
+        clearData()
     }
 
     private fun dismissKeyboard() {

@@ -2,6 +2,7 @@ package com.example.demo.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_bank.ivAdd
 import kotlinx.android.synthetic.main.fragment_bank.ivMoney
 import kotlinx.android.synthetic.main.fragment_bank.rvRecent
 import kotlinx.android.synthetic.main.fragment_bank.vAddItem
+import kotlinx.android.synthetic.main.fragment_cash.*
 
 class BankFragment : Fragment() {
 
@@ -72,12 +74,6 @@ class BankFragment : Fragment() {
         super.onPause()
         animHandler.removeMessages(0)
         vAddItem.dismiss()
-        vpBank.registerOnPageChangeCallback(mainViewModel.getBankChangeCallback())
-    }
-
-    override fun onStop() {
-        super.onStop()
-        vpBank.unregisterOnPageChangeCallback(mainViewModel.getBankChangeCallback())
     }
 
     private fun initView() {
@@ -115,6 +111,7 @@ class BankFragment : Fragment() {
             if (bankData.size == 1) {
                 ivAdd.visibility = View.GONE
             } else {
+                mainViewModel.loadRecentHistoryData(bankData[0]!!.name)
                 ivAdd.visibility = View.VISIBLE
             }
         })
@@ -161,6 +158,8 @@ class BankFragment : Fragment() {
         ivAdd.setOnClickListener {
             vAddItem.show()
         }
+        adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
+        vpBank.registerOnPageChangeCallback(mainViewModel.getBankChangeCallback())
     }
 
     /**

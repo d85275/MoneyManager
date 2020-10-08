@@ -50,8 +50,8 @@ class CashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getViewModel()
-        setListener()
         initView()
+        setListener()
         initObservers()
         mainViewModel.loadRecentHistoryData(HistoryData.SOURCE_CASH)
     }
@@ -85,6 +85,7 @@ class CashFragment : Fragment() {
         ivAdd.setOnClickListener {
             vAddItem.show()
         }
+        adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
     }
 
     private fun getViewModel() {

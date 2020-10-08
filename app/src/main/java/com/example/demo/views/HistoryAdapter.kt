@@ -1,6 +1,7 @@
 package com.example.demo.views
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.item_history.view.*
 
 class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var alHistoryData = arrayListOf<HistoryData>()
+    var onItemClick: ((HistoryData) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_history, parent, false)
         return object : RecyclerView.ViewHolder(view) {}
@@ -28,6 +30,9 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.itemView.tvName.setTextColor(getDarkColor())
             holder.itemView.tvDate.setTextColor(getLightColor())
             holder.itemView.tvPrice.setTextColor(getLightColor())
+        }
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(alHistoryData[position])
         }
     }
 
