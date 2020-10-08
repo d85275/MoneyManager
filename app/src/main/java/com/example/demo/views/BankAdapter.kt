@@ -1,22 +1,13 @@
 package com.example.demo.views
 
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.BankData
 import com.example.demo.utils.CommonUtils
-import com.example.demo.viewmodels.BankViewModel
 import com.example.demo.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.item_bank_card.view.*
 import kotlinx.android.synthetic.main.item_bank_card_add.view.*
@@ -84,29 +75,8 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
             )
             itemView.tvName.text = list[position]?.name
             itemView.ivRemove.setOnClickListener {
-                showDialog()
+                CommonUtils.showRemoveBankDialog(itemView, mainViewModel)
             }
-        }
-
-        private fun showDialog() {
-            val dialog = Dialog(itemView.context)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.setCancelable(true)
-            dialog.setContentView(R.layout.view_remove_bank)
-            dialog.setCanceledOnTouchOutside(true)
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            val name = itemView.tvName.text.toString().trim()
-            dialog.findViewById<TextView>(R.id.tvMsg).text =
-                itemView.context.getString(R.string.remove_bank_msg, name)
-
-            dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
-                mainViewModel.removeBank(BankData.create(name))
-                dialog.dismiss()
-            }
-            dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            dialog.show()
         }
     }
 
@@ -115,35 +85,8 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
 
         override fun bindView(position: Int, list: List<BankData?>) {
             itemView.ivAddBank.setOnClickListener {
-                showDialog()
+                CommonUtils.showAddBankDialog(itemView, mainViewModel)
             }
-        }
-
-        private fun showDialog() {
-            val dialog = Dialog(itemView.context)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.setCancelable(true)
-            dialog.setContentView(R.layout.view_add_bank)
-            dialog.setCanceledOnTouchOutside(true)
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            val rvColor = dialog.findViewById<RecyclerView>(R.id.rvColours)
-            val adapter = BankCardColorAdapter(mainViewModel.getBankColor())
-            rvColor.layoutManager =
-                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            rvColor.setHasFixedSize(true)
-            rvColor.adapter = adapter
-            dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
-                val name = dialog.findViewById<EditText>(R.id.etName).text.toString().trim()
-                if (name.isEmpty()) {
-                    return@setOnClickListener
-                }
-                mainViewModel.addBank(BankData.create(name, adapter.getSelectedColor()))
-                dialog.dismiss()
-            }
-            dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            dialog.show()
         }
     }
 }

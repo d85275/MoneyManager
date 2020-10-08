@@ -1,15 +1,28 @@
 package com.example.demo.utils
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.View
+import android.view.Window
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.BankData
+import com.example.demo.viewmodels.MainViewModel
+import com.example.demo.views.BankCardColorAdapter
 import com.example.demo.views.HistoryActivity
+import kotlinx.android.synthetic.main.item_bank_card.view.*
 import kotlin.math.abs
 
 object CommonUtils {
@@ -58,28 +71,57 @@ object CommonUtils {
         val intent = Intent()
         val bundle = Bundle()
         intent.setClass(context, HistoryActivity::class.java)
-        bundle.putInt(KEY_FROM,from)
+        bundle.putInt(KEY_FROM, from)
         intent.putExtras(bundle)
         context.startActivity(intent)
     }
 
-    fun getBankCardTheme(color: Int, context: Context): Int {
-        return when (color) {
-            BankData.COLOR_BLUE -> {
-                R.drawable.icon_bank_blue
-            }
-            BankData.COLOR_BLUE_2 -> {
-                R.drawable.icon_card_blue_2
-            }
-            BankData.COLOR_PURPLE -> {
-                R.drawable.icon_card_purple
-            }
-            BankData.COLOR_RED -> {
-                R.drawable.icon_card_red
-            }
-            else -> {
-                R.drawable.icon_bank_green
-            }
+    fun showRemoveBankDialog(itemView: View, mainViewModel: MainViewModel) {
+        val dialog = Dialog(itemView.context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.view_remove_bank)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val name = itemView.tvName.text.toString().trim()
+        dialog.findViewById<TextView>(R.id.tvMsg).text =
+            itemView.context.getString(R.string.remove_bank_msg, name)
+
+        dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
+            mainViewModel.removeBank(BankData.create(name))
+            dialog.dismiss()
         }
+        dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
+
+    fun showAddBankDialog(itemView: View, mainViewModel: MainViewModel) {
+        val dialog = Dialog(itemView.context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.view_add_bank)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val rvColor = dialog.findViewById<RecyclerView>(R.id.rvColours)
+        val adapter = BankCardColorAdapter(mainViewModel.getBankColor())
+        rvColor.layoutManager =
+            LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+        rvColor.setHasFixedSize(true)
+        rvColor.adapter = adapter
+        dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
+            val name = dialog.findViewById<EditText>(R.id.etName).text.toString().trim()
+            if (name.isEmpty()) {
+                return@setOnClickListener
+            }
+            mainViewModel.addBank(BankData.create(name, adapter.getSelectedColor()))
+            dialog.dismiss()
+        }
+        dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
 }
