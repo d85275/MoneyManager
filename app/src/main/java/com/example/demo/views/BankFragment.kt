@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -127,6 +128,9 @@ class BankFragment : Fragment() {
             } else {
                 getRecentData(curBank)
             }
+        })
+        mainViewModel.dbErrorMsg.observe(viewLifecycleOwner, Observer { msg ->
+            CommonUtils.showToast(requireContext(), msg)
         })
     }
 

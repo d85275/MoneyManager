@@ -15,6 +15,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
@@ -122,6 +123,10 @@ object CommonUtils {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    fun showToast(context: Context, msg: String) {
+        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
     }
 
 }

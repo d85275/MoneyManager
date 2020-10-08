@@ -1,5 +1,6 @@
 package com.example.demo.viewmodels
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -74,22 +75,27 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    val dbErrorMsg = MutableLiveData<String>()
+
+    @SuppressLint("CheckResult")
     fun addBank(bankData: BankData) {
         repository.addBank(bankData).doOnComplete {
             loadBankListData()
         }.doOnError {
             Log.e("123", "add bank error, ${it.toString()}")
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, { dbErrorMsg.postValue("Error when adding banks")})
     }
 
+    @SuppressLint("CheckResult")
     fun addItem(historyData: HistoryData, source: String) {
         repository.addHistory(historyData).doOnComplete {
             loadRecentHistoryData(source)
-        }.doOnError {
-            Log.e("123", "add bank error, ${it.toString()}")
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+            .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                {}, { dbErrorMsg.postValue("Error when adding items") }
+            )
     }
 
     fun removeBank(bankData: BankData) {

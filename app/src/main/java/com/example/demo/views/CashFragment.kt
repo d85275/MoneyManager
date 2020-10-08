@@ -104,6 +104,9 @@ class CashFragment : Fragment() {
                 addItemViewModel.showAddBtn(ivAdd)
             }
         })
+        mainViewModel.dbErrorMsg.observe(viewLifecycleOwner, Observer { msg ->
+            CommonUtils.showToast(requireContext(), msg)
+        })
     }
 
     /**
