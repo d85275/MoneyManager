@@ -22,9 +22,11 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    // cash fragment
+    val recentBankData = MutableLiveData<List<HistoryData>>()
     val recentCashData = MutableLiveData<List<HistoryData>>()
-
+    val dbErrorMsg = MutableLiveData<Int>()
+    val bankList = MutableLiveData<List<BankData?>>()
+    val curBank = MutableLiveData<BankData>()
     /*
     fun loadRecentCashData() {
         val compositeDisposable = CompositeDisposable()
@@ -54,10 +56,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     }
      */
 
-    // bank fragment
-    val recentBankData = MutableLiveData<List<HistoryData>>()
-    val bankList = MutableLiveData<List<BankData?>>()
-    val curBank = MutableLiveData<BankData>()
 
     fun getBankColor() = arrayListOf(
         R.drawable.icon_bank_green,
@@ -79,7 +77,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    val dbErrorMsg = MutableLiveData<Int>()
 
     @SuppressLint("CheckResult")
     fun addBank(bankData: BankData) {
@@ -140,10 +137,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                     }
                 }
         )
-    }
-
-    fun getBankData(curBank: BankData) {
-
     }
 
     /*

@@ -59,15 +59,16 @@
                 app:layout_constraintEnd_toEndOf="@id/ivBackground"
                 app:layout_constraintStart_toEndOf="@id/ivMoney"
                 app:layout_constraintTop_toTopOf="@id/ivMoney" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:letterSpacing="0.14"
                 android:lineSpacingExtra="6sp"
-                android:layout_marginStart="10dp"
+                android:text="@string/total_balance"
                 android:textColor="#b87463"
-                android:textSize="14sp"
-                android:text="@string/total_balance" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -116,8 +117,9 @@
                     android:layout_height="240dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="15dp"
+                    android:layout_marginEnd="32dp"
                     android:layout_marginBottom="35dp"
-                    android:layout_marginEnd="32dp" />
+                    android:visibility="invisible" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

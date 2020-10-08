@@ -54,6 +54,14 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         this.mainViewModel = mainViewModel
     }
 
+    fun setViewModel(mainViewModel: MainViewModel) {
+        this.mainViewModel = mainViewModel
+    }
+
+    fun setSource(source: String) {
+        this.source = source
+    }
+
     fun setDate(date: Date?) {
         this.date = date
         if (date != null) tvAddItemDate.text = dateFormatForAdd.format(date)

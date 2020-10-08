@@ -44,8 +44,8 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun loadRecentData() {
-        viewModel.loadBankListData()
-        viewModel.loadRecentHistoryData(HistoryData.SOURCE_CASH)
+        //viewModel.loadBankListData()
+        //viewModel.loadRecentHistoryData(HistoryData.SOURCE_CASH)
     }
 
     private fun initObservers() {
@@ -65,9 +65,9 @@ class MainActivity : FragmentActivity() {
                 }
             }
         })
-        viewModel.bankList.observe(this, Observer { list ->
-            if (list.isNotEmpty() && list[0] != null) viewModel.loadRecentHistoryData(list[0]!!.name)
-        })
+        //viewModel.bankList.observe(this, Observer { list ->
+        //    if (list.isNotEmpty() && list[0] != null) viewModel.loadRecentHistoryData(list[0]!!.name)
+        //})
     }
 
     override fun onBackPressed() {

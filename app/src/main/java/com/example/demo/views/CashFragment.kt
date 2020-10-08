@@ -2,7 +2,6 @@ package com.example.demo.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +53,7 @@ class CashFragment : Fragment() {
         setListener()
         initView()
         initObservers()
+        mainViewModel.loadRecentHistoryData(HistoryData.SOURCE_CASH)
     }
 
     override fun onResume() {
@@ -95,6 +95,7 @@ class CashFragment : Fragment() {
 
     private fun initObservers() {
         mainViewModel.recentCashData.observe(viewLifecycleOwner, Observer { recentData ->
+            rvRecent.visibility = View.VISIBLE
             adapter.setList(recentData)
         })
         vAddItem.isShow().observe(viewLifecycleOwner, Observer { isShow ->

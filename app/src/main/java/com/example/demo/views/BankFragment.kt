@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -57,6 +56,7 @@ class BankFragment : Fragment() {
         initView()
         setListeners()
         initObservers()
+        mainViewModel.loadBankListData()
     }
 
     override fun onResume() {
@@ -94,6 +94,8 @@ class BankFragment : Fragment() {
         vpBank.adapter = bankAdapter
         vpBank.offscreenPageLimit = 3
         vpBank.setPageTransformer(bankViewModel.getTransformer())
+
+        vAddItem.setViewModel(mainViewModel)
         /*
         rvBank.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -104,6 +106,7 @@ class BankFragment : Fragment() {
 
     private fun initObservers() {
         mainViewModel.recentBankData.observe(viewLifecycleOwner, Observer { recentData ->
+            rvRecent.visibility = View.VISIBLE
             adapter.setList(recentData)
         })
         mainViewModel.bankList.observe(viewLifecycleOwner, Observer { bankData ->
@@ -138,11 +141,14 @@ class BankFragment : Fragment() {
 
     private fun hideRecentData() {
         rvRecent.visibility = View.INVISIBLE
+        ivAdd.visibility = View.INVISIBLE
     }
 
     private fun getRecentData(curBank: BankData) {
         rvRecent.visibility = View.VISIBLE
-        mainViewModel.getBankData(curBank)
+        ivAdd.visibility = View.VISIBLE
+        vAddItem.setSource(curBank.name)
+        mainViewModel.loadRecentHistoryData(curBank.name)
     }
 
     private fun getViewModel() {
