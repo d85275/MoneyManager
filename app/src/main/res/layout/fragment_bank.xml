@@ -55,7 +55,7 @@
                 android:layout_marginStart="10dp"
                 android:letterSpacing="0.14"
                 android:lineSpacingExtra="6sp"
-                android:text="帳戶餘額"
+                android:text="@string/account_balance"
                 android:textColor="#b3197009"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -111,7 +111,7 @@
                     android:layout_marginTop="15dp"
                     android:gravity="start"
                     android:letterSpacing="0.13"
-                    android:text="近期存匯"
+                    android:text="@string/recent_transition"
                     android:textColor="#4a7c51"
                     android:textSize="19sp"
                     android:textStyle="bold" />

@@ -61,10 +61,14 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     fun getBankColor() = arrayListOf(
         R.drawable.icon_bank_green,
+        R.drawable.icon_card_light_green,
+        R.drawable.icon_card_yellow,
         R.drawable.icon_bank_blue,
         R.drawable.icon_card_blue_2,
+        R.drawable.icon_card_orange,
         R.drawable.icon_card_red,
-        R.drawable.icon_card_purple
+        R.drawable.icon_card_purple,
+        R.drawable.icon_card_black
     )
 
     fun getBankChangeCallback() = object : ViewPager2.OnPageChangeCallback() {
@@ -75,7 +79,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    val dbErrorMsg = MutableLiveData<String>()
+    val dbErrorMsg = MutableLiveData<Int>()
 
     @SuppressLint("CheckResult")
     fun addBank(bankData: BankData) {
@@ -85,7 +89,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             Log.e("123", "add bank error, ${it.toString()}")
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({}, { dbErrorMsg.postValue("Error when adding banks")})
+            .subscribe({}, { dbErrorMsg.postValue(0) })
     }
 
     @SuppressLint("CheckResult")
@@ -94,7 +98,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             loadRecentHistoryData(source)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                {}, { dbErrorMsg.postValue("Error when adding items") }
+                {}, { dbErrorMsg.postValue(1) }
             )
     }
 

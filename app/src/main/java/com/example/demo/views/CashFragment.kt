@@ -104,7 +104,9 @@ class CashFragment : Fragment() {
                 addItemViewModel.showAddBtn(ivAdd)
             }
         })
-        mainViewModel.dbErrorMsg.observe(viewLifecycleOwner, Observer { msg ->
+        mainViewModel.dbErrorMsg.observe(viewLifecycleOwner, Observer { errorCode ->
+            val msg =
+                if (errorCode == 0) getString(R.string.add_bank_error) else getString(R.string.add_history_error)
             CommonUtils.showToast(requireContext(), msg)
         })
     }

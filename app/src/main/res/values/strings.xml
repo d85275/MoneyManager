@@ -4,4 +4,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_hint">快速搜尋關鍵字</string>
     <string name="remove_bank_msg">是否將『 %1$s 』從清單中移除?</string>
+    <string name="total_balance">總餘額</string>
+    <string name="account_balance">帳戶餘額</string>
+    <string name="recent_transition">近期存匯</string>
+    <string name="recent_expenses">近期消費</string>
+    <string name="add_bank_error">帳戶新增失敗</string>
+    <string name="add_history_error">收支新增失敗</string>
 </resources>
