@@ -75,8 +75,21 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
             )
             itemView.tvName.text = list[position]?.name
             itemView.ivRemove.setOnClickListener {
-                CommonUtils.showRemoveBankDialog(itemView, mainViewModel)
+                showRemoveBankDialog()
             }
+        }
+
+        private fun showRemoveBankDialog() {
+            val title = itemView.context.getString(R.string.remove_bank)
+            val name = itemView.tvName.text.toString().trim()
+            val msg = itemView.context.getString(R.string.remove_bank_msg, name)
+            CommonUtils.showDialog(
+                itemView.context,
+                title,
+                msg,
+                { mainViewModel.removeBank(BankData.create(name)) },
+                null
+            )
         }
     }
 

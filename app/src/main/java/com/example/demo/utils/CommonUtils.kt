@@ -77,22 +77,32 @@ object CommonUtils {
         context.startActivity(intent)
     }
 
-    fun showRemoveBankDialog(itemView: View, mainViewModel: MainViewModel) {
-        val dialog = Dialog(itemView.context)
+    fun showDialog(context: Context, title: String, msg: String) {
+        showDialog(context, title, msg, null, null)
+    }
+
+    fun showDialog(
+        context: Context,
+        title: String,
+        msg: String,
+        confirmAction: (() -> Unit)?,
+        cancelAction: (() -> Unit)?
+    ) {
+        val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
-        dialog.setContentView(R.layout.view_remove_bank)
+        dialog.setContentView(R.layout.view_common_dialog)
         dialog.setCanceledOnTouchOutside(true)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val name = itemView.tvName.text.toString().trim()
-        dialog.findViewById<TextView>(R.id.tvMsg).text =
-            itemView.context.getString(R.string.remove_bank_msg, name)
+        dialog.findViewById<TextView>(R.id.tvTitle).text = title
+        dialog.findViewById<TextView>(R.id.tvMsg).text = msg
 
         dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
-            mainViewModel.removeBank(BankData.create(name))
+            confirmAction?.invoke()
             dialog.dismiss()
         }
         dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {
+            cancelAction?.invoke()
             dialog.dismiss()
         }
         dialog.show()
@@ -126,7 +136,7 @@ object CommonUtils {
     }
 
     fun showToast(context: Context, msg: String) {
-        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
 }
