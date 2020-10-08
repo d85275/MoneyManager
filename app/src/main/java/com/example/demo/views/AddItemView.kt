@@ -11,7 +11,9 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.demo.R
+import com.example.demo.model.HistoryData
 import com.example.demo.utils.OnSwipeTouchListener
+import com.example.demo.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.view_add_item.view.*
 import java.lang.StringBuilder
 import java.text.DecimalFormat
@@ -20,9 +22,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
+
     private var view: View =
         LayoutInflater.from(context).inflate(R.layout.view_add_item, this, true)
-
+    private lateinit var source: String
+    private lateinit var mainViewModel: MainViewModel
     private var total = 0L
 
     private companion object {
@@ -43,6 +47,11 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     init {
         setDate(Calendar.getInstance().time)
         setListeners()
+    }
+
+    fun init(source: String, mainViewModel: MainViewModel) {
+        this.source = source
+        this.mainViewModel = mainViewModel
     }
 
     fun setDate(date: Date?) {
@@ -85,6 +94,24 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
                 showKeyboard()
             }
         }
+        btConfirm.setOnClickListener {
+            val name = etName.text.toString().trim()
+            if (name.isEmpty()) {
+                return@setOnClickListener
+            }
+            val tmp = tvPrice.text.toString().trim()
+            if (tmp.isEmpty()) {
+                return@setOnClickListener
+            }
+            val price = formatter.format(tmp.replace(",", "").toDouble()).toDouble()
+            val type = HistoryData.TYPE_EXPENSE
+            val source = this.source
+            val date = tvAddItemDate.text.toString()
+            val icon = 0
+            val historyData = HistoryData.create(name, type, price, date, source, icon)
+            mainViewModel.addItem(historyData, source)
+        }
+
         btCancel.setOnClickListener {
             dismiss()
         }

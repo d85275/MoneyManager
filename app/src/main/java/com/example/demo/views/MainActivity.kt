@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.R
 import com.example.demo.Repository
+import com.example.demo.model.HistoryData
 import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.MainVMFactory
 import kotlinx.android.synthetic.main.activity_main.*
@@ -35,15 +36,6 @@ class MainActivity : FragmentActivity() {
         loadRecentData()
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        //viewPager.unregisterOnPageChangeCallback(viewModel.getChangeCallback())
-    }
-
     private fun initViewPager() {
         viewPager = findViewById(R.id.pager)
         val pagerAdapter = ScreenSlidePagerAdapter(this)
@@ -52,9 +44,8 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun loadRecentData() {
-        viewModel.loadRecentBankData()
-        viewModel.loadBankData()
-        viewModel.loadRecentCashData()
+        viewModel.loadBankListData()
+        viewModel.loadRecentHistoryData(HistoryData.SOURCE_CASH)
     }
 
     private fun initObservers() {
@@ -73,6 +64,9 @@ class MainActivity : FragmentActivity() {
                     llSearch.visibility = View.GONE
                 }
             }
+        })
+        viewModel.bankList.observe(this, Observer { list ->
+            if (list.isNotEmpty() && list[0] != null) viewModel.loadRecentHistoryData(list[0]!!.name)
         })
     }
 

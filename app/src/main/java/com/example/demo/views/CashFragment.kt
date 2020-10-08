@@ -2,6 +2,7 @@ package com.example.demo.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
 import com.example.demo.R
+import com.example.demo.model.HistoryData
 import com.example.demo.viewmodels.AddItemViewModel
 import com.example.demo.viewmodels.CashViewModel
 import com.example.demo.viewmodels.MainViewModel
@@ -48,9 +50,9 @@ class CashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getViewModel()
         setListener()
         initView()
-        getViewModel()
         initObservers()
     }
 
@@ -75,6 +77,7 @@ class CashFragment : Fragment() {
         rvRecent.layoutManager = LinearLayoutManager(requireContext())
         rvRecent.setHasFixedSize(true)
         rvRecent.adapter = adapter
+        vAddItem.init(HistoryData.SOURCE_CASH, mainViewModel)
     }
 
 

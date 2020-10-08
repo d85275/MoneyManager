@@ -47,22 +47,27 @@ class HistoryViewModel : ViewModel() {
 
     fun loadData(date: Date?) {
         if (date == null) return
+        /*
         val list = arrayListOf<HistoryData>()
         for (i in 0..20) {
             val data = HistoryData.create("test $i", "food", 500,"2020-10/03")
             list.add(data)
         }
         historyData.value = list
+         */
     }
 
     val isAddItem = MutableLiveData(false)
     fun addItem(date: Date?) {
         if (date == null) return
-        val data = HistoryData.create("test ${historyData.value!!.size}", "food", 500,"2020-10/03")
-        val list = (historyData.value as ArrayList)
-        list.add(data)
-        historyData.value = list
-        isAddItem.value = true
+/*
+val data = HistoryData.create("test ${historyData.value!!.size}", "food", 500,"2020-10/03")
+val list = (historyData.value as ArrayList)
+list.add(data)
+historyData.value = list
+isAddItem.value = true
+
+ */
     }
 
     val selectedDay = MutableLiveData<Date>(Calendar.getInstance().time)

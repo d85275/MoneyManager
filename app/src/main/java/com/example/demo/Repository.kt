@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.demo.database.AppDatabase
 import com.example.demo.model.BankData
+import com.example.demo.model.HistoryData
 import io.reactivex.Completable
 import io.reactivex.Single
 
@@ -20,5 +21,17 @@ class Repository(context: Context) {
 
     fun removeBank(bankData: BankData): Completable {
         return db.bankDao().delete(bankData)
+    }
+
+    //fun getRecentCashData(): Single<List<HistoryData>> {
+    //    return db.historyDao().loadCashRecent()
+    //}
+
+    fun getRecentHistoryData(source: String): Single<List<HistoryData>> {
+        return db.historyDao().loadRecentData(source)
+    }
+
+    fun addHistory(historyData: HistoryData): Completable {
+        return db.historyDao().insertAll(historyData)
     }
 }

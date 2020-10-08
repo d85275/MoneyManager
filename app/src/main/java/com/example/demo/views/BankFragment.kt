@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.demo.R
-import com.example.demo.Repository
 import com.example.demo.model.BankData
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
@@ -24,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_bank.ivAdd
 import kotlinx.android.synthetic.main.fragment_bank.ivMoney
 import kotlinx.android.synthetic.main.fragment_bank.rvRecent
 import kotlinx.android.synthetic.main.fragment_bank.vAddItem
-import kotlinx.android.synthetic.main.fragment_cash.*
 
 class BankFragment : Fragment() {
 
@@ -104,10 +102,10 @@ class BankFragment : Fragment() {
     }
 
     private fun initObservers() {
-        mainViewModel.recentData.observe(viewLifecycleOwner, Observer { recentData ->
+        mainViewModel.recentBankData.observe(viewLifecycleOwner, Observer { recentData ->
             adapter.setList(recentData)
         })
-        mainViewModel.bankData.observe(viewLifecycleOwner, Observer { bankData ->
+        mainViewModel.bankList.observe(viewLifecycleOwner, Observer { bankData ->
             vpBank.visibility = View.VISIBLE
             bankAdapter.setList(bankData)
         })
