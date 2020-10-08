@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.viewpager2.widget.ViewPager2
+import com.example.demo.R
 import com.example.demo.Repository
 import com.example.demo.model.BankData
 import com.example.demo.model.HistoryData
@@ -38,8 +39,16 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     // bank fragment
     val recentData = MutableLiveData<List<HistoryData>>()
     val bankData = MutableLiveData<List<BankData?>>()
-
     val curBank = MutableLiveData<BankData>()
+
+    fun getBankColor() = arrayListOf(
+        R.drawable.icon_bank_green,
+        R.drawable.icon_bank_blue,
+        R.drawable.icon_card_blue_2,
+        R.drawable.icon_card_red,
+        R.drawable.icon_card_purple
+    )
+
     fun getBankChangeCallback() = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)

@@ -11,6 +11,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.BankData
@@ -79,9 +80,7 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
         BaseBankViewHolder(itemView, mainViewModel) {
         override fun bindView(position: Int, list: List<BankData?>) {
             itemView.clBackground.setBackgroundResource(
-                CommonUtils.getBankCardTheme(
-                    list[position]?.color ?: 0, itemView.context
-                )
+                list[position]?.color ?: R.drawable.icon_bank_green
             )
             itemView.tvName.text = list[position]?.name
             itemView.ivRemove.setOnClickListener {
@@ -127,13 +126,18 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
             dialog.setContentView(R.layout.view_add_bank)
             dialog.setCanceledOnTouchOutside(true)
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
+            val rvColor = dialog.findViewById<RecyclerView>(R.id.rvColours)
+            val adapter = BankCardColorAdapter(mainViewModel.getBankColor())
+            rvColor.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            rvColor.setHasFixedSize(true)
+            rvColor.adapter = adapter
             dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
                 val name = dialog.findViewById<EditText>(R.id.etName).text.toString().trim()
                 if (name.isEmpty()) {
                     return@setOnClickListener
                 }
-                mainViewModel.addBank(BankData.create(name))
+                mainViewModel.addBank(BankData.create(name, adapter.getSelectedColor()))
                 dialog.dismiss()
             }
             dialog.findViewById<Button>(R.id.btCancel).setOnClickListener {

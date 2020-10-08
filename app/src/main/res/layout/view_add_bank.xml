@@ -48,61 +48,26 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
+                android:layout_marginTop="90dp"
                 android:layout_marginEnd="30dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_marginTop="90dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-            <LinearLayout
-                android:id="@+id/llColours"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvColours"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/etName">
-
-                <ImageView
-                    android:id="@+id/tvGreen"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@android:color/darker_gray" />
-
-                <ImageView
-                    android:id="@+id/tvBlue"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@android:color/darker_gray" />
-
-                <ImageView
-                    android:id="@+id/tvBlue2"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@android:color/darker_gray" />
-
-                <ImageView
-                    android:id="@+id/tvPurple"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@android:color/darker_gray" />
-
-                <ImageView
-                    android:id="@+id/tvRed"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@android:color/darker_gray" />
-
-
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@id/etName" />
 
             <LinearLayout
                 android:layout_width="match_parent"

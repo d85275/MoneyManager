@@ -2,6 +2,7 @@ package com.example.demo.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.viewpager2.widget.ViewPager2
+import com.example.demo.R
 
 class BankViewModel : ViewModel() {
     fun getTransformer() = ViewPager2.PageTransformer { page, position ->
