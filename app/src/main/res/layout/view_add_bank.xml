@@ -9,90 +9,126 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="350dp"
-        android:layout_height="300dp"
+        android:layout_height="360dp"
         app:cardCornerRadius="22dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/ivImage"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/add_bank"
-                app:layout_constraintEnd_toStartOf="@id/tvTitle"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:letterSpacing="0.12"
-                android:lineSpacingExtra="9sp"
-                android:text="新增銀行"
+                android:layout_marginTop="18dp"
+                android:gravity="center_horizontal"
+                android:letterSpacing="0.13"
+                android:text="@string/add_bank"
                 android:textColor="#4a7c51"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@id/ivImage"
+                android:textSize="19sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/ivImage"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_goneMarginStart="30dp" />
 
+            <TextView
+                android:id="@+id/tvBankName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="87dp"
+                android:letterSpacing="0.12"
+                android:lineSpacingExtra="9sp"
+                android:text="@string/bank_name"
+                android:textColor="#4a7c51"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/etName"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
                 android:layout_marginEnd="30dp"
+                android:background="@android:color/transparent"
                 android:ellipsize="end"
+                android:hint="@string/add_bank_hint"
                 android:maxLines="1"
+                app:layout_constraintBottom_toBottomOf="@id/tvBankName"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/tvBankName"
+                app:layout_constraintTop_toTopOf="@id/tvBankName" />
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="#4a7c51"
+                app:layout_constraintEnd_toEndOf="@id/etName"
+                app:layout_constraintStart_toStartOf="@id/etName"
+                app:layout_constraintTop_toBottomOf="@id/etName" />
+
+
+            <TextView
+                android:id="@+id/tvColorSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="158dp"
+                android:letterSpacing="0.12"
+                android:lineSpacingExtra="9sp"
+                android:text="@string/color_setting"
+                android:textColor="#4a7c51"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="@id/tvBankName"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvColours"
                 android:layout_width="0dp"
                 android:layout_height="55dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/etName" />
+                app:layout_constraintEnd_toEndOf="@id/etName"
+                app:layout_constraintStart_toStartOf="@id/tvColorSettings"
+                app:layout_constraintTop_toBottomOf="@id/tvColorSettings" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="26dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <Button
-                    android:id="@+id/btConfirm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:text="確定" />
 
                 <Button
                     android:id="@+id/btCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="取消" />
+                    android:layout_marginEnd="50dp"
+                    android:background="@drawable/rectangle_copy_3"
+                    android:letterSpacing="0.2"
+                    android:paddingBottom="3dp"
+                    android:text="@string/cancel"
+                    android:textColor="#787878"
+                    android:textSize="14sp" />
 
+                <Button
+                    android:id="@+id/btConfirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/rectangle_copy_2"
+                    android:letterSpacing="0.2"
+                    android:paddingBottom="3dp"
+                    android:text="@string/confirm"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
