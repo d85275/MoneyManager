@@ -1,32 +1,26 @@
 package com.example.demo.views
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.LayoutAnimationController
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.R
-import com.example.demo.utils.OnSwipeTouchListener
+import com.example.demo.Repository
 import com.example.demo.viewmodels.AddItemViewModel
+import com.example.demo.viewmodels.HistoryVMFactory
 import com.example.demo.viewmodels.HistoryViewModel
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_history.*
-import kotlinx.android.synthetic.main.item_history.tvPrice
-import kotlinx.android.synthetic.main.view_add_item.*
 
 class HistoryActivity : AppCompatActivity() {
     private var isShow = true
     private var scrollRange = -1
     private lateinit var viewModel: HistoryViewModel
     private lateinit var addItemViewModel: AddItemViewModel
-    private lateinit var adapter: HistoryAdapter
+    private lateinit var adapter: HistoryDataAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +30,8 @@ class HistoryActivity : AppCompatActivity() {
         setListeners()
         initViews()
         initObservers()
-        viewModel.loadData(compactcalendar_view.firstDayOfCurrentMonth)
+        //viewModel.loadData(compactcalendar_view.firstDayOfCurrentMonth)
+        viewModel.loadHistoryData()
     }
 
     override fun onResume() {
@@ -54,7 +49,7 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun initViews() {
         collapsingToolbar.title = " "
-        adapter = HistoryAdapter()
+        adapter = HistoryDataAdapter()
         tvCurrentDate.text = viewModel.getDate(compactcalendar_view.firstDayOfCurrentMonth)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
@@ -62,13 +57,17 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun getViewModel() {
-        viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            HistoryVMFactory(Repository(this))
+        ).get(HistoryViewModel::class.java)
         addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
     }
 
     private fun initObservers() {
         viewModel.selectedDay.observe(this, Observer { day ->
-            val selectedDay = viewModel.getDay(day)
+            //val selectedDay = viewModel.getDay(day)
+            adapter.setList(viewModel.getDataByDay(day))
         })
 
         viewModel.selectedMonth.observe(this, Observer { firstDayOfMonth ->
@@ -76,8 +75,9 @@ class HistoryActivity : AppCompatActivity() {
         })
 
         viewModel.historyData.observe(this, Observer { historyData ->
-            adapter.setList(historyData)
+            compactcalendar_view.addEvents(viewModel.getEvents(historyData))
         })
+
         viewModel.isAddItem.observe(this, Observer { isAdded ->
             if (isAdded) {
                 //recyclerView.smoothScrollToPosition(adapter.itemCount)
@@ -114,6 +114,7 @@ class HistoryActivity : AppCompatActivity() {
             vAddItem.show()
         }
     }
+
 
     override fun onBackPressed() {
         if (vAddItem.isShow().value == true) {

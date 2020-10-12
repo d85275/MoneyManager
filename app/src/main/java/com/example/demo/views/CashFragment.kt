@@ -31,7 +31,7 @@ class CashFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var addItemViewModel: AddItemViewModel
     private lateinit var animHandler: AnimHandler
-    private lateinit var adapter: HistoryAdapter
+    private lateinit var adapter: RecentDataAdapter
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -72,7 +72,7 @@ class CashFragment : Fragment() {
 
     private fun initView() {
         animHandler = AnimHandler(ivMoney)
-        adapter = HistoryAdapter()
+        adapter = RecentDataAdapter()
         adapter.setType(0)
         rvRecent.layoutManager = LinearLayoutManager(requireContext())
         rvRecent.setHasFixedSize(true)

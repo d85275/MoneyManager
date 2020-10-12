@@ -27,6 +27,10 @@ class Repository(context: Context) {
     //    return db.historyDao().loadCashRecent()
     //}
 
+    fun getHistoryData():Single<List<HistoryData>>{
+        return db.historyDao().getAll()
+    }
+
     fun getRecentHistoryData(source: String): Single<List<HistoryData>> {
         return db.historyDao().loadRecentData(source)
     }

@@ -1,23 +1,25 @@
 package com.example.demo.viewmodels
 
+import android.graphics.Color
 import android.util.Log
-import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
 import android.view.animation.DecelerateInterpolator
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.demo.Repository
 import com.example.demo.model.HistoryData
-import com.example.demo.utils.AnimHandler
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
-import kotlinx.android.synthetic.main.activity_history.*
-import kotlinx.android.synthetic.main.view_add_item.*
+import com.github.sundeepk.compactcalendarview.domain.Event
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
+import java.time.temporal.TemporalQueries.localTime
 import java.util.*
-import kotlin.collections.ArrayList
 
-class HistoryViewModel : ViewModel() {
+
+class HistoryViewModel(private val repository: Repository) : ViewModel() {
     private companion object {
         private const val ANIM_DURATION = 150L
     }
@@ -31,6 +33,12 @@ class HistoryViewModel : ViewModel() {
 
     val historyData = MutableLiveData<List<HistoryData>>()
 
+    fun getDataByDay(date: Date): List<HistoryData> {
+        if (historyData.value == null) return arrayListOf()
+        val curDate = dateFormatForAdd.format(date)
+        Log.e("123", "curDate: $curDate")
+        return historyData.value!!.filter { it.date == curDate }
+    }
 
     fun getDay(date: Date): String {
         return dateFormatForDay.format(date)
@@ -55,6 +63,31 @@ class HistoryViewModel : ViewModel() {
         }
         historyData.value = list
          */
+    }
+
+    fun loadHistoryData() {
+        val compositeDisposable = CompositeDisposable()
+        compositeDisposable.add(
+            repository.getHistoryData().subscribeOn(Schedulers.io()).observeOn(
+                AndroidSchedulers.mainThread()
+            ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
+                .subscribe { list ->
+                    list.reversed()
+                    historyData.postValue(list)
+                }
+        )
+    }
+
+    fun getEvents(alData: List<HistoryData>): List<Event> {
+        val list = arrayListOf<Event>()
+        Log.e("123","size: ${alData.size}")
+        for (i in alData.indices) {
+            //Log.e("123","i: $i")
+            val timestamp = dateFormatForAdd.parse(alData[i].date)
+            Log.e("13","timestamp: ${timestamp.time}")
+            list.add(Event(Color.GRAY, timestamp.time))
+        }
+        return list
     }
 
     val isAddItem = MutableLiveData(false)

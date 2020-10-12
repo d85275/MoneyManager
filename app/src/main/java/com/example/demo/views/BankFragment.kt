@@ -2,7 +2,6 @@ package com.example.demo.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_bank.ivAdd
 import kotlinx.android.synthetic.main.fragment_bank.ivMoney
 import kotlinx.android.synthetic.main.fragment_bank.rvRecent
 import kotlinx.android.synthetic.main.fragment_bank.vAddItem
-import kotlinx.android.synthetic.main.fragment_cash.*
 
 class BankFragment : Fragment() {
 
@@ -32,7 +30,7 @@ class BankFragment : Fragment() {
     private lateinit var bankViewModel: BankViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var animHandler: AnimHandler
-    private lateinit var adapter: HistoryAdapter
+    private lateinit var adapter: RecentDataAdapter
     private lateinit var bankAdapter: BankAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +76,7 @@ class BankFragment : Fragment() {
 
     private fun initView() {
         animHandler = AnimHandler(ivMoney)
-        adapter = HistoryAdapter()
+        adapter = RecentDataAdapter()
         adapter.setType(1)
         rvRecent.layoutManager = LinearLayoutManager(requireContext())
         rvRecent.setHasFixedSize(true)

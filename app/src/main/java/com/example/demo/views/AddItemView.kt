@@ -14,7 +14,7 @@ import com.example.demo.R
 import com.example.demo.model.HistoryData
 import com.example.demo.utils.OnSwipeTouchListener
 import com.example.demo.viewmodels.MainViewModel
-import kotlinx.android.synthetic.main.item_history.view.*
+import kotlinx.android.synthetic.main.item_recent_data.view.*
 import kotlinx.android.synthetic.main.view_add_item.view.*
 import kotlinx.android.synthetic.main.view_add_item.view.tvPrice
 import java.lang.StringBuilder

@@ -1,20 +1,19 @@
 package com.example.demo.views
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.HistoryData
 import com.example.demo.model.HistoryData.Companion.TYPE_INCOME
-import kotlinx.android.synthetic.main.item_history.view.*
+import kotlinx.android.synthetic.main.item_recent_data.view.*
 
-class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RecentDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var alHistoryData = arrayListOf<HistoryData>()
     var onItemClick: ((HistoryData) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_history, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recent_data, parent, false)
         return object : RecyclerView.ViewHolder(view) {}
     }
 

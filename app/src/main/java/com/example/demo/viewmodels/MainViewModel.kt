@@ -12,6 +12,8 @@ import com.example.demo.model.HistoryData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import com.github.sundeepk.compactcalendarview.domain.Event
+
 
 class MainViewModel(private val repository: Repository) : ViewModel() {
     val curPage = MutableLiveData(0)
@@ -139,6 +141,10 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         )
     }
 
+
+    fun loadCalendarEvents() {
+        val alEvents = arrayListOf<Event>()
+    }
     /*
     fun loadRecentBankData() {
         val list = arrayListOf<HistoryData>()
