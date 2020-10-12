@@ -111,6 +111,9 @@ class CashFragment : Fragment() {
                 if (errorCode == 0) getString(R.string.add_bank_error) else getString(R.string.add_history_error)
             CommonUtils.showToast(requireContext(), msg)
         })
+        mainViewModel.totalBalance.observe(viewLifecycleOwner, Observer { totalBalance ->
+            tvBalanced.text = totalBalance
+        })
     }
 
     /**

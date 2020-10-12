@@ -22,7 +22,9 @@ import kotlinx.android.synthetic.main.fragment_bank.*
 import kotlinx.android.synthetic.main.fragment_bank.ivAdd
 import kotlinx.android.synthetic.main.fragment_bank.ivMoney
 import kotlinx.android.synthetic.main.fragment_bank.rvRecent
+import kotlinx.android.synthetic.main.fragment_bank.tvBalanced
 import kotlinx.android.synthetic.main.fragment_bank.vAddItem
+import kotlinx.android.synthetic.main.fragment_cash.*
 
 class BankFragment : Fragment() {
 
@@ -131,6 +133,9 @@ class BankFragment : Fragment() {
             val msg =
                 if (errorCode == 0) getString(R.string.add_bank_error) else getString(R.string.add_history_error)
             CommonUtils.showToast(requireContext(), msg)
+        })
+        mainViewModel.totalBalanceForBank.observe(viewLifecycleOwner, Observer { totalBalance ->
+            tvBalanced.text = totalBalance
         })
     }
 

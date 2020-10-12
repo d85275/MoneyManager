@@ -46,6 +46,7 @@ class MainActivity : FragmentActivity() {
     private fun loadRecentData() {
         //viewModel.loadBankListData()
         //viewModel.loadRecentHistoryData(HistoryData.SOURCE_CASH)
+        viewModel.loadTotalBalance()
     }
 
     private fun initObservers() {

@@ -29,35 +29,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val dbErrorMsg = MutableLiveData<Int>()
     val bankList = MutableLiveData<List<BankData?>>()
     val curBank = MutableLiveData<BankData>()
-    /*
-    fun loadRecentCashData() {
-        val compositeDisposable = CompositeDisposable()
-        compositeDisposable.add(
-            repository.getRecentCashData().subscribeOn(Schedulers.io()).observeOn(
-                AndroidSchedulers.mainThread()
-            ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
-                .subscribe { list ->
-                    list.reversed()
-                    recentCashData.postValue(list)
-                }
-        )
-    }
-    */
-    /*
-    fun loadRecentCashData() {
-        val list = arrayListOf<HistoryData>()
-        val data1 = HistoryData.create("薪水", HistoryData.TYPE_INCOME, 32000, "2020-10/05")
-        list.add(data1)
-        val data2 = HistoryData.create("海鮮麵", HistoryData.TYPE_EXPENSE, 190, "2020-09/30")
-        list.add(data2)
-        val data3 = HistoryData.create("ＶＳ簽帳消費", HistoryData.TYPE_EXPENSE, 499, "2020-09/23")
-        list.add(data3)
-        val data4 = HistoryData.create("瓦斯費", HistoryData.TYPE_EXPENSE, 650, "2020-09/30")
-        list.add(data4)
-        recentCashData.value = list
-    }
-     */
-
 
     fun getBankColor() = arrayListOf(
         R.drawable.icon_bank_green,
@@ -95,6 +66,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun addItem(historyData: HistoryData, source: String) {
         repository.addHistory(historyData).doOnComplete {
             loadRecentHistoryData(source)
+            loadTotalBalance()
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 {}, { dbErrorMsg.postValue(1) }
@@ -129,6 +101,41 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         )
     }
 
+    val totalBalance = MutableLiveData<String>()
+    val totalBalanceForBank = MutableLiveData<String>()
+    fun loadTotalBalance() {
+        val compositeDisposable = CompositeDisposable()
+        compositeDisposable.add(
+            repository.getHistoryData().subscribeOn(Schedulers.io()).observeOn(
+                AndroidSchedulers.mainThread()
+            ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
+                .subscribe { list ->
+                    getTotalBalance(list)
+                }
+        )
+    }
+
+    private fun getTotalBalance(alData: List<HistoryData>) {
+        var total: Double = 0.0
+        var totalBank: Double = 0.0
+        for (i in alData.indices) {
+            val data = alData[i]
+            if (data.type == HistoryData.TYPE_EXPENSE) {
+                total -= data.price
+                if (data.source != HistoryData.SOURCE_CASH) {
+                    totalBank -= data.price
+                }
+            } else {
+                total += data.price
+                if (data.source != HistoryData.SOURCE_CASH) {
+                    totalBank += data.price
+                }
+            }
+        }
+        totalBalance.value = total.toString()
+        totalBalanceForBank.value = totalBank.toString()
+    }
+
     fun loadRecentHistoryData(source: String) {
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(
@@ -145,23 +152,4 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 }
         )
     }
-
-
-    fun loadCalendarEvents() {
-        val alEvents = arrayListOf<Event>()
-    }
-    /*
-    fun loadRecentBankData() {
-        val list = arrayListOf<HistoryData>()
-        val data1 = HistoryData.create("薪水", HistoryData.TYPE_INCOME, 32000, "2020-10/05")
-        list.add(data1)
-        val data2 = HistoryData.create("提款", HistoryData.TYPE_EXPENSE, 2000, "2020-09/30")
-        list.add(data2)
-        val data3 = HistoryData.create("ＶＳ簽帳消費", HistoryData.TYPE_EXPENSE, 499, "2020-09/23")
-        list.add(data3)
-        val data4 = HistoryData.create("提款", HistoryData.TYPE_EXPENSE, 1000, "2020-09/30")
-        list.add(data4)
-        recentData.value = list
-    }
-     */
 }

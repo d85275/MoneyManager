@@ -20,9 +20,6 @@ interface HistoryDao {
     @Query("SELECT * FROM historydata WHERE type IN (:type)")
     fun loadAllByType(type: String): Single<List<HistoryData>>
 
-    //@Query("SELECT * FROM historydata LIMIT 4")
-    //fun loadCashRecent(): Single<List<HistoryData>>
-
     @Query("SELECT * FROM historydata WHERE source IN (:source) LIMIT 4")
     fun loadRecentData(source: String): Single<List<HistoryData>>
 
