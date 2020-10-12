@@ -36,7 +36,6 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
     fun getDataByDay(date: Date): List<HistoryData> {
         if (historyData.value == null) return arrayListOf()
         val curDate = dateFormatForAdd.format(date)
-        Log.e("123", "curDate: $curDate")
         return historyData.value!!.filter { it.date == curDate }
     }
 
@@ -80,11 +79,8 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
 
     fun getEvents(alData: List<HistoryData>): List<Event> {
         val list = arrayListOf<Event>()
-        Log.e("123","size: ${alData.size}")
         for (i in alData.indices) {
-            //Log.e("123","i: $i")
             val timestamp = dateFormatForAdd.parse(alData[i].date)
-            Log.e("13","timestamp: ${timestamp.time}")
             list.add(Event(Color.GRAY, timestamp.time))
         }
         return list

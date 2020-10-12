@@ -1,6 +1,7 @@
 package com.example.demo.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.LayoutAnimationController
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.activity_history.vAddItem
 import kotlinx.android.synthetic.main.fragment_bank.*
+import java.util.*
 
 class HistoryActivity : AppCompatActivity() {
     private var isShow = true
@@ -65,10 +67,11 @@ class HistoryActivity : AppCompatActivity() {
         addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
     }
 
+    private var selectedDate: Date? = null
     private fun initObservers() {
         viewModel.selectedDay.observe(this, Observer { day ->
-            //val selectedDay = viewModel.getDay(day)
             adapter.setList(viewModel.getDataByDay(day))
+            selectedDate = day
         })
 
         viewModel.selectedMonth.observe(this, Observer { firstDayOfMonth ->
@@ -77,6 +80,7 @@ class HistoryActivity : AppCompatActivity() {
 
         viewModel.historyData.observe(this, Observer { historyData ->
             compactcalendar_view.addEvents(viewModel.getEvents(historyData))
+            if (selectedDate != null) adapter.setList(viewModel.getDataByDay(selectedDate!!))
         })
 
         viewModel.isAddItem.observe(this, Observer { isAdded ->
