@@ -23,6 +23,9 @@ class Repository(context: Context) {
         return db.bankDao().delete(bankData)
     }
 
+    fun updateBank(bankData: BankData): Completable {
+        return db.bankDao().updateBank(bankData)
+    }
     //fun getRecentCashData(): Single<List<HistoryData>> {
     //    return db.historyDao().loadCashRecent()
     //}

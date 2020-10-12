@@ -30,6 +30,15 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val bankList = MutableLiveData<List<BankData?>>()
     val curBank = MutableLiveData<BankData>()
 
+    fun getBankColorPosition(color: Int?): Int {
+        if (color == null) return 0
+        val list = getBankColor()
+        for (i in list.indices) {
+            if (list[i] == color) return i
+        }
+        return 0
+    }
+
     fun getBankColor() = arrayListOf(
         R.drawable.icon_bank_green,
         R.drawable.icon_card_light_green,
@@ -50,6 +59,17 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    @SuppressLint("CheckResult")
+    fun updateBank(bankData: BankData) {
+        repository.updateBank(bankData).doOnComplete {
+            loadBankListData()
+            //todo change the data in history as well
+        }.doOnError {
+            Log.e("123", "add bank error, ${it.toString()}")
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, { dbErrorMsg.postValue(0) })
+    }
 
     @SuppressLint("CheckResult")
     fun addBank(bankData: BankData) {

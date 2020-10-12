@@ -1,6 +1,5 @@
 package com.example.demo.views
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,9 +73,23 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
                 list[position]?.color ?: R.drawable.icon_bank_green
             )
             itemView.tvName.text = list[position]?.name
-            itemView.ivRemove.setOnClickListener {
-                showRemoveBankDialog()
+            itemView.vEdit.setOnClickListener {
+                //showRemoveBankDialog()
+                CommonUtils.showEditBankDialog(itemView, mainViewModel,list[position])
             }
+        }
+
+        private fun showEditBankDialog(){
+            val title = itemView.context.getString(R.string.edit)
+            val name = itemView.tvName.text.toString().trim()
+            val msg = itemView.context.getString(R.string.remove_bank_msg, name)
+            CommonUtils.showDialog(
+                itemView.context,
+                title,
+                msg,
+                { mainViewModel.removeBank(BankData.create(name)) },
+                null
+            )
         }
 
         private fun showRemoveBankDialog() {

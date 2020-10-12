@@ -32,6 +32,10 @@ class BankCardColorAdapter(val list: List<Int>) : RecyclerView.Adapter<RecyclerV
         }
     }
 
+    fun setSelectedIdx(selectIdx:Int){
+        this.selectIdx = selectIdx
+    }
+
     fun getSelectedColor(): Int {
         return list[selectIdx]
     }

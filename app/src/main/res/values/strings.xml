@@ -12,6 +12,7 @@
     <string name="add_history_error">收支新增失敗</string>
     <string name="add_bank">新增銀行</string>
     <string name="remove_bank">移除銀行</string>
+    <string name="edit">編輯</string>
     <string name="add_bank_hint">ＯＯ銀行</string>
     <string name="bank_name">銀行名稱</string>
     <string name="color_setting">顏色設置</string>

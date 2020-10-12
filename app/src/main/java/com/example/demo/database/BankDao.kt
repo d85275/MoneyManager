@@ -1,9 +1,6 @@
 package com.example.demo.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.demo.model.BankData
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -21,4 +18,7 @@ interface BankDao {
 
     @Delete
     fun delete(bankData: BankData): Completable
+
+    @Update
+    fun updateBank(bankData: BankData): Completable
 }
