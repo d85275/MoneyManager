@@ -14,6 +14,8 @@ import com.example.demo.viewmodels.HistoryVMFactory
 import com.example.demo.viewmodels.HistoryViewModel
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_history.*
+import kotlinx.android.synthetic.main.activity_history.vAddItem
+import kotlinx.android.synthetic.main.fragment_bank.*
 
 class HistoryActivity : AppCompatActivity() {
     private var isShow = true
@@ -27,10 +29,9 @@ class HistoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_history)
         setSupportActionBar(toolbar)
         getViewModel()
-        setListeners()
         initViews()
+        setListeners()
         initObservers()
-        //viewModel.loadData(compactcalendar_view.firstDayOfCurrentMonth)
         viewModel.loadHistoryData()
     }
 
@@ -113,6 +114,7 @@ class HistoryActivity : AppCompatActivity() {
             vAddItem.setDate(viewModel.selectedDay.value)
             vAddItem.show()
         }
+        adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
     }
 
 
