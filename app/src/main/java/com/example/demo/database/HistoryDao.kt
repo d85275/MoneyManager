@@ -31,4 +31,7 @@ interface HistoryDao {
 
     @Delete
     fun delete(historyData: HistoryData): Completable
+
+    @Query("DELETE FROM historydata WHERE source IN (:source)")
+    fun deleteFromSource(source: String): Completable
 }

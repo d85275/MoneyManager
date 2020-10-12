@@ -27,7 +27,7 @@ class Repository(context: Context) {
     //    return db.historyDao().loadCashRecent()
     //}
 
-    fun getHistoryData():Single<List<HistoryData>>{
+    fun getHistoryData(): Single<List<HistoryData>> {
         return db.historyDao().getAll()
     }
 
@@ -37,5 +37,9 @@ class Repository(context: Context) {
 
     fun addHistory(historyData: HistoryData): Completable {
         return db.historyDao().insertAll(historyData)
+    }
+
+    fun deleteFromSource(source: String): Completable {
+        return db.historyDao().deleteFromSource(source)
     }
 }

@@ -108,6 +108,11 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             Log.e("123", "remove bank error, ${it.toString()}")
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
+
+        repository.deleteFromSource(bankData.name).doOnComplete {
+        }.doOnError {
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
     fun loadBankListData() {
