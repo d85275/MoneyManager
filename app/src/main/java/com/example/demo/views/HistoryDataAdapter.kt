@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.item_history_data.view.*
 import kotlinx.android.synthetic.main.item_recent_data.view.*
 import kotlinx.android.synthetic.main.item_recent_data.view.tvName
 import kotlinx.android.synthetic.main.item_recent_data.view.tvPrice
+import java.lang.StringBuilder
 
 class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var alHistoryData = arrayListOf<HistoryData>()
@@ -28,7 +29,12 @@ class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.tvName.text = alHistoryData[position].name
         holder.itemView.tvSource.text = alHistoryData[position].source
-        holder.itemView.tvPrice.text = "$ ${alHistoryData[position].price}"
+        val price = StringBuilder().append("$")
+        if (alHistoryData[position].type == HistoryData.TYPE_EXPENSE) {
+            price.append(" -")
+        }
+        price.append(alHistoryData[position].price)
+        holder.itemView.tvPrice.text = price.toString()
         if (alHistoryData[position].type == TYPE_INCOME) {
             holder.itemView.tvName.setTextColor(getDarkColor())
             holder.itemView.tvDate.setTextColor(getLightColor())
