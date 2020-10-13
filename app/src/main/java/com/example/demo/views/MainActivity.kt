@@ -24,6 +24,7 @@ class MainActivity : FragmentActivity() {
 
     private companion object {
         private const val NUM_PAGES = 2
+        private const val CASH = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,15 +53,19 @@ class MainActivity : FragmentActivity() {
     private fun initObservers() {
         viewModel.curPage.observe(this, Observer { curPage ->
             when (curPage) {
-                0 -> {
+                CASH -> {
                     ivCashDot.setImageResource(R.drawable.dot_selected)
                     ivBankDot.setImageResource(R.drawable.dot_default)
+                    ivSearch.setImageResource(R.drawable.search_cash)
+                    ivHistory.setImageResource(R.drawable.history_cash)
                     vBackground.setBackgroundResource(R.drawable.cash_background)
                     llSearch.visibility = View.GONE
                 }
                 else -> {
                     ivCashDot.setImageResource(R.drawable.dot_default)
                     ivBankDot.setImageResource(R.drawable.dot_selected)
+                    ivSearch.setImageResource(R.drawable.search_bank)
+                    ivHistory.setImageResource(R.drawable.history_bank)
                     vBackground.setBackgroundResource(R.drawable.bank_background)
                     llSearch.visibility = View.GONE
                 }
