@@ -42,7 +42,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     app:compactCalendarBackgroundColor="@color/main_colour"
-                    app:compactCalendarCurrentDayBackgroundColor="@color/selected_day_bg"
+                    app:compactCalendarCurrentDayBackgroundColor="@android:color/transparent"
                     app:compactCalendarCurrentSelectedDayBackgroundColor="@color/selected_day"
                     app:compactCalendarDisplayOtherMonthDays="false"
                     app:compactCalendarMultiEventIndicatorColor="@color/calendar_text_colour"

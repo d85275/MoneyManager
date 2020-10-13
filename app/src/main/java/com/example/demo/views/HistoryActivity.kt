@@ -57,6 +57,7 @@ class HistoryActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
         vAddItem.setViewModel(mainViewModel)
+        compactcalendar_view.shouldDrawIndicatorsBelowSelectedDays(true)
     }
 
     private fun getViewModel() {
