@@ -111,7 +111,8 @@ class BankFragment : Fragment() {
             if (bankData.size == 1) {
                 ivAdd.visibility = View.GONE
             } else {
-                mainViewModel.loadRecentHistoryData(bankData[0]!!.name)
+                val curBank = mainViewModel.curBank.value ?: return@Observer
+                mainViewModel.loadRecentHistoryData(curBank.name)
                 ivAdd.visibility = View.VISIBLE
             }
         })

@@ -108,7 +108,12 @@ object CommonUtils {
     }
 
 
-    fun showEditBankDialog(itemView: View, mainViewModel: MainViewModel, bankData: BankData?) {
+    fun showEditBankDialog(
+        itemView: View,
+        mainViewModel: MainViewModel,
+        bankData: BankData?,
+        oldName: String
+    ) {
         val dialog = Dialog(itemView.context)
         val adapter = BankCardColorAdapter(mainViewModel.getBankColor())
         adapter.setSelectedIdx(mainViewModel.getBankColorPosition(bankData?.color))
@@ -122,7 +127,11 @@ object CommonUtils {
             if (name.isEmpty()) {
                 return@setOnClickListener
             }
-            mainViewModel.updateBank(BankData.create(name, adapter.getSelectedColor()))
+            if (bankData != null) {
+                bankData.name = name
+                bankData.color = adapter.getSelectedColor()
+                mainViewModel.updateBank(bankData, oldName)
+            }
             dialog.dismiss()
         }
         dialog.show()

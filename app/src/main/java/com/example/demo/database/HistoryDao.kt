@@ -31,4 +31,7 @@ interface HistoryDao {
 
     @Query("DELETE FROM historydata WHERE source IN (:source)")
     fun deleteFromSource(source: String): Completable
+
+    @Query("UPDATE historydata SET source = :newName WHERE source=:oldName")
+    fun updateSourceName(newName: String, oldName: String): Completable
 }

@@ -12,7 +12,6 @@ import com.example.demo.model.HistoryData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import com.github.sundeepk.compactcalendarview.domain.Event
 
 
 class MainViewModel(private val repository: Repository) : ViewModel() {
@@ -60,10 +59,12 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     }
 
     @SuppressLint("CheckResult")
-    fun updateBank(bankData: BankData) {
+    fun updateBank(bankData: BankData, oldName: String) {
+        repository.updateSourceName(bankData.name, oldName).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+
         repository.updateBank(bankData).doOnComplete {
             loadBankListData()
-            //todo change the data in history as well
         }.doOnError {
             Log.e("123", "add bank error, ${it.toString()}")
         }.subscribeOn(Schedulers.io())
