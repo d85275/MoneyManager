@@ -18,7 +18,8 @@ class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var alHistoryData = arrayListOf<HistoryData>()
     var onItemClick: ((HistoryData) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_history_data, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_history_data, parent, false)
         return object : RecyclerView.ViewHolder(view) {}
     }
 
@@ -28,7 +29,11 @@ class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.tvName.text = alHistoryData[position].name
-        holder.itemView.tvSource.text = alHistoryData[position].source
+        if (alHistoryData[position].source == HistoryData.SOURCE_CASH) {
+            holder.itemView.tvSource.text = holder.itemView.context.getString(R.string.cash)
+        } else {
+            holder.itemView.tvSource.text = alHistoryData[position].source
+        }
         val price = StringBuilder().append("$")
         if (alHistoryData[position].type == HistoryData.TYPE_EXPENSE) {
             price.append(" -")
