@@ -27,7 +27,19 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val recentCashData = MutableLiveData<List<HistoryData>>()
     val dbErrorMsg = MutableLiveData<Int>()
     val bankList = MutableLiveData<List<BankData?>>()
-    val curBank = MutableLiveData<BankData>()
+    val curBankPosition = MutableLiveData(-1)
+
+    fun getCurrentBank(): BankData? {
+        if (curBankPosition.value == null || curBankPosition.value == -1) {
+            return null
+        }
+        val bankList = this.bankList.value
+        val curPosition = curBankPosition.value!!
+        if (bankList == null || bankList.size <= curPosition) {
+            return null
+        }
+        return bankList[curPosition]
+    }
 
     fun getBankColorPosition(color: Int?): Int {
         if (color == null) return 0
@@ -54,7 +66,8 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
             if (bankList.value == null) return
-            curBank.value = bankList.value!![position]
+            //curBank.value = bankList.value!![position]
+            curBankPosition.value = position
         }
     }
 
@@ -97,6 +110,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun removeBank(bankData: BankData) {
         repository.removeBank(bankData).doOnComplete {
             loadBankListData()
+            loadTotalBalance()
         }.doOnError {
             Log.e("123", "remove bank error, ${it.toString()}")
         }.subscribeOn(Schedulers.io())
@@ -157,7 +171,8 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         totalBalanceForBank.value = totalBank.toString()
     }
 
-    fun loadRecentHistoryData(source: String) {
+    fun loadRecentHistoryData(source: String?) {
+        if (source == null) return
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(
             repository.getRecentHistoryData(source).subscribeOn(Schedulers.io()).observeOn(

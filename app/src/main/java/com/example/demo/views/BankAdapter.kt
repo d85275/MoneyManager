@@ -83,19 +83,6 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
                 )
             }
         }
-
-        private fun showRemoveBankDialog() {
-            val title = itemView.context.getString(R.string.remove_bank)
-            val name = itemView.tvName.text.toString().trim()
-            val msg = itemView.context.getString(R.string.remove_bank_msg, name)
-            CommonUtils.showDialog(
-                itemView.context,
-                title,
-                msg,
-                { mainViewModel.removeBank(BankData.create(name)) },
-                null
-            )
-        }
     }
 
     class EmptyViewHolder(itemView: View, mainViewModel: MainViewModel) :

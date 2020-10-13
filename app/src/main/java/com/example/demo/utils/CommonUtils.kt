@@ -12,10 +12,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
@@ -23,6 +20,7 @@ import com.example.demo.model.BankData
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.views.BankCardColorAdapter
 import com.example.demo.views.HistoryActivity
+import kotlinx.android.synthetic.main.item_bank_card.view.*
 import kotlin.math.abs
 
 object CommonUtils {
@@ -122,6 +120,11 @@ object CommonUtils {
         dialog.findViewById<EditText>(R.id.etName).setText(bankData?.name)
         val rvColor = dialog.findViewById<RecyclerView>(R.id.rvColours)
         rvColor.smoothScrollToPosition(mainViewModel.getBankColorPosition(bankData?.color))
+        val ivDelete = dialog.findViewById<ImageView>(R.id.ivDelete)
+        ivDelete.visibility = View.VISIBLE
+        ivDelete.setOnClickListener {
+            showRemoveBankDialog(dialog, bankData, itemView, mainViewModel)
+        }
         dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
             val name = dialog.findViewById<EditText>(R.id.etName).text.toString().trim()
             if (name.isEmpty()) {
@@ -135,6 +138,27 @@ object CommonUtils {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private fun showRemoveBankDialog(
+        dialog: Dialog,
+        bankData: BankData?,
+        itemView: View,
+        mainViewModel: MainViewModel
+    ) {
+        val title = itemView.context.getString(R.string.remove_bank)
+        val name = bankData?.name?.trim()
+        val msg = itemView.context.getString(R.string.remove_bank_msg, name)
+        showDialog(
+            itemView.context, title, msg,
+            {
+                if (bankData != null){
+                    mainViewModel.removeBank(bankData)
+                }
+                dialog.dismiss()
+            },
+            null
+        )
     }
 
     fun showAddBankDialog(itemView: View, mainViewModel: MainViewModel) {

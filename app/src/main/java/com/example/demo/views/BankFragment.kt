@@ -111,8 +111,8 @@ class BankFragment : Fragment() {
             if (bankData.size == 1) {
                 ivAdd.visibility = View.GONE
             } else {
-                val curBank = mainViewModel.curBank.value ?: return@Observer
-                mainViewModel.loadRecentHistoryData(curBank.name)
+                val curBank = mainViewModel.getCurrentBank()
+                mainViewModel.loadRecentHistoryData(curBank?.name)
                 ivAdd.visibility = View.VISIBLE
             }
         })
@@ -123,11 +123,11 @@ class BankFragment : Fragment() {
                 addItemViewModel.showAddBtn(ivAdd)
             }
         })
-        mainViewModel.curBank.observe(viewLifecycleOwner, Observer { curBank ->
-            if (curBank == null) {
+        mainViewModel.curBankPosition.observe(viewLifecycleOwner, Observer {
+            if (mainViewModel.getCurrentBank() == null) {
                 hideRecentData()
             } else {
-                getRecentData(curBank)
+                getRecentData()
             }
         })
         mainViewModel.dbErrorMsg.observe(viewLifecycleOwner, Observer { errorCode ->
@@ -145,9 +145,10 @@ class BankFragment : Fragment() {
         ivAdd.visibility = View.INVISIBLE
     }
 
-    private fun getRecentData(curBank: BankData) {
+    private fun getRecentData() {
         rvRecent.visibility = View.VISIBLE
         ivAdd.visibility = View.VISIBLE
+        val curBank = mainViewModel.getCurrentBank() ?: return
         vAddItem.setSource(curBank.name)
         mainViewModel.loadRecentHistoryData(curBank.name)
     }

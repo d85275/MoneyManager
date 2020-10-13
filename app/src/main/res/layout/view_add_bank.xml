@@ -32,6 +32,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_goneMarginStart="30dp" />
 
+            <ImageView
+                android:id="@+id/ivDelete"
+                android:layout_width="19dp"
+                android:layout_height="23dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/icon_bin"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvTitle" />
+
             <TextView
                 android:id="@+id/tvBankName"
                 android:layout_width="wrap_content"
