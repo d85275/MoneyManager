@@ -43,6 +43,10 @@ class Repository(context: Context) {
         return db.historyDao().insertAll(historyData)
     }
 
+    fun updateHistory(historyData: HistoryData): Completable {
+        return db.historyDao().updateHistory(historyData)
+    }
+
     fun deleteFromSource(source: String): Completable {
         return db.historyDao().deleteFromSource(source)
     }

@@ -53,7 +53,6 @@ class CashFragment : Fragment() {
         initView()
         setListener()
         initObservers()
-        mainViewModel.loadRecentHistoryData(HistoryData.SOURCE_CASH)
     }
 
     override fun onResume() {

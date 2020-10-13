@@ -10,9 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.R
 import com.example.demo.Repository
-import com.example.demo.viewmodels.AddItemViewModel
-import com.example.demo.viewmodels.HistoryVMFactory
-import com.example.demo.viewmodels.HistoryViewModel
+import com.example.demo.viewmodels.*
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.activity_history.vAddItem
@@ -23,6 +21,7 @@ class HistoryActivity : AppCompatActivity() {
     private var isShow = true
     private var scrollRange = -1
     private lateinit var viewModel: HistoryViewModel
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var addItemViewModel: AddItemViewModel
     private lateinit var adapter: HistoryDataAdapter
 
@@ -34,7 +33,7 @@ class HistoryActivity : AppCompatActivity() {
         initViews()
         setListeners()
         initObservers()
-        viewModel.loadHistoryData()
+        mainViewModel.loadHistoryData()
     }
 
     override fun onResume() {
@@ -57,6 +56,7 @@ class HistoryActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
+        vAddItem.setViewModel(mainViewModel)
     }
 
     private fun getViewModel() {
@@ -64,13 +64,15 @@ class HistoryActivity : AppCompatActivity() {
             this,
             HistoryVMFactory(Repository(this))
         ).get(HistoryViewModel::class.java)
+        mainViewModel =
+            ViewModelProvider(this, MainVMFactory(Repository(this))).get(MainViewModel::class.java)
         addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
     }
 
     private var selectedDate: Date? = null
     private fun initObservers() {
         viewModel.selectedDay.observe(this, Observer { day ->
-            adapter.setList(viewModel.getDataByDay(day))
+            adapter.setList(mainViewModel.getDataByDay(day))
             selectedDate = day
         })
 
@@ -78,9 +80,9 @@ class HistoryActivity : AppCompatActivity() {
             tvCurrentDate.text = viewModel.getDate(firstDayOfMonth)
         })
 
-        viewModel.historyData.observe(this, Observer { historyData ->
+        mainViewModel.historyData.observe(this, Observer { historyData ->
             compactcalendar_view.addEvents(viewModel.getEvents(historyData))
-            if (selectedDate != null) adapter.setList(viewModel.getDataByDay(selectedDate!!))
+            if (selectedDate != null) adapter.setList(mainViewModel.getDataByDay(selectedDate!!))
         })
 
         viewModel.isAddItem.observe(this, Observer { isAdded ->

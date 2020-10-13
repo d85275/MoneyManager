@@ -7,12 +7,12 @@ import androidx.room.PrimaryKey
 @Entity
 data class HistoryData(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo val name: String,
-    @ColumnInfo val type: String, // income/expense
-    @ColumnInfo val price: Double,
-    @ColumnInfo val date: String,
-    @ColumnInfo val source: String, // cash or bank name
-    @ColumnInfo val icon: Int
+    @ColumnInfo var name: String,
+    @ColumnInfo var type: String, // income/expense
+    @ColumnInfo var price: Double,
+    @ColumnInfo var date: String,
+    @ColumnInfo var source: String, // cash or bank name
+    @ColumnInfo var icon: Int
 ) {
     companion object {
         const val TYPE_INCOME = "INCOME"

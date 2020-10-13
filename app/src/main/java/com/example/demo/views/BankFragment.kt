@@ -58,7 +58,6 @@ class BankFragment : Fragment() {
         initView()
         setListeners()
         initObservers()
-        mainViewModel.loadBankListData()
     }
 
     override fun onResume() {

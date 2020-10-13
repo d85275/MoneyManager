@@ -31,13 +31,6 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
     private val dateFormatForAdd: SimpleDateFormat =
         SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
 
-    val historyData = MutableLiveData<List<HistoryData>>()
-
-    fun getDataByDay(date: Date): List<HistoryData> {
-        if (historyData.value == null) return arrayListOf()
-        val curDate = dateFormatForAdd.format(date)
-        return historyData.value!!.filter { it.date == curDate }
-    }
 
     fun getDay(date: Date): String {
         return dateFormatForDay.format(date)
@@ -52,30 +45,6 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
         return dateFormatForAdd.format(selectedDay.value!!)
     }
 
-    fun loadData(date: Date?) {
-        if (date == null) return
-        /*
-        val list = arrayListOf<HistoryData>()
-        for (i in 0..20) {
-            val data = HistoryData.create("test $i", "food", 500,"2020-10/03")
-            list.add(data)
-        }
-        historyData.value = list
-         */
-    }
-
-    fun loadHistoryData() {
-        val compositeDisposable = CompositeDisposable()
-        compositeDisposable.add(
-            repository.getHistoryData().subscribeOn(Schedulers.io()).observeOn(
-                AndroidSchedulers.mainThread()
-            ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
-                .subscribe { list ->
-                    list.reversed()
-                    historyData.postValue(list)
-                }
-        )
-    }
 
     fun getEvents(alData: List<HistoryData>): List<Event> {
         val list = arrayListOf<Event>()
@@ -87,17 +56,6 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
     }
 
     val isAddItem = MutableLiveData(false)
-    fun addItem(date: Date?) {
-        if (date == null) return
-/*
-val data = HistoryData.create("test ${historyData.value!!.size}", "food", 500,"2020-10/03")
-val list = (historyData.value as ArrayList)
-list.add(data)
-historyData.value = list
-isAddItem.value = true
-
- */
-    }
 
     val selectedDay = MutableLiveData<Date>(Calendar.getInstance().time)
     val selectedMonth = MutableLiveData<Date>(Calendar.getInstance().time)

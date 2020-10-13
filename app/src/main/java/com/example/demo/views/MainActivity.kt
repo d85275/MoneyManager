@@ -34,6 +34,10 @@ class MainActivity : FragmentActivity() {
         getViewModel()
         setListener()
         initObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
         loadRecentData()
     }
 
@@ -45,8 +49,8 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun loadRecentData() {
-        //viewModel.loadBankListData()
-        //viewModel.loadRecentHistoryData(HistoryData.SOURCE_CASH)
+        viewModel.loadBankListData()
+        viewModel.loadRecentHistoryData(HistoryData.SOURCE_CASH)
         viewModel.loadTotalBalance()
     }
 

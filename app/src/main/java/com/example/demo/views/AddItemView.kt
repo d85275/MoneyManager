@@ -14,7 +14,6 @@ import com.example.demo.R
 import com.example.demo.model.HistoryData
 import com.example.demo.utils.OnSwipeTouchListener
 import com.example.demo.viewmodels.MainViewModel
-import kotlinx.android.synthetic.main.item_recent_data.view.*
 import kotlinx.android.synthetic.main.view_add_item.view.*
 import kotlinx.android.synthetic.main.view_add_item.view.tvPrice
 import java.lang.StringBuilder
@@ -30,6 +29,8 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     private lateinit var source: String
     private lateinit var mainViewModel: MainViewModel
     private var total = 0L
+    private var curMode = MODE_ADD
+    private var resumeData: HistoryData? = null
 
     private companion object {
         private const val ADD_ANIM_DURATION = 300L
@@ -39,6 +40,8 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         private const val DOT = 10
         private const val BACK = 12
         private const val ZERO = 11
+        private const val MODE_ADD = 0
+        private const val MODE_EDIT = 1
     }
 
     private val dateFormatForAdd: SimpleDateFormat =
@@ -152,8 +155,19 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         val source = this.source
         val date = tvAddItemDate.text.toString()
         val icon = 0
-        val historyData = HistoryData.create(name, type, price, date, source, icon)
-        mainViewModel.addItem(historyData, source)
+        if (curMode == MODE_ADD) {
+            val historyData = HistoryData.create(name, type, price, date, source, icon)
+            mainViewModel.addItem(historyData, source)
+        } else if (resumeData != null) {
+            resumeData!!.name = name
+            resumeData!!.price = price
+            resumeData!!.type = type
+            resumeData!!.source = source
+            resumeData!!.date = date
+            resumeData!!.icon = icon
+            mainViewModel.updateItem(resumeData!!)
+        }
+
         clearData()
     }
 
@@ -176,6 +190,9 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
 
     fun resumeData(historyData: HistoryData) {
         //tvAddItemDate.text = historyData.date
+        curMode = MODE_EDIT
+        resumeData = historyData
+        source = historyData.source
         setDate(dateFormatForAdd.parse(historyData.date))
         tvPrice.text = formatter.format(historyData.price)
         etName.setText(historyData.name)

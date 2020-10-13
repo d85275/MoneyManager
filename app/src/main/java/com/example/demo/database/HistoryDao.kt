@@ -1,9 +1,6 @@
 package com.example.demo.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.demo.model.BankData
 import com.example.demo.model.HistoryData
 import io.reactivex.Completable
@@ -34,4 +31,7 @@ interface HistoryDao {
 
     @Query("UPDATE historydata SET source = :newName WHERE source=:oldName")
     fun updateSourceName(newName: String, oldName: String): Completable
+
+    @Update
+    fun updateHistory(historyData: HistoryData): Completable
 }

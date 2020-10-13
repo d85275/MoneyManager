@@ -12,6 +12,9 @@ import com.example.demo.model.HistoryData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainViewModel(private val repository: Repository) : ViewModel() {
@@ -105,6 +108,38 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 {}, { dbErrorMsg.postValue(1) }
             )
+    }
+
+    fun updateItem(historyData: HistoryData) {
+        repository.updateHistory(historyData).doOnComplete {
+            loadRecentHistoryData(historyData.source)
+            loadHistoryData()
+            loadTotalBalance()
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
+
+    private val dateFormatForAdd: SimpleDateFormat =
+        SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+    val historyData = MutableLiveData<List<HistoryData>>()
+
+    fun getDataByDay(date: Date): List<HistoryData> {
+        if (historyData.value == null) return arrayListOf()
+        val curDate = dateFormatForAdd.format(date)
+        return historyData.value!!.filter { it.date == curDate }
+    }
+
+    fun loadHistoryData() {
+        val compositeDisposable = CompositeDisposable()
+        compositeDisposable.add(
+            repository.getHistoryData().subscribeOn(Schedulers.io()).observeOn(
+                AndroidSchedulers.mainThread()
+            ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
+                .subscribe { list ->
+                    list.reversed()
+                    historyData.postValue(list)
+                }
+        )
     }
 
     fun removeBank(bankData: BankData) {
