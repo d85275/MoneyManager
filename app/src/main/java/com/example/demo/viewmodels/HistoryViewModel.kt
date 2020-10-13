@@ -1,7 +1,6 @@
 package com.example.demo.viewmodels
 
 import android.graphics.Color
-import android.util.Log
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
 import android.view.animation.DecelerateInterpolator
@@ -11,11 +10,7 @@ import com.example.demo.Repository
 import com.example.demo.model.HistoryData
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
-import java.time.temporal.TemporalQueries.localTime
 import java.util.*
 
 

@@ -81,6 +81,7 @@ class HistoryActivity : AppCompatActivity() {
         })
 
         mainViewModel.historyData.observe(this, Observer { historyData ->
+            compactcalendar_view.removeAllEvents()
             compactcalendar_view.addEvents(viewModel.getEvents(historyData))
             if (selectedDate != null) adapter.setList(mainViewModel.getDataByDay(selectedDate!!))
         })
