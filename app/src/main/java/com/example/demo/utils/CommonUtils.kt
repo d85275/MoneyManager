@@ -20,7 +20,6 @@ import com.example.demo.model.BankData
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.views.BankCardColorAdapter
 import com.example.demo.views.HistoryActivity
-import kotlinx.android.synthetic.main.item_bank_card.view.*
 import kotlin.math.abs
 
 object CommonUtils {
@@ -146,13 +145,14 @@ object CommonUtils {
         itemView: View,
         mainViewModel: MainViewModel
     ) {
-        val title = itemView.context.getString(R.string.remove_bank)
+        //val title = itemView.context.getString(R.string.remove_bank)
         val name = bankData?.name?.trim()
-        val msg = itemView.context.getString(R.string.remove_bank_msg, name)
+        val title = itemView.context.getString(R.string.remove_bank_title, name)
+        val msg = itemView.context.getString(R.string.remove_bank_msg)
         showDialog(
             itemView.context, title, msg,
             {
-                if (bankData != null){
+                if (bankData != null) {
                     mainViewModel.removeBank(bankData)
                 }
                 dialog.dismiss()
