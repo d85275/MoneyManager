@@ -5,7 +5,7 @@
     <color name="colorAccent">#03DAC5</color>
 
     <color name="main_colour">#FFFFFF</color>
-    <color name="selected_day">#E3F2FD</color>
+    <color name="selected_day">#b97461</color>
     <color name="selected_day_bg">#BBDEFB</color>
 
     <color name="calendar_text_colour">#777777</color>

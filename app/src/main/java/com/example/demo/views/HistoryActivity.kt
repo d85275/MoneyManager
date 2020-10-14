@@ -12,8 +12,8 @@ import com.example.demo.R
 import com.example.demo.Repository
 import com.example.demo.viewmodels.*
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.activity_history.vAddItem
+import kotlinx.android.synthetic.main.activity_history2.*
 import kotlinx.android.synthetic.main.fragment_bank.*
 import java.util.*
 
@@ -27,8 +27,8 @@ class HistoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_history)
-        setSupportActionBar(toolbar)
+        setContentView(R.layout.activity_history2)
+        //setSupportActionBar(toolbar)
         getViewModel()
         initViews()
         setListeners()
@@ -50,7 +50,7 @@ class HistoryActivity : AppCompatActivity() {
 
 
     private fun initViews() {
-        collapsingToolbar.title = " "
+        //collapsingToolbar.title = " "
         adapter = HistoryDataAdapter()
         tvCurrentDate.text = viewModel.getDate(compactcalendar_view.firstDayOfCurrentMonth)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -105,7 +105,9 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun setListeners() {
         compactcalendar_view.setListener(viewModel.getCalendarListener())
+        /*
         appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
+
             if (scrollRange == -1) {
                 scrollRange = barLayout?.totalScrollRange!!
             }
@@ -115,6 +117,7 @@ class HistoryActivity : AppCompatActivity() {
                 isShow = false
             }
         })
+        */
         llClose.setOnClickListener {
             finish()
         }

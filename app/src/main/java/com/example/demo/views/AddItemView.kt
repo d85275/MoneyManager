@@ -26,7 +26,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
 
     private var view: View =
         LayoutInflater.from(context).inflate(R.layout.view_add_item, this, true)
-    private lateinit var source: String
+    private var source = HistoryData.SOURCE_CASH
     private lateinit var mainViewModel: MainViewModel
     private var total = 0L
     private var curMode = MODE_ADD
