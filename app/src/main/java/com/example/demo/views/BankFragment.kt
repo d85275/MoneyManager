@@ -112,7 +112,7 @@ class BankFragment : Fragment() {
             } else {
                 val curBank = mainViewModel.getCurrentBank()
                 mainViewModel.loadRecentHistoryData(curBank?.name)
-                ivAdd.visibility = View.VISIBLE
+                if (curBank != null) ivAdd.visibility = View.VISIBLE
             }
         })
         vAddItem.isShow().observe(viewLifecycleOwner, Observer { isShow ->

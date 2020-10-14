@@ -24,6 +24,10 @@ import kotlin.math.abs
 
 object CommonUtils {
 
+    fun e(msg: String) {
+        Log.e("Debug", msg)
+    }
+
     fun getGesture(activity: Activity, action: () -> Unit, isEnter: Boolean): GestureDetector {
         return GestureDetector(
             activity,
