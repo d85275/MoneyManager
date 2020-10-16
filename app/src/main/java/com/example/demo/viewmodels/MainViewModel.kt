@@ -125,6 +125,15 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
     val historyData = MutableLiveData<List<HistoryData>>()
     val dayData = MutableLiveData<List<HistoryData>>()
+    val monthData = MutableLiveData<List<HistoryData>>()
+
+    fun getDataByMonth(date: Date) {
+        if (historyData.value == null) return
+        val dateFormat = SimpleDateFormat("yyyy/MM", Locale.getDefault())
+        val curMonth = dateFormat.format(date)
+        monthData.value = historyData.value!!.filter { it.date.startsWith(curMonth) }
+    }
+
     fun getDataByDay(date: Date) {
         if (historyData.value == null) return
         val curDate = dateFormatForAdd.format(date)
@@ -190,8 +199,10 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         )
     }
 
-    val totalBalance = MutableLiveData<String>()
-    val totalBalanceForBank = MutableLiveData<String>()
+    val totalBalance = MutableLiveData<String>("0.0")
+    val totalBalanceForBank = MutableLiveData<String>("0.0")
+    val dailyBalance = MutableLiveData<String>("0.0")
+    val monthlyBalance = MutableLiveData<String>("0.0")
     fun loadTotalBalance() {
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(
@@ -223,6 +234,27 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
         totalBalance.value = total.toString()
         totalBalanceForBank.value = totalBank.toString()
+    }
+
+    fun getMonthlyBalance(alData: List<HistoryData>) {
+        monthlyBalance.value = getBalance(alData)
+    }
+
+    fun getDailyBalance(alData: List<HistoryData>) {
+        dailyBalance.value = getBalance(alData)
+    }
+
+    private fun getBalance(alData: List<HistoryData>): String {
+        var total: Double = 0.0
+        for (i in alData.indices) {
+            val data = alData[i]
+            if (data.type == HistoryData.TYPE_EXPENSE) {
+                total -= data.price
+            } else {
+                total += data.price
+            }
+        }
+        return total.toString()
     }
 
     fun loadRecentHistoryData(source: String?) {

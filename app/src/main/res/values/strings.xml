@@ -21,4 +21,6 @@
     <string name="cancel">取消</string>
     <string name="cash">現金</string>
     <string name="delete_item">刪除選擇項目</string>
+    <string name="monthly_balance">本月損益</string>
+    <string name="daily_balance">本日損益</string>
 </resources>

@@ -38,9 +38,9 @@
                     android:id="@+id/compactcalendar_view"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_marginStart="25dp"
                     android:layout_marginTop="65dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:layout_marginEnd="25dp"
                     app:compactCalendarBackgroundColor="@color/main_colour"
                     app:compactCalendarCurrentDayBackgroundColor="@android:color/transparent"
                     app:compactCalendarCurrentDayIndicatorStyle="fill_large_indicator"
@@ -139,16 +139,111 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp">
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp">
+
+            <View
+                android:id="@+id/vBackground"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:background="@drawable/rounded_balance_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:gravity="center_vertical"
+                android:maxWidth="120dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/vBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/vBackground">
+
+                <TextView
+                    android:id="@+id/tvDailyBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif"
+                    android:maxWidth="120dp"
+                    android:maxLines="1"
+                    android:text="$ -1,303"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvDailyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/daily_balance"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvMonthlyBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif"
+                    android:maxWidth="120dp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:text="$ -50,323"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvMonthlyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/monthly_balance"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvTotalBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxWidth="220dp"
+                android:maxLines="1"
+                android:text="$ -12,100.00"
+                android:textColor="@android:color/white"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:translationY="-4dp"
+                app:layout_constraintBottom_toBottomOf="@id/vBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/vBackground" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_balance"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:translationY="-10dp"
+                app:layout_constraintEnd_toEndOf="@id/tvTotalBalance"
+                app:layout_constraintTop_toBottomOf="@id/tvTotalBalance" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/vBackground" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
@@ -161,7 +256,7 @@
         android:layout_marginEnd="15dp"
         android:alpha="0.7"
         android:background="@drawable/add"
-        android:translationY="-100dp"
+        android:translationY="-30dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
     <Button
@@ -185,6 +280,7 @@
         android:background="@color/main_colour"
         android:gravity="center"
         android:orientation="horizontal"
+        android:visibility="invisible"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <TextView

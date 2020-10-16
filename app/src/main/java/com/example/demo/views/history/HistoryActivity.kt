@@ -33,6 +33,7 @@ class HistoryActivity : AppCompatActivity() {
         setListeners()
         initObservers()
         mainViewModel.loadHistoryData()
+        mainViewModel.loadTotalBalance()
     }
 
     override fun onResume() {
@@ -74,6 +75,7 @@ class HistoryActivity : AppCompatActivity() {
 
         historyViewModel.selectedMonth.observe(this, Observer { firstDayOfMonth ->
             tvCurrentDate.text = historyViewModel.getDate(firstDayOfMonth)
+            mainViewModel.getDataByMonth(firstDayOfMonth)
         })
 
         mainViewModel.historyData.observe(this, Observer { historyData ->
@@ -81,6 +83,7 @@ class HistoryActivity : AppCompatActivity() {
             compactcalendar_view.addEvents(historyViewModel.getEvents(historyData))
             if (selectedDate != null) {
                 mainViewModel.getDataByDay(selectedDate!!)
+                mainViewModel.getDataByMonth(selectedDate!!)
             }
         })
         mainViewModel.dayData.observe(this, Observer { dayData ->
@@ -89,8 +92,13 @@ class HistoryActivity : AppCompatActivity() {
             } else {
                 ivEdit.visibility = View.VISIBLE
             }
+            mainViewModel.getDailyBalance(dayData)
             adapter.setList(dayData)
             startAnimation()
+        })
+
+        mainViewModel.monthData.observe(this, Observer { monthData ->
+            mainViewModel.getMonthlyBalance(monthData)
         })
 
         historyViewModel.isAddItem.observe(this, Observer { isAdded ->
@@ -123,7 +131,17 @@ class HistoryActivity : AppCompatActivity() {
             if (selectedId.size <= 0) {
                 btDelete.setBackgroundResource(R.drawable.rounded_delete_btn_bg_not_selected)
             } else {
-                btDelete.setBackgroundResource(R.drawable.rounded_delete_btn_bg_selected)            }
+                btDelete.setBackgroundResource(R.drawable.rounded_delete_btn_bg_selected)
+            }
+        })
+        mainViewModel.totalBalance.observe(this, Observer { totalBalance ->
+            tvTotalBalance.text = totalBalance
+        })
+        mainViewModel.monthlyBalance.observe(this, Observer { monthlyBalance ->
+            tvMonthlyBalance.text = monthlyBalance
+        })
+        mainViewModel.dailyBalance.observe(this, Observer { dailyBalance ->
+            tvDailyBalance.text = dailyBalance
         })
     }
 
