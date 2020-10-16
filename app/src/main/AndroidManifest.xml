@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.HistoryActivity"
+            android:name=".views.history.HistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />

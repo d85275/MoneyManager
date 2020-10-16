@@ -51,6 +51,10 @@ class Repository(context: Context) {
         return db.historyDao().deleteFromSource(source)
     }
 
+    fun deleteFromIds(list: List<Int>): Completable {
+        return db.historyDao().deleteFromIds(list)
+    }
+
     fun updateSourceName(newName: String, oldName: String): Completable {
         Log.e("123", "update name. new: $newName, old: $oldName")
         return db.historyDao().updateSourceName(newName, oldName)

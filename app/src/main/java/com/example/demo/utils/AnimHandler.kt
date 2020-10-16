@@ -3,8 +3,6 @@ package com.example.demo.utils
 import android.os.Handler
 import android.os.Message
 import android.view.View
-import com.example.demo.views.HistoryActivity
-import kotlinx.android.synthetic.main.activity_history.*
 
 class AnimHandler(private val v: View) : Handler() {
     companion object {

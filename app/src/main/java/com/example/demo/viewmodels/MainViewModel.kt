@@ -9,6 +9,7 @@ import com.example.demo.R
 import com.example.demo.Repository
 import com.example.demo.model.BankData
 import com.example.demo.model.HistoryData
+import com.example.demo.utils.CommonUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -103,6 +104,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun addItem(historyData: HistoryData, source: String) {
         repository.addHistory(historyData).doOnComplete {
             loadRecentHistoryData(source)
+            loadHistoryData()
             loadTotalBalance()
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe(
@@ -122,11 +124,11 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     private val dateFormatForAdd: SimpleDateFormat =
         SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
     val historyData = MutableLiveData<List<HistoryData>>()
-
-    fun getDataByDay(date: Date): List<HistoryData> {
-        if (historyData.value == null) return arrayListOf()
+    val dayData = MutableLiveData<List<HistoryData>>()
+    fun getDataByDay(date: Date) {
+        if (historyData.value == null) return
         val curDate = dateFormatForAdd.format(date)
-        return historyData.value!!.filter { it.date == curDate }
+        dayData.value = historyData.value!!.filter { it.date == curDate }
     }
 
     fun loadHistoryData() {
@@ -141,6 +143,23 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 }
         )
     }
+
+    fun deleteHistoryData(selectedId: Set<Int>) {
+        val deletedData = arrayListOf<Int>()
+        for (key in selectedId) {
+            CommonUtils.e("position: $key")
+            deletedData.add(dayData.value!![key].id)
+        }
+        repository.deleteFromIds(deletedData).doOnComplete {
+            isDeleteCompleted.postValue(true)
+            loadHistoryData()
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnError {
+            CommonUtils.e("error: $it")
+        }
+            .subscribe()
+    }
+
+    val isDeleteCompleted = MutableLiveData(false)
 
     fun removeBank(bankData: BankData) {
         repository.removeBank(bankData).doOnComplete {

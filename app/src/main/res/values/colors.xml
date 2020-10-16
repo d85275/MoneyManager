@@ -10,4 +10,5 @@
 
     <color name="calendar_text_colour">#777777</color>
     <color name="main_text_colour">#64B5F6</color>
+    <color name="brown">#B96139</color>
 </resources>

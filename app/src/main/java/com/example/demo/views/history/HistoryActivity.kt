@@ -1,7 +1,7 @@
-package com.example.demo.views
+package com.example.demo.views.history
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.LayoutAnimationController
 import androidx.appcompat.app.AppCompatActivity
@@ -12,23 +12,22 @@ import com.example.demo.R
 import com.example.demo.Repository
 import com.example.demo.viewmodels.*
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.activity_history.vAddItem
-import kotlinx.android.synthetic.main.activity_history2.*
-import kotlinx.android.synthetic.main.fragment_bank.*
 import java.util.*
 
 class HistoryActivity : AppCompatActivity() {
     private var isShow = true
     private var scrollRange = -1
-    private lateinit var viewModel: HistoryViewModel
+    private lateinit var historyViewModel: HistoryViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var addItemViewModel: AddItemViewModel
     private lateinit var adapter: HistoryDataAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_history2)
-        //setSupportActionBar(toolbar)
+        setContentView(R.layout.activity_history)
+        setSupportActionBar(toolbar)
         getViewModel()
         initViews()
         setListeners()
@@ -42,7 +41,7 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun startAnimation() {
-        val controller = LayoutAnimationController(viewModel.getAnimationSetAlpha())
+        val controller = LayoutAnimationController(historyViewModel.getAnimationSetAlpha())
         recyclerView.layoutAnimation = controller
         recyclerView.adapter?.notifyDataSetChanged()
         recyclerView.scheduleLayoutAnimation()
@@ -52,7 +51,7 @@ class HistoryActivity : AppCompatActivity() {
     private fun initViews() {
         //collapsingToolbar.title = " "
         adapter = HistoryDataAdapter()
-        tvCurrentDate.text = viewModel.getDate(compactcalendar_view.firstDayOfCurrentMonth)
+        tvCurrentDate.text = historyViewModel.getDate(compactcalendar_view.firstDayOfCurrentMonth)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
@@ -61,7 +60,7 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun getViewModel() {
-        viewModel = ViewModelProvider(
+        historyViewModel = ViewModelProvider(
             this,
             HistoryVMFactory(Repository(this))
         ).get(HistoryViewModel::class.java)
@@ -72,22 +71,32 @@ class HistoryActivity : AppCompatActivity() {
 
     private var selectedDate: Date? = null
     private fun initObservers() {
-        viewModel.selectedDay.observe(this, Observer { day ->
-            adapter.setList(mainViewModel.getDataByDay(day))
+        historyViewModel.selectedDay.observe(this, Observer { day ->
+            mainViewModel.getDataByDay(day)
             selectedDate = day
         })
 
-        viewModel.selectedMonth.observe(this, Observer { firstDayOfMonth ->
-            tvCurrentDate.text = viewModel.getDate(firstDayOfMonth)
+        historyViewModel.selectedMonth.observe(this, Observer { firstDayOfMonth ->
+            tvCurrentDate.text = historyViewModel.getDate(firstDayOfMonth)
         })
 
         mainViewModel.historyData.observe(this, Observer { historyData ->
             compactcalendar_view.removeAllEvents()
-            compactcalendar_view.addEvents(viewModel.getEvents(historyData))
-            if (selectedDate != null) adapter.setList(mainViewModel.getDataByDay(selectedDate!!))
+            compactcalendar_view.addEvents(historyViewModel.getEvents(historyData))
+            if (selectedDate != null) {
+                mainViewModel.getDataByDay(selectedDate!!)
+            }
+        })
+        mainViewModel.dayData.observe(this, Observer { dayData ->
+            if (dayData.isEmpty()) {
+                ivEdit.visibility = View.INVISIBLE
+            } else {
+                ivEdit.visibility = View.VISIBLE
+            }
+            adapter.setList(dayData)
         })
 
-        viewModel.isAddItem.observe(this, Observer { isAdded ->
+        historyViewModel.isAddItem.observe(this, Observer { isAdded ->
             if (isAdded) {
                 //recyclerView.smoothScrollToPosition(adapter.itemCount)
             }
@@ -101,11 +110,48 @@ class HistoryActivity : AppCompatActivity() {
                 addItemViewModel.showAddBtn(btAdd)
             }
         })
+        historyViewModel.isEditMode.observe(this, Observer { isEditMode ->
+            if (isEditMode) {
+                activateEditMode()
+            } else {
+                deactivateEditMode()
+            }
+        })
+        mainViewModel.isDeleteCompleted.observe(this, Observer { isDeleteCompleted ->
+            if (isDeleteCompleted) {
+                historyViewModel.setEditMode(false)
+            }
+        })
+        adapter.getSelectedId().observe(this, Observer { selectedId ->
+            if (selectedId.size <= 0) {
+                btDelete.setBackgroundColor(getColor(android.R.color.darker_gray))
+            } else {
+                btDelete.setBackgroundColor(getColor(R.color.selected_day))
+            }
+        })
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun activateEditMode() {
+        ivEdit.visibility = View.INVISIBLE
+        tvCancel.visibility = View.VISIBLE
+        btDelete.visibility = View.VISIBLE
+        adapter.setIsEditMode(true)
+        compactcalendar_view.setOnTouchListener { _, _ -> true }
+        addItemViewModel.hideAddBtn(btAdd)
+    }
+
+    private fun deactivateEditMode() {
+        ivEdit.visibility = View.VISIBLE
+        tvCancel.visibility = View.INVISIBLE
+        btDelete.visibility = View.INVISIBLE
+        adapter.setIsEditMode(false)
+        compactcalendar_view.setOnTouchListener(null)
+        addItemViewModel.showAddBtn(btAdd)
     }
 
     private fun setListeners() {
-        compactcalendar_view.setListener(viewModel.getCalendarListener())
-        /*
+        compactcalendar_view.setListener(historyViewModel.getCalendarListener())
         appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
 
             if (scrollRange == -1) {
@@ -117,15 +163,28 @@ class HistoryActivity : AppCompatActivity() {
                 isShow = false
             }
         })
-        */
+
         llClose.setOnClickListener {
+            if (historyViewModel.isEditMode.value == true) {
+                return@setOnClickListener
+            }
             finish()
         }
         btAdd.setOnClickListener {
-            vAddItem.setDate(viewModel.selectedDay.value)
+            if (historyViewModel.isEditMode.value == true) {
+                return@setOnClickListener
+            }
+            vAddItem.setDate(historyViewModel.selectedDay.value)
             vAddItem.show()
         }
         adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
+        ivEdit.setOnClickListener { historyViewModel.onEditModeClicked() }
+        btDelete.setOnClickListener {
+            mainViewModel.deleteHistoryData(adapter.getSelectedId().value!!)
+        }
+        tvCancel.setOnClickListener {
+            historyViewModel.onEditModeClicked()
+        }
     }
 
 

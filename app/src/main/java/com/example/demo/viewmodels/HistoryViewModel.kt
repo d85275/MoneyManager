@@ -25,7 +25,16 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
         SimpleDateFormat("MM/dd", Locale.getDefault())
     private val dateFormatForAdd: SimpleDateFormat =
         SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+    val isEditMode = MutableLiveData(false)
 
+    fun setEditMode(isActivate: Boolean) {
+        isEditMode.value = isActivate
+    }
+
+    fun onEditModeClicked() {
+        val mode = isEditMode.value ?: false
+        isEditMode.value = !mode
+    }
 
     fun getDay(date: Date): String {
         return dateFormatForDay.format(date)

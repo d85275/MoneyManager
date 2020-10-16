@@ -19,7 +19,7 @@ import com.example.demo.R
 import com.example.demo.model.BankData
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.views.BankCardColorAdapter
-import com.example.demo.views.HistoryActivity
+import com.example.demo.views.history.HistoryActivity
 import kotlin.math.abs
 
 object CommonUtils {

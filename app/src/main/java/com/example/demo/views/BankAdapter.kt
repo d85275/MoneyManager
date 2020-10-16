@@ -1,17 +1,16 @@
 package com.example.demo.views
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.BankData
-import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.MainViewModel
-import kotlinx.android.synthetic.main.item_bank_card.view.*
-import kotlinx.android.synthetic.main.item_bank_card_add.view.*
+import com.example.demo.views.history.BankViewHolder
+import com.example.demo.views.history.BaseBankViewHolder
+import com.example.demo.views.history.EmptyViewHolder
 
-class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
+class BankAdapter : RecyclerView.Adapter<BaseBankViewHolder>() {
     private var alNames = arrayListOf<BankData?>(null)
     private lateinit var mainViewModel: MainViewModel
 
@@ -59,39 +58,5 @@ class BankAdapter : RecyclerView.Adapter<BankAdapter.BaseBankViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return if (alNames[position] == null) EMPTY else BANK
-    }
-
-    open class BaseBankViewHolder(itemView: View, val mainViewModel: MainViewModel) :
-        RecyclerView.ViewHolder(itemView) {
-        open fun bindView(position: Int, list: List<BankData?>) {}
-    }
-
-    class BankViewHolder(itemView: View, mainViewModel: MainViewModel) :
-        BaseBankViewHolder(itemView, mainViewModel) {
-        override fun bindView(position: Int, list: List<BankData?>) {
-            itemView.clBackground.setBackgroundResource(
-                list[position]?.color ?: R.drawable.icon_bank_green
-            )
-            itemView.tvName.text = list[position]?.name
-            itemView.vEdit.setOnClickListener {
-                //showRemoveBankDialog()
-                CommonUtils.showEditBankDialog(
-                    itemView,
-                    mainViewModel,
-                    list[position],
-                    list[position]?.name!!
-                )
-            }
-        }
-    }
-
-    class EmptyViewHolder(itemView: View, mainViewModel: MainViewModel) :
-        BaseBankViewHolder(itemView, mainViewModel) {
-
-        override fun bindView(position: Int, list: List<BankData?>) {
-            itemView.ivAddBank.setOnClickListener {
-                CommonUtils.showAddBankDialog(itemView, mainViewModel)
-            }
-        }
     }
 }
