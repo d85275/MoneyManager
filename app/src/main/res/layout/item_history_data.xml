@@ -4,7 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="58dp"
-    android:layout_gravity="center_horizontal">
+    android:layout_gravity="center_horizontal"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="15dp"
+    android:background="@drawable/rounded_bg_history"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp">
 
 
     <CheckBox
@@ -63,47 +69,37 @@
 
     <TextView
         android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Item_Title_Theme"
         android:layout_marginStart="20dp"
-        android:fontFamily="sans-serif-medium"
-        android:letterSpacing="0.12"
-        android:lineSpacingExtra="9sp"
-        tools:text="海鮮麵"
         android:textColor="#de000000"
         android:textSize="16sp"
-        android:textStyle="normal"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/tvSource"
         app:layout_constraintStart_toEndOf="@+id/ivImage"
-        app:layout_constraintTop_toTopOf="@id/ivImage" />
+        app:layout_constraintTop_toTopOf="@id/ivImage"
+        tools:text="海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵" />
 
     <TextView
         android:id="@+id/tvSource"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:letterSpacing="0.14"
-        android:lineSpacingExtra="6sp"
-        android:text="@string/cash"
+        style="@style/Item_Title_Theme"
         android:textColor="#8b000000"
         android:textSize="14sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="@id/ivImage"
         app:layout_constraintStart_toStartOf="@id/tvName"
-        app:layout_constraintTop_toBottomOf="@id/tvName" />
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        tools:text="海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵海鮮麵" />
 
     <TextView
         android:id="@+id/tvPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Item_Price_Theme"
         android:layout_marginStart="10dp"
-        android:fontFamily="sans-serif"
-        android:letterSpacing="0.14"
+        android:maxLines="1"
         android:textColor="#8b000000"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/tvSource"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvName"
-        tools:text="$190" />
+        tools:text="190" />
 </androidx.constraintlayout.widget.ConstraintLayout>

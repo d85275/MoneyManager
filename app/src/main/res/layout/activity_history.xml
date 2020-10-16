@@ -131,44 +131,27 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="350dp"
-            android:background="@drawable/history_list_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="25dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginEnd="15dp">
 
-        <Button
-            android:id="@+id/btDelete"
-            android:layout_width="200dp"
-            android:layout_height="70dp"
-            android:alpha="0.7"
-            android:background="@color/selected_day"
-            android:text="@string/delete_item"
-            android:textColor="@android:color/white"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <Button
         android:id="@+id/btAdd"
@@ -181,6 +164,20 @@
         android:translationY="-100dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
+    <Button
+        android:id="@+id/btDelete"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:alpha="0.7"
+        android:background="@color/selected_day"
+        android:text="@string/delete_item"
+        android:textColor="@android:color/white"
+        android:translationY="-40dp"
+        android:visibility="gone"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
+
+
     <LinearLayout
         android:id="@+id/llList"
         android:layout_width="match_parent"
@@ -188,7 +185,6 @@
         android:background="@color/main_colour"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="invisible"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <TextView
