@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.BankData
 import com.example.demo.viewmodels.MainViewModel
-import com.example.demo.views.BankCardColorAdapter
+import com.example.demo.views.main.bank_frag.BankCardColorAdapter
 import com.example.demo.views.history.HistoryActivity
 import kotlin.math.abs
 
@@ -116,7 +116,9 @@ object CommonUtils {
         oldName: String
     ) {
         val dialog = Dialog(itemView.context)
-        val adapter = BankCardColorAdapter(mainViewModel.getBankColor())
+        val adapter = BankCardColorAdapter(
+            mainViewModel.getBankColor()
+        )
         adapter.setSelectedIdx(mainViewModel.getBankColorPosition(bankData?.color))
         initView(dialog, adapter, itemView)
         dialog.findViewById<TextView>(R.id.tvTitle).text = itemView.context.getText(R.string.edit)
@@ -167,7 +169,9 @@ object CommonUtils {
 
     fun showAddBankDialog(itemView: View, mainViewModel: MainViewModel) {
         val dialog = Dialog(itemView.context)
-        val adapter = BankCardColorAdapter(mainViewModel.getBankColor())
+        val adapter = BankCardColorAdapter(
+            mainViewModel.getBankColor()
+        )
         initView(dialog, adapter, itemView)
         dialog.findViewById<Button>(R.id.btConfirm).setOnClickListener {
             val name = dialog.findViewById<EditText>(R.id.etName).text.toString().trim()

@@ -1,4 +1,4 @@
-package com.example.demo.views
+package com.example.demo.views.main.bank_frag
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,9 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.BankData
 import com.example.demo.viewmodels.MainViewModel
-import com.example.demo.views.history.BankViewHolder
-import com.example.demo.views.history.BaseBankViewHolder
-import com.example.demo.views.history.EmptyViewHolder
 
 class BankAdapter : RecyclerView.Adapter<BaseBankViewHolder>() {
     private var alNames = arrayListOf<BankData?>(null)
@@ -22,11 +19,12 @@ class BankAdapter : RecyclerView.Adapter<BaseBankViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBankViewHolder {
         return when (viewType) {
             EMPTY -> {
-                val holder = EmptyViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_bank_card_add, parent, false)
-                    , mainViewModel
-                )
+                val holder =
+                    EmptyViewHolder(
+                        LayoutInflater.from(parent.context)
+                            .inflate(R.layout.item_bank_card_add, parent, false)
+                        , mainViewModel
+                    )
                 holder
             }
             else -> {

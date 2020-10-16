@@ -1,4 +1,4 @@
-package com.example.demo.views
+package com.example.demo.views.main.cash_frag
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -17,6 +17,7 @@ import com.example.demo.model.HistoryData
 import com.example.demo.viewmodels.AddItemViewModel
 import com.example.demo.viewmodels.CashViewModel
 import com.example.demo.viewmodels.MainViewModel
+import com.example.demo.views.main.RecentDataAdapter
 import kotlinx.android.synthetic.main.fragment_cash.*
 import kotlinx.android.synthetic.main.fragment_cash.vAddItem
 

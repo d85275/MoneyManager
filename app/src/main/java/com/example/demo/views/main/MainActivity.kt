@@ -1,4 +1,4 @@
-package com.example.demo.views
+package com.example.demo.views.main
 
 import ZoomOutPageTransformer
 import android.os.Bundle
@@ -15,6 +15,8 @@ import com.example.demo.Repository
 import com.example.demo.model.HistoryData
 import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.MainVMFactory
+import com.example.demo.views.main.bank_frag.BankFragment
+import com.example.demo.views.main.cash_frag.CashFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : FragmentActivity() {

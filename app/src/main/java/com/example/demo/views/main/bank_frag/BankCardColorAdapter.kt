@@ -1,4 +1,4 @@
-package com.example.demo.views
+package com.example.demo.views.main.bank_frag
 
 import android.view.LayoutInflater
 import android.view.View

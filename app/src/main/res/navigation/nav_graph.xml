@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/bankFragment"
-        android:name="com.example.demo.views.BankFragment"
+        android:name="com.example.demo.views.main.bank_frag.BankFragment"
         android:label="fragment_bank"
         tools:layout="@layout/fragment_bank">
         <action

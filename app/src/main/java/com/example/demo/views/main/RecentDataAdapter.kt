@@ -1,4 +1,4 @@
-package com.example.demo.views
+package com.example.demo.views.main
 
 import android.graphics.Color
 import android.view.LayoutInflater

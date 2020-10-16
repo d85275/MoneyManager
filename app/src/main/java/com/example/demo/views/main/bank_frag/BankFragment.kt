@@ -1,4 +1,4 @@
-package com.example.demo.views
+package com.example.demo.views.main.bank_frag
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,19 +12,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.demo.R
-import com.example.demo.model.BankData
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.AddItemViewModel
 import com.example.demo.viewmodels.BankViewModel
 import com.example.demo.viewmodels.MainViewModel
+import com.example.demo.views.main.RecentDataAdapter
 import kotlinx.android.synthetic.main.fragment_bank.*
 import kotlinx.android.synthetic.main.fragment_bank.ivAdd
 import kotlinx.android.synthetic.main.fragment_bank.ivMoney
 import kotlinx.android.synthetic.main.fragment_bank.rvRecent
 import kotlinx.android.synthetic.main.fragment_bank.tvBalanced
 import kotlinx.android.synthetic.main.fragment_bank.vAddItem
-import kotlinx.android.synthetic.main.fragment_cash.*
 
 class BankFragment : Fragment() {
 
