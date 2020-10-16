@@ -121,10 +121,9 @@ class HistoryActivity : AppCompatActivity() {
         })
         adapter.getSelectedId().observe(this, Observer { selectedId ->
             if (selectedId.size <= 0) {
-                btDelete.setBackgroundColor(getColor(android.R.color.darker_gray))
+                btDelete.setBackgroundResource(R.drawable.rounded_delete_btn_bg_not_selected)
             } else {
-                btDelete.setBackgroundColor(getColor(R.color.selected_day))
-            }
+                btDelete.setBackgroundResource(R.drawable.rounded_delete_btn_bg_selected)            }
         })
     }
 

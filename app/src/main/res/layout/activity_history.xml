@@ -166,11 +166,11 @@
 
     <Button
         android:id="@+id/btDelete"
-        android:layout_width="200dp"
-        android:layout_height="70dp"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:alpha="0.7"
-        android:background="@color/selected_day"
+        android:background="@drawable/rounded_delete_btn_bg_not_selected"
         android:text="@string/delete_item"
         android:textColor="@android:color/white"
         android:translationY="-40dp"
