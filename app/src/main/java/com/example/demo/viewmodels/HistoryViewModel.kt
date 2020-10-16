@@ -14,9 +14,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HistoryViewModel(private val repository: Repository) : ViewModel() {
+class HistoryViewModel() : ViewModel() {
     private companion object {
-        private const val ANIM_DURATION = 150L
+        private const val ANIM_DURATION = 250L
     }
 
     private val dateFormatForMonth: SimpleDateFormat =
@@ -80,7 +80,7 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
 
     fun getAnimationSetAlpha(): AnimationSet? {
         val animationSet = AnimationSet(true)
-        val alphaAnimation = AlphaAnimation(0.1f, 1.0f)
+        val alphaAnimation = AlphaAnimation(0f, 1.0f)
         alphaAnimation.interpolator = DecelerateInterpolator()
         alphaAnimation.duration = ANIM_DURATION
         animationSet.addAnimation(alphaAnimation)

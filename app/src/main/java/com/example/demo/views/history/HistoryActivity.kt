@@ -37,7 +37,6 @@ class HistoryActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        startAnimation()
     }
 
     private fun startAnimation() {
@@ -60,10 +59,7 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun getViewModel() {
-        historyViewModel = ViewModelProvider(
-            this,
-            HistoryVMFactory(Repository(this))
-        ).get(HistoryViewModel::class.java)
+        historyViewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
         mainViewModel =
             ViewModelProvider(this, MainVMFactory(Repository(this))).get(MainViewModel::class.java)
         addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
@@ -94,6 +90,7 @@ class HistoryActivity : AppCompatActivity() {
                 ivEdit.visibility = View.VISIBLE
             }
             adapter.setList(dayData)
+            startAnimation()
         })
 
         historyViewModel.isAddItem.observe(this, Observer { isAdded ->
@@ -180,7 +177,7 @@ class HistoryActivity : AppCompatActivity() {
         adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
         ivEdit.setOnClickListener { historyViewModel.onEditModeClicked() }
         btDelete.setOnClickListener {
-            if (!adapter.getSelectedId().value.isNullOrEmpty()){
+            if (!adapter.getSelectedId().value.isNullOrEmpty()) {
                 mainViewModel.deleteHistoryData(adapter.getSelectedId().value!!)
             }
         }
