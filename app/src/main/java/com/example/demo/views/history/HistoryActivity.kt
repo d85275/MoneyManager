@@ -180,7 +180,9 @@ class HistoryActivity : AppCompatActivity() {
         adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
         ivEdit.setOnClickListener { historyViewModel.onEditModeClicked() }
         btDelete.setOnClickListener {
-            mainViewModel.deleteHistoryData(adapter.getSelectedId().value!!)
+            if (!adapter.getSelectedId().value.isNullOrEmpty()){
+                mainViewModel.deleteHistoryData(adapter.getSelectedId().value!!)
+            }
         }
         tvCancel.setOnClickListener {
             historyViewModel.onEditModeClicked()
