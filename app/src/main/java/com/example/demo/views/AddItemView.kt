@@ -2,7 +2,6 @@ package com.example.demo.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -12,8 +11,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.demo.R
 import com.example.demo.model.HistoryData
+import com.example.demo.utils.CommonUtils
 import com.example.demo.utils.OnSwipeTouchListener
 import com.example.demo.viewmodels.MainViewModel
+import com.example.demo.views.main.MainActivity
 import kotlinx.android.synthetic.main.view_add_item.view.*
 import kotlinx.android.synthetic.main.view_add_item.view.tvPrice
 import java.lang.StringBuilder
@@ -27,6 +28,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     private var view: View =
         LayoutInflater.from(context).inflate(R.layout.view_add_item, this, true)
     private var source = HistoryData.SOURCE_CASH
+    private var mainActivity: MainActivity? = null
     private lateinit var mainViewModel: MainViewModel
     private var total = 0L
     private var curMode = MODE_ADD
@@ -45,7 +47,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     private val dateFormatForAdd: SimpleDateFormat =
-        SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        SimpleDateFormat("yyyy/MM/dd - EEE", Locale.getDefault())
 
     private var date: Date? = null
 
@@ -54,9 +56,14 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         setListeners()
     }
 
-    fun init(source: String, mainViewModel: MainViewModel) {
+    fun init(source: String, mainViewModel: MainViewModel, mainActivity: MainActivity) {
         this.source = source
         this.mainViewModel = mainViewModel
+        this.mainActivity = mainActivity
+    }
+
+    fun setMainActivity(mainActivity: MainActivity) {
+        this.mainActivity = mainActivity
     }
 
     fun setViewModel(mainViewModel: MainViewModel) {
@@ -115,14 +122,23 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         btCancel.setOnClickListener {
             dismiss()
         }
-
+        llIcon.setOnClickListener {
+            if (elIcons.isExpanded) {
+                elIcons.collapse()
+            } else {
+                elIcons.expand()
+            }
+        }
         view.setOnTouchListener(object : OnSwipeTouchListener(context) {
             override fun onSwipeBottom() {
                 super.onSwipeBottom()
                 dismiss()
             }
         })
+        setKeyboardListener()
+    }
 
+    private fun setKeyboardListener() {
         val count = vKeyboard.childCount
         for (i in 0 until count) {
             vKeyboard.getChildAt(i).setOnClickListener {
@@ -233,6 +249,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     fun show() {
+        mainActivity?.hideIndicator()
         isShow.value = true
         if (view.visibility != View.VISIBLE) {
             val y = view.height.toFloat()
@@ -260,6 +277,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     fun dismiss() {
+        mainActivity?.showIndicator()
         isShow.value = false
         dismissKeyboard()
         hideSoftKeyboard()
@@ -274,25 +292,32 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
 
     private fun dismissKeyboard() {
         isKeyboardShow = false
+        /*
         vKeyboard.animate()
             .alpha(0f)
             .setDuration(300)
             .withEndAction {
                 vKeyboard.visibility = View.INVISIBLE
-                btConfirm.visibility = View.VISIBLE
+
             }.start()
+         */
+        elKeyboard.collapse()
+        //btConfirm.visibility = View.VISIBLE
     }
 
     private fun showKeyboard() {
         hideSoftKeyboard()
         isKeyboardShow = true
+        elKeyboard.expand()
+        //btConfirm.visibility = View.INVISIBLE
+        /*
         vKeyboard.visibility = View.VISIBLE
         vKeyboard.alpha = 0f
-        btConfirm.visibility = View.INVISIBLE
         vKeyboard.animate()
             .alpha(1f)
             .setDuration(300)
             .start()
+         */
     }
 
     private fun View.hideSoftKeyboard() {

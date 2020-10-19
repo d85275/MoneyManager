@@ -17,6 +17,7 @@ import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.AddItemViewModel
 import com.example.demo.viewmodels.BankViewModel
 import com.example.demo.viewmodels.MainViewModel
+import com.example.demo.views.main.MainActivity
 import com.example.demo.views.main.RecentDataAdapter
 import kotlinx.android.synthetic.main.fragment_bank.*
 import kotlinx.android.synthetic.main.fragment_bank.ivAdd
@@ -90,6 +91,7 @@ class BankFragment : Fragment() {
         vpBank.setPageTransformer(bankViewModel.getTransformer())
 
         vAddItem.setViewModel(mainViewModel)
+        vAddItem.setMainActivity(activity as MainActivity)
         /*
         rvBank.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

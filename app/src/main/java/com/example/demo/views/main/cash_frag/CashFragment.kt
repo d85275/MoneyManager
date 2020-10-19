@@ -17,6 +17,7 @@ import com.example.demo.model.HistoryData
 import com.example.demo.viewmodels.AddItemViewModel
 import com.example.demo.viewmodels.CashViewModel
 import com.example.demo.viewmodels.MainViewModel
+import com.example.demo.views.main.MainActivity
 import com.example.demo.views.main.RecentDataAdapter
 import kotlinx.android.synthetic.main.fragment_cash.*
 import kotlinx.android.synthetic.main.fragment_cash.vAddItem
@@ -77,7 +78,7 @@ class CashFragment : Fragment() {
         rvRecent.layoutManager = LinearLayoutManager(requireContext())
         rvRecent.setHasFixedSize(true)
         rvRecent.adapter = adapter
-        vAddItem.init(HistoryData.SOURCE_CASH, mainViewModel)
+        vAddItem.init(HistoryData.SOURCE_CASH, mainViewModel, activity as MainActivity)
     }
 
 

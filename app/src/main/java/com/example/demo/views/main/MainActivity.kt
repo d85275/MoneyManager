@@ -27,6 +27,8 @@ class MainActivity : FragmentActivity() {
     private companion object {
         private const val NUM_PAGES = 2
         private const val CASH = 0
+        private const val BANK = 1
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,10 +98,10 @@ class MainActivity : FragmentActivity() {
         var handled = false
         val list = supportFragmentManager.fragments
         for (i in list.indices) {
-            if (list[i] is CashFragment) {
+            if (list[i] is CashFragment && viewModel.curPage.value == CASH) {
                 handled = (list[i] as CashFragment).onBackPressed()
                 break
-            } else if (list[i] is BankFragment) {
+            } else if (list[i] is BankFragment && viewModel.curPage.value == BANK) {
                 handled = (list[i] as BankFragment).onBackPressed()
                 break
             }
@@ -107,6 +109,16 @@ class MainActivity : FragmentActivity() {
         if (!handled) {
             super.onBackPressed()
         }
+    }
+
+    fun hideIndicator() {
+        llIndicator.visibility = View.INVISIBLE
+        viewPager.isUserInputEnabled = false
+    }
+
+    fun showIndicator() {
+        llIndicator.visibility = View.VISIBLE
+        viewPager.isUserInputEnabled = true
     }
 
     private fun getViewModel() {

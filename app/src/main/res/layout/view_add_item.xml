@@ -7,261 +7,310 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:cardCornerRadius="22dp"
-        app:cardElevation="10dp">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="10dp">
 
-            <LinearLayout
-                android:id="@+id/llContent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:id="@+id/llContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/ivPreDay"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/pre_arrow_black"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintBottom_toBottomOf="@id/tvCurrentDate"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvCurrentDate" />
+
+                        <TextView
+                            android:id="@+id/tvAddItemDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:gravity="center_vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:textColor="@color/calendar_text_colour"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            tools:text="2020/09/30 - Fri" />
+
+                        <ImageView
+                            android:id="@+id/ivNextDay"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/next_arrow_black"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintBottom_toBottomOf="@id/tvCurrentDate"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvCurrentDate" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="15dp"
+                            android:text="品項名稱" />
+
+                        <EditText
+                            android:id="@+id/etName"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:ellipsize="end"
+                            android:hint="請輸入品項"
+                            android:maxLines="1"
+                            android:textColor="@color/main_text_colour"
+                            android:textColorHint="#44000000"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="15dp"
+                            android:text="品項價格" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:text="$ "
+                            android:textColor="#44000000"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:textColor="#44000000"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="15dp"
+                            android:text="品項類型" />
+
+                        <LinearLayout
+                            android:id="@+id/llIcon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/ivIcon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/icon_restaurant"
+                                android:textColor="#44000000"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <net.cachapa.expandablelayout.ExpandableLayout
+                        android:id="@+id/elIcons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:el_duration="300"
+                        app:el_expanded="false"
+                        app:el_parallax="0.5">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:text="Icons" />
+
+                    </net.cachapa.expandablelayout.ExpandableLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="15dp"
+                            android:text="品項收支" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:text="收入"
+                            android:textColor="#44000000"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btCancel"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/close"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <net.cachapa.expandablelayout.ExpandableLayout
+                    android:id="@+id/elKeyboard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    app:el_duration="400"
+                    app:el_expanded="false"
+                    app:el_parallax="0.5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llContent">
 
-                    <ImageView
-                        android:id="@+id/ivPreDay"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/pre_arrow_black"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:layout_constraintBottom_toBottomOf="@id/tvCurrentDate"
+                    <GridLayout
+                        android:id="@+id/vKeyboard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center"
+                        android:columnCount="3"
+                        android:orientation="horizontal"
+                        android:weightSum="3"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tvCurrentDate" />
+                        app:layout_constraintTop_toBottomOf="@id/llContent">
 
-                    <TextView
-                        android:id="@+id/tvAddItemDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center_vertical"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:textColor="@color/calendar_text_colour"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        tools:text="2020/09/30" />
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="1" />
 
-                    <ImageView
-                        android:id="@+id/ivNextDay"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/next_arrow_black"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:layout_constraintBottom_toBottomOf="@id/tvCurrentDate"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tvCurrentDate" />
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="2" />
 
-                </LinearLayout>
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="3" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="4" />
+
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="5" />
+
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="6" />
+
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="7" />
+
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="8" />
+
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="9" />
+
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="." />
+
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="0" />
+
+                        <Button
+                            android:layout_columnWeight="1"
+                            android:text="&lt;" />
+                    </GridLayout>
+
+                </net.cachapa.expandablelayout.ExpandableLayout>
+
+
+                <Button
+                    android:id="@+id/btConfirm"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
                     android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/elKeyboard" />
 
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/add_item_name" />
-
-                    <EditText
-                        android:id="@+id/etName"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#22000000"
-                        android:ellipsize="end"
-                        android:hint="請輸入品項"
-                        android:maxLines="1"
-                        android:textColor="@color/main_text_colour"
-                        android:textColorHint="#44000000"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/add_item_money" />
-
-                    <TextView
-                        android:id="@+id/tvPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#22000000"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:maxLines="1"
-                        android:textColor="#44000000"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/add_item_type" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#22000000"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="#44000000"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/add_item_atm" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#22000000"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="#44000000"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btCancel"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/close"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <GridLayout
-                android:id="@+id/vKeyboard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:columnCount="3"
-                android:orientation="horizontal"
-                android:visibility="invisible"
-                android:weightSum="3"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llContent">
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="1" />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="2" />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="3" />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="4" />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="5" />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="6" />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="7" />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="8" />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="9" />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="." />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="0" />
-
-                <Button
-                    android:layout_columnWeight="1"
-                    android:text="&lt;" />
-            </GridLayout>
-
-            <Button
-                android:id="@+id/btConfirm"
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llContent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

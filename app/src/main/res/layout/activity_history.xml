@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:duplicateParentState="false"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -321,9 +320,7 @@
         android:id="@+id/vBlocker"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#11000000"
-        android:clickable="true"
-        android:focusable="true"
+        android:background="#33000000"
         android:visibility="gone" />
 
     <com.example.demo.views.AddItemView

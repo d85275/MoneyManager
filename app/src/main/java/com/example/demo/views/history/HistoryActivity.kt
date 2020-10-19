@@ -10,11 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.R
 import com.example.demo.Repository
-import com.example.demo.viewmodels.*
+import com.example.demo.viewmodels.AddItemViewModel
+import com.example.demo.viewmodels.HistoryViewModel
+import com.example.demo.viewmodels.MainVMFactory
+import com.example.demo.viewmodels.MainViewModel
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_history.*
-import kotlinx.android.synthetic.main.activity_history.vAddItem
 import java.util.*
+
 
 class HistoryActivity : AppCompatActivity() {
     private var isShow = true
@@ -108,9 +111,11 @@ class HistoryActivity : AppCompatActivity() {
         })
         vAddItem.isShow().observe(this, Observer { isShow ->
             if (isShow) {
+                disableToolbarScroll()
                 vBlocker.visibility = View.VISIBLE
                 addItemViewModel.hideAddBtn(btAdd)
             } else {
+                enableToolbarScroll()
                 vBlocker.visibility = View.GONE
                 addItemViewModel.showAddBtn(btAdd)
             }
@@ -143,6 +148,14 @@ class HistoryActivity : AppCompatActivity() {
         mainViewModel.dailyBalance.observe(this, Observer { dailyBalance ->
             tvDailyBalance.text = dailyBalance
         })
+    }
+
+    private fun disableToolbarScroll() {
+        //todo to disable toolbar scroll
+    }
+
+    private fun enableToolbarScroll() {
+        //todo to enable toolbar scroll
     }
 
     @SuppressLint("ClickableViewAccessibility")
