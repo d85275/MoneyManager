@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.demo.R
+import com.example.demo.model.HistoryData
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.AddItemViewModel
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_bank.ivMoney
 import kotlinx.android.synthetic.main.fragment_bank.rvRecent
 import kotlinx.android.synthetic.main.fragment_bank.tvBalanced
 import kotlinx.android.synthetic.main.fragment_bank.vAddItem
+import kotlinx.android.synthetic.main.fragment_cash.*
 
 class BankFragment : Fragment() {
 
@@ -89,9 +91,7 @@ class BankFragment : Fragment() {
         vpBank.adapter = bankAdapter
         vpBank.offscreenPageLimit = 3
         vpBank.setPageTransformer(bankViewModel.getTransformer())
-
-        vAddItem.setViewModel(mainViewModel)
-        vAddItem.setMainActivity(activity as MainActivity)
+        vAddItem.init(mainViewModel, activity as MainActivity)
         /*
         rvBank.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -103,7 +103,7 @@ class BankFragment : Fragment() {
     private fun initObservers() {
         mainViewModel.recentBankData.observe(viewLifecycleOwner, Observer { recentData ->
             rvRecent.visibility = View.VISIBLE
-            adapter.setList(recentData)
+            adapter.setList(recentData, mainViewModel.getIconList())
         })
         mainViewModel.bankList.observe(viewLifecycleOwner, Observer { bankData ->
             vpBank.visibility = View.VISIBLE

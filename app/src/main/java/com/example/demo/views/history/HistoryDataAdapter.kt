@@ -13,10 +13,15 @@ import com.example.demo.model.HistoryData
 import com.example.demo.model.HistoryData.Companion.TYPE_INCOME
 import com.example.demo.utils.CommonUtils
 import kotlinx.android.synthetic.main.item_history_data.view.*
+import kotlinx.android.synthetic.main.item_history_data.view.ivImage
+import kotlinx.android.synthetic.main.item_history_data.view.tvName
+import kotlinx.android.synthetic.main.item_history_data.view.tvPrice
+import kotlinx.android.synthetic.main.item_recent_data.view.*
 import java.lang.StringBuilder
 
 class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var alHistoryData = arrayListOf<HistoryData>()
+    private var alIcons = arrayListOf<Int>()
     private var isEditMode = false
     private val selectedId = MutableLiveData(hashSetOf<Int>())
     var onItemClick: ((HistoryData) -> Unit)? = null
@@ -33,6 +38,7 @@ class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.tvName.text = alHistoryData[position].name
+        holder.itemView.ivImage.setImageResource(alIcons[alHistoryData[position].iconPosition])
         /*
         if (position == 0) {
             holder.itemView.vUp.visibility = View.INVISIBLE
@@ -100,8 +106,9 @@ class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setList(list: List<HistoryData>) {
+    fun setList(list: List<HistoryData>, iconList:List<Int>) {
         alHistoryData = list as ArrayList
+        alIcons = iconList as ArrayList
         notifyDataSetChanged()
     }
 

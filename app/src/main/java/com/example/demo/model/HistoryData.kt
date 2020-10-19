@@ -12,7 +12,7 @@ data class HistoryData(
     @ColumnInfo var price: Double,
     @ColumnInfo var date: String,
     @ColumnInfo var source: String, // cash or bank name
-    @ColumnInfo var icon: Int
+    @ColumnInfo var iconPosition: Int
 ) {
     companion object {
         const val TYPE_INCOME = "INCOME"
@@ -24,9 +24,9 @@ data class HistoryData(
             price: Double,
             date: String,
             source: String,
-            icon: Int
+            iconPosition: Int
         ): HistoryData {
-            return HistoryData(0, name, type, price, date, source, icon)
+            return HistoryData(0, name, type, price, date, source, iconPosition)
         }
     }
 }

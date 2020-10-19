@@ -54,6 +54,31 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         return 0
     }
 
+    fun getAddItemIconPosition(icon: Int?): Int {
+        if (icon == null) return 0
+        val list = getIconList()
+        for (i in list.indices) {
+            if (list[i] == icon) return i
+        }
+        return 0
+    }
+
+    fun getIconList() = arrayListOf(
+        R.drawable.icon_restaurant,
+        R.drawable.icon_fastfood,
+        R.drawable.icon_commute,
+        R.drawable.icon_fitness,
+        R.drawable.icon_flight,
+        R.drawable.icon_hotel,
+        R.drawable.icon_grocery,
+        R.drawable.icon_gas,
+        R.drawable.icon_school,
+        R.drawable.icon_viedo_game,
+        R.drawable.icon_bar,
+        R.drawable.icon_cafe,
+        R.drawable.icon_music
+    )
+
     fun getBankColor() = arrayListOf(
         R.drawable.icon_bank_green,
         R.drawable.icon_card_light_green,
@@ -121,8 +146,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
 
-    private val dateFormatForAdd: SimpleDateFormat =
-        SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
     val historyData = MutableLiveData<List<HistoryData>>()
     val dayData = MutableLiveData<List<HistoryData>>()
     val monthData = MutableLiveData<List<HistoryData>>()
@@ -136,8 +159,11 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     fun getDataByDay(date: Date) {
         if (historyData.value == null) return
-        val curDate = dateFormatForAdd.format(date)
-        dayData.value = historyData.value!!.filter { it.date == curDate }
+        val curDate = CommonUtils.addItemDate().format(date)
+        CommonUtils.e("current date: $curDate")
+        val list = historyData.value!!.filter { it.date == curDate }
+        CommonUtils.e("current date data: ${list.size}")
+        dayData.value = list
     }
 
     fun loadHistoryData() {
@@ -147,6 +173,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 AndroidSchedulers.mainThread()
             ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
                 .subscribe { list ->
+                    CommonUtils.e("load history data. size: ${list.size}")
                     list.reversed()
                     historyData.postValue(list)
                 }

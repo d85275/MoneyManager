@@ -20,6 +20,8 @@ import com.example.demo.model.BankData
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.views.main.bank_frag.BankCardColorAdapter
 import com.example.demo.views.history.HistoryActivity
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.abs
 
 object CommonUtils {
@@ -27,6 +29,8 @@ object CommonUtils {
     fun e(msg: String) {
         Log.e("Debug", msg)
     }
+
+    fun addItemDate(): SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd - EEE", Locale.getDefault())
 
     fun getGesture(activity: Activity, action: () -> Unit, isEnter: Boolean): GestureDetector {
         return GestureDetector(

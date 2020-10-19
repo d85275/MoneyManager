@@ -1,6 +1,7 @@
 package com.example.demo.views.main
 
 import android.graphics.Color
+import android.graphics.drawable.Icon
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import java.lang.StringBuilder
 
 class RecentDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var alHistoryData = arrayListOf<HistoryData>()
+    private var alIcons = arrayListOf<Int>()
     var onItemClick: ((HistoryData) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view =
@@ -26,6 +28,7 @@ class RecentDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.tvName.text = alHistoryData[position].name
         holder.itemView.tvDate.text = alHistoryData[position].date
+        holder.itemView.ivImage.setImageResource(alIcons[alHistoryData[position].iconPosition])
         val price = StringBuilder().append("$")
         if (alHistoryData[position].type == HistoryData.TYPE_EXPENSE) {
             price.append(" -")
@@ -42,8 +45,9 @@ class RecentDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun setList(list: List<HistoryData>) {
+    fun setList(list: List<HistoryData>, iconList: List<Int>) {
         alHistoryData = list as ArrayList
+        alIcons = iconList as ArrayList
         notifyDataSetChanged()
     }
 

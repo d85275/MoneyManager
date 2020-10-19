@@ -34,7 +34,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="20dp"
@@ -54,8 +54,9 @@
 
                         <TextView
                             android:id="@+id/tvAddItemDate"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="50dp"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingStart="20dp"
                             android:paddingEnd="20dp"
@@ -158,9 +159,8 @@
 
                             <ImageView
                                 android:id="@+id/ivIcon"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/icon_restaurant"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
                                 android:textColor="#44000000"
                                 android:textSize="14sp" />
 
@@ -175,11 +175,10 @@
                         app:el_expanded="false"
                         app:el_parallax="0.5">
 
-                        <TextView
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvIcons"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:text="Icons" />
+                            android:layout_height="50dp" />
 
                     </net.cachapa.expandablelayout.ExpandableLayout>
 
@@ -303,8 +302,8 @@
                     android:id="@+id/btConfirm"
                     android:layout_width="200dp"
                     android:layout_height="50dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

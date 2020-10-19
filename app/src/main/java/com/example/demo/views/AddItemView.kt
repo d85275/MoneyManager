@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.R
 import com.example.demo.model.HistoryData
 import com.example.demo.utils.CommonUtils
@@ -30,6 +31,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     private var source = HistoryData.SOURCE_CASH
     private var mainActivity: MainActivity? = null
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var iconAdapter: AddItemIconAdapter
     private var total = 0L
     private var curMode = MODE_ADD
     private var resumeData: HistoryData? = null
@@ -38,16 +40,12 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         private const val ADD_ANIM_DURATION = 300L
         private const val ALPHA_SHOW = 1F
         private const val ALPHA_HIDE = 0F
-        private const val TAG = "ADD_VIEW"
         private const val DOT = 10
         private const val BACK = 12
         private const val ZERO = 11
         private const val MODE_ADD = 0
         private const val MODE_EDIT = 1
     }
-
-    private val dateFormatForAdd: SimpleDateFormat =
-        SimpleDateFormat("yyyy/MM/dd - EEE", Locale.getDefault())
 
     private var date: Date? = null
 
@@ -60,14 +58,30 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         this.source = source
         this.mainViewModel = mainViewModel
         this.mainActivity = mainActivity
+        setIconView()
     }
 
-    fun setMainActivity(mainActivity: MainActivity) {
-        this.mainActivity = mainActivity
-    }
-
-    fun setViewModel(mainViewModel: MainViewModel) {
+    fun init(mainViewModel: MainViewModel, mainActivity: MainActivity) {
         this.mainViewModel = mainViewModel
+        this.mainActivity = mainActivity
+        setIconView()
+    }
+
+    fun init(mainViewModel: MainViewModel) {
+        this.mainViewModel = mainViewModel
+        setIconView()
+    }
+
+    private fun setIconView() {
+        iconAdapter = AddItemIconAdapter(mainViewModel.getIconList())
+        ivIcon.setImageResource(mainViewModel.getIconList()[0])
+        iconAdapter.setOnItemClickListener { icon ->
+            ivIcon.setImageResource(icon)
+        }
+        rvIcons.layoutManager =
+            LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+        rvIcons.setHasFixedSize(true)
+        rvIcons.adapter = iconAdapter
     }
 
     fun setSource(source: String) {
@@ -76,7 +90,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
 
     fun setDate(date: Date?) {
         this.date = date
-        if (date != null) tvAddItemDate.text = dateFormatForAdd.format(date)
+        if (date != null) tvAddItemDate.text = CommonUtils.addItemDate().format(date)
     }
 
     fun getTotal(): Long {
@@ -170,9 +184,9 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         val type = HistoryData.TYPE_EXPENSE
         val source = this.source
         val date = tvAddItemDate.text.toString()
-        val icon = 0
+        val iconPosition = iconAdapter.getSelectedPosition()
         if (curMode == MODE_ADD) {
-            val historyData = HistoryData.create(name, type, price, date, source, icon)
+            val historyData = HistoryData.create(name, type, price, date, source, iconPosition)
             mainViewModel.addItem(historyData, source)
         } else if (resumeData != null) {
             resumeData!!.name = name
@@ -180,10 +194,10 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             resumeData!!.type = type
             resumeData!!.source = source
             resumeData!!.date = date
-            resumeData!!.icon = icon
+            resumeData!!.iconPosition = iconPosition
             mainViewModel.updateItem(resumeData!!)
+            dismiss()
         }
-
         clearData()
     }
 
@@ -200,6 +214,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     private fun clearData() {
+        curMode = MODE_ADD
         etName.setText("")
         tvPrice.text = ""
     }
@@ -209,9 +224,12 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         curMode = MODE_EDIT
         resumeData = historyData
         source = historyData.source
-        setDate(dateFormatForAdd.parse(historyData.date))
+        setDate(CommonUtils.addItemDate().parse(historyData.date))
         tvPrice.text = formatter.format(historyData.price)
         etName.setText(historyData.name)
+        CommonUtils.e("icon position: ${historyData.iconPosition}")
+        ivIcon.setImageResource(mainViewModel.getIconList()[historyData.iconPosition])
+        iconAdapter.setSelectedIdx(historyData.iconPosition)
         show()
     }
 
@@ -280,6 +298,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         mainActivity?.showIndicator()
         isShow.value = false
         dismissKeyboard()
+        elIcons.collapse()
         hideSoftKeyboard()
         val y = view.height.toFloat()
         view.animate()
@@ -288,6 +307,8 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             .setDuration(ADD_ANIM_DURATION)
             .start()
         clearData()
+        iconAdapter.setSelectedIdx(0)
+        ivIcon.setImageResource(mainViewModel.getIconList()[0])
     }
 
     private fun dismissKeyboard() {

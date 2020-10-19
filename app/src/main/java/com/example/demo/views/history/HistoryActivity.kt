@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.demo.R
 import com.example.demo.Repository
+import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.AddItemViewModel
 import com.example.demo.viewmodels.HistoryViewModel
 import com.example.demo.viewmodels.MainVMFactory
@@ -58,7 +59,7 @@ class HistoryActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
-        vAddItem.setViewModel(mainViewModel)
+        vAddItem.init(mainViewModel)
         compactcalendar_view.shouldDrawIndicatorsBelowSelectedDays(true)
     }
 
@@ -72,6 +73,7 @@ class HistoryActivity : AppCompatActivity() {
     private var selectedDate: Date? = null
     private fun initObservers() {
         historyViewModel.selectedDay.observe(this, Observer { day ->
+            CommonUtils.e("on day selected")
             mainViewModel.getDataByDay(day)
             selectedDate = day
         })
@@ -96,7 +98,7 @@ class HistoryActivity : AppCompatActivity() {
                 ivEdit.visibility = View.VISIBLE
             }
             mainViewModel.getDailyBalance(dayData)
-            adapter.setList(dayData)
+            adapter.setList(dayData, mainViewModel.getIconList())
             startAnimation()
         })
 
