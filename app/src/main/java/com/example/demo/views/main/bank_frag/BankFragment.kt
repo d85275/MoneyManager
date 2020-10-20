@@ -115,6 +115,7 @@ class BankFragment : Fragment() {
                 mainViewModel.loadRecentHistoryData(curBank?.name)
                 if (curBank != null) ivAdd.visibility = View.VISIBLE
             }
+            vAddItem.updateSourceList()
         })
         vAddItem.isShow().observe(viewLifecycleOwner, Observer { isShow ->
             if (isShow) {

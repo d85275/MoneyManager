@@ -19,24 +19,23 @@ import com.example.demo.utils.OnSwipeTouchListener
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.views.main.MainActivity
 import kotlinx.android.synthetic.main.view_add_item.view.*
-import kotlinx.android.synthetic.main.view_add_item.view.tvPrice
 import java.lang.StringBuilder
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
 
     private var view: View =
         LayoutInflater.from(context).inflate(R.layout.view_add_item, this, true)
-    private var source = HistoryData.SOURCE_CASH
     private var mainActivity: MainActivity? = null
     private lateinit var mainViewModel: MainViewModel
     private lateinit var iconAdapter: AddItemIconAdapter
+    private lateinit var sourceAdapter: AddItemSourceAdapter
     private var total = 0L
     private var curMode = MODE_ADD
     private var resumeData: HistoryData? = null
+    private var curSource = view.context.getString(R.string.cash)
     private var curType = HistoryData.TYPE_EXPENSE
 
     private companion object {
@@ -58,24 +57,24 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     fun init(source: String, mainViewModel: MainViewModel, mainActivity: MainActivity) {
-        this.source = source
+        this.curSource = source
         this.mainViewModel = mainViewModel
         this.mainActivity = mainActivity
-        setIconView()
+        initViews()
     }
 
     fun init(mainViewModel: MainViewModel, mainActivity: MainActivity) {
         this.mainViewModel = mainViewModel
         this.mainActivity = mainActivity
-        setIconView()
+        initViews()
     }
 
     fun init(mainViewModel: MainViewModel) {
         this.mainViewModel = mainViewModel
-        setIconView()
+        initViews()
     }
 
-    private fun setIconView() {
+    private fun initViews() {
         iconAdapter = AddItemIconAdapter(mainViewModel.getIconList())
         ivIcon.setImageResource(mainViewModel.getIconList()[0])
         iconAdapter.setOnItemClickListener { icon ->
@@ -85,10 +84,27 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
         rvIcons.setHasFixedSize(true)
         rvIcons.adapter = iconAdapter
+
+
+        sourceAdapter =
+            AddItemSourceAdapter(arrayListOf(view.context.getString(R.string.cash)))
+        sourceAdapter.setOnItemClickListener { source ->
+            tvSource.text = source
+        }
+        CommonUtils.e("curSource: $curSource")
+        tvSource.text = curSource
+        rvSource.layoutManager =
+            LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+        rvSource.setHasFixedSize(true)
+        rvSource.adapter = sourceAdapter
+    }
+
+    fun updateSourceList() {
+        sourceAdapter.setSourceList(mainViewModel.getSourceList(arrayListOf(view.context.getString(R.string.cash))))
     }
 
     fun setSource(source: String) {
-        this.source = source
+        this.curSource = source
     }
 
     fun setDate(date: Date?) {
@@ -146,6 +162,14 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
                 elIcons.expand()
             }
         }
+        llSource.setOnClickListener {
+            if (elSources.isExpanded) {
+                elSources.collapse()
+            } else {
+                elSources.expand()
+            }
+        }
+
         view.setOnTouchListener(object : OnSwipeTouchListener(context) {
             override fun onSwipeBottom() {
                 super.onSwipeBottom()
@@ -200,7 +224,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         val name = etName.text.toString().trim()
         val price = tvPrice.text.toString().trim().replace(",", "").toDouble()
         val type = curType
-        val source = this.source
+        val source = this.curSource
         val date = tvAddItemDate.text.toString()
         val iconPosition = iconAdapter.getSelectedPosition()
         if (curMode == MODE_ADD) {
@@ -241,7 +265,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         //tvAddItemDate.text = historyData.date
         curMode = MODE_EDIT
         resumeData = historyData
-        source = historyData.source
+        curSource = historyData.source
         curType = historyData.type
         if (curType == HistoryData.TYPE_INCOME) {
             setTypeBackground(btIncome, btExpense)
@@ -321,6 +345,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         isShow.value = false
         dismissKeyboard()
         elIcons.collapse()
+        elSources.collapse()
         hideSoftKeyboard()
         val y = view.height.toFloat()
         view.animate()

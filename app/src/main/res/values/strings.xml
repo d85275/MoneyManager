@@ -26,6 +26,7 @@
     <string name="income">收入</string>
     <string name="expense">支出</string>
     <string name="item_name">品項名稱</string>
+    <string name="item_source">消費帳戶</string>
     <string name="item_name_hint">請輸入品項</string>
     <string name="item_price">品項價格</string>
     <string name="item_icon">品項圖示</string>

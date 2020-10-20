@@ -78,7 +78,7 @@ class CashFragment : Fragment() {
         rvRecent.layoutManager = LinearLayoutManager(requireContext())
         rvRecent.setHasFixedSize(true)
         rvRecent.adapter = adapter
-        vAddItem.init(HistoryData.SOURCE_CASH, mainViewModel, activity as MainActivity)
+        vAddItem.init(mainViewModel, activity as MainActivity)
     }
 
 
@@ -114,6 +114,9 @@ class CashFragment : Fragment() {
         })
         mainViewModel.totalBalance.observe(viewLifecycleOwner, Observer { totalBalance ->
             tvBalanced.text = totalBalance
+        })
+        mainViewModel.bankList.observe(viewLifecycleOwner, Observer {
+            vAddItem.updateSourceList()
         })
     }
 

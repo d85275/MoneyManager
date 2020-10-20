@@ -63,6 +63,17 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         return 0
     }
 
+    fun getSourceList(list: ArrayList<String>): ArrayList<String> {
+        val bankList = bankList.value
+        if (!bankList.isNullOrEmpty()) {
+            for (i in bankList.indices) {
+                val name = bankList[i]?.name ?: continue
+                list.add(name)
+            }
+        }
+        return list
+    }
+
     fun getIconList() = arrayListOf(
         R.drawable.icon_restaurant,
         R.drawable.icon_fastfood,

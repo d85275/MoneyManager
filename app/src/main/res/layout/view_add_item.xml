@@ -98,7 +98,7 @@
                             android:ellipsize="end"
                             android:hint="@string/item_name_hint"
                             android:maxLines="1"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="@color/add_item_selected"
                             android:textColorHint="#44000000"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -123,7 +123,7 @@
                             android:gravity="center_vertical"
                             android:maxLines="1"
                             android:text="$ "
-                            android:textColor="#44000000"
+                            android:textColor="@color/add_item_selected"
                             android:textSize="14sp" />
 
                         <TextView
@@ -133,9 +133,50 @@
                             android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:maxLines="1"
-                            android:textColor="#44000000"
+                            android:textColor="@color/add_item_selected"
                             android:textSize="14sp" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llSource"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="15dp"
+                            android:text="@string/item_source" />
+
+                        <TextView
+                            android:id="@+id/tvSource"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:textColor="@color/add_item_selected"
+                            android:textColorHint="#44000000"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <net.cachapa.expandablelayout.ExpandableLayout
+                        android:id="@+id/elSources"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:el_duration="300"
+                        app:el_expanded="false"
+                        app:el_parallax="0.5">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvSource"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp" />
+
+                    </net.cachapa.expandablelayout.ExpandableLayout>
 
 
                     <LinearLayout
@@ -214,7 +255,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_bg_type_not_selected"
                             android:text="@string/income"
-                            android:textColor="@android:color/darker_gray" />
+                            android:textColor="@color/add_item_selected" />
                     </LinearLayout>
 
                 </LinearLayout>
