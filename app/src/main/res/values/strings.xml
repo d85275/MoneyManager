@@ -23,4 +23,11 @@
     <string name="delete_item">刪除選擇項目</string>
     <string name="monthly_balance">本月損益</string>
     <string name="daily_balance">本日損益</string>
+    <string name="income">收入</string>
+    <string name="expense">支出</string>
+    <string name="item_name">品項名稱</string>
+    <string name="item_name_hint">請輸入品項</string>
+    <string name="item_price">品項價格</string>
+    <string name="item_icon">品項圖示</string>
+    <string name="item_type">品項收支</string>
 </resources>

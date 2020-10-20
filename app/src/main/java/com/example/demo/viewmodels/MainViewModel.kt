@@ -286,6 +286,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     fun loadRecentHistoryData(source: String?) {
         if (source == null) return
+        CommonUtils.e("load recent.  source: $source")
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(
             repository.getRecentHistoryData(source).subscribeOn(Schedulers.io()).observeOn(

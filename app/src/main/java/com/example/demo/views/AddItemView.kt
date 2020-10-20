@@ -1,11 +1,13 @@
 package com.example.demo.views
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,6 +37,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     private var total = 0L
     private var curMode = MODE_ADD
     private var resumeData: HistoryData? = null
+    private var curType = HistoryData.TYPE_EXPENSE
 
     private companion object {
         private const val ADD_ANIM_DURATION = 300L
@@ -150,6 +153,21 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             }
         })
         setKeyboardListener()
+        btIncome.setOnClickListener {
+            curType = HistoryData.TYPE_INCOME
+            setTypeBackground(btIncome, btExpense)
+        }
+        btExpense.setOnClickListener {
+            curType = HistoryData.TYPE_EXPENSE
+            setTypeBackground(btExpense, btIncome)
+        }
+    }
+
+    private fun setTypeBackground(vSelected: View, vNotSelected: View) {
+        vSelected.setBackgroundResource(R.drawable.rounded_bg_type_selected)
+        vNotSelected.setBackgroundResource(R.drawable.rounded_bg_type_not_selected)
+        (vSelected as TextView).setTextColor(Color.WHITE)
+        (vNotSelected as TextView).setTextColor(Color.DKGRAY)
     }
 
     private fun setKeyboardListener() {
@@ -181,7 +199,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         }
         val name = etName.text.toString().trim()
         val price = tvPrice.text.toString().trim().replace(",", "").toDouble()
-        val type = HistoryData.TYPE_EXPENSE
+        val type = curType
         val source = this.source
         val date = tvAddItemDate.text.toString()
         val iconPosition = iconAdapter.getSelectedPosition()
@@ -224,6 +242,10 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         curMode = MODE_EDIT
         resumeData = historyData
         source = historyData.source
+        curType = historyData.type
+        if (curType == HistoryData.TYPE_INCOME) {
+            setTypeBackground(btIncome, btExpense)
+        }
         setDate(CommonUtils.addItemDate().parse(historyData.date))
         tvPrice.text = formatter.format(historyData.price)
         etName.setText(historyData.name)
@@ -309,6 +331,8 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         clearData()
         iconAdapter.setSelectedIdx(0)
         ivIcon.setImageResource(mainViewModel.getIconList()[0])
+        setTypeBackground(btExpense, btIncome)
+        curType = HistoryData.TYPE_EXPENSE
     }
 
     private fun dismissKeyboard() {

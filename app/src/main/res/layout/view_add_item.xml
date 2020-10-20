@@ -89,16 +89,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="15dp"
-                            android:text="品項名稱" />
+                            android:text="@string/item_name" />
 
                         <EditText
                             android:id="@+id/etName"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:ellipsize="end"
-                            android:hint="請輸入品項"
+                            android:hint="@string/item_name_hint"
                             android:maxLines="1"
-                            android:textColor="@color/main_text_colour"
+                            android:textColor="@android:color/darker_gray"
                             android:textColorHint="#44000000"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -114,7 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="15dp"
-                            android:text="品項價格" />
+                            android:text="@string/item_price" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -149,7 +149,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="15dp"
-                            android:text="品項類型" />
+                            android:text="@string/item_icon" />
 
                         <LinearLayout
                             android:id="@+id/llIcon"
@@ -184,7 +184,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_marginBottom="20dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
@@ -193,17 +193,28 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="15dp"
-                            android:text="品項收支" />
+                            android:text="@string/item_type" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:ellipsize="end"
-                            android:gravity="center_vertical"
-                            android:maxLines="1"
-                            android:text="收入"
-                            android:textColor="#44000000"
-                            android:textSize="14sp" />
+
+                        <Button
+                            android:id="@+id/btExpense"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="@string/expense"
+                            android:textColor="@android:color/white" />
+
+                        <Button
+                            android:id="@+id/btIncome"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_bg_type_not_selected"
+                            android:text="@string/income"
+                            android:textColor="@android:color/darker_gray" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -240,6 +251,7 @@
                         android:layout_gravity="center"
                         android:columnCount="3"
                         android:orientation="horizontal"
+                        android:useDefaultMargins="true"
                         android:weightSum="3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -248,51 +260,75 @@
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="1" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="1"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="2" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="2"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="3" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="3"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="4" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="4"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="5" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="5"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="6" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="6"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="7" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="7"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="8" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="8"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="9" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="9"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="." />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="."
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="0" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="0"
+                            android:textColor="@android:color/white" />
 
                         <Button
                             android:layout_columnWeight="1"
-                            android:text="&lt;" />
+                            android:background="@drawable/rounded_bg_type_selected"
+                            android:text="&lt;"
+                            android:textColor="@android:color/white" />
                     </GridLayout>
 
                 </net.cachapa.expandablelayout.ExpandableLayout>
@@ -304,6 +340,9 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:background="@drawable/rounded_bg_type_selected"
+                    android:text="@string/confirm"
+                    android:textColor="@android:color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
