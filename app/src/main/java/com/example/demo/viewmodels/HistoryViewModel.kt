@@ -21,11 +21,12 @@ class HistoryViewModel() : ViewModel() {
 
     private val dateFormatForMonth: SimpleDateFormat =
         SimpleDateFormat("MMM - yyyy", Locale.getDefault())
-    private val dateFormatForDay: SimpleDateFormat =
-        SimpleDateFormat("MM/dd", Locale.getDefault())
     private val dateFormatForAdd: SimpleDateFormat =
         SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
     val isEditMode = MutableLiveData(false)
+    val isAddItem = MutableLiveData(false)
+    val selectedDay = MutableLiveData<Date>(Calendar.getInstance().time)
+    val selectedMonth = MutableLiveData<Date>(Calendar.getInstance().time)
 
     fun setEditMode(isActivate: Boolean) {
         isEditMode.value = isActivate
@@ -36,19 +37,9 @@ class HistoryViewModel() : ViewModel() {
         isEditMode.value = !mode
     }
 
-    fun getDay(date: Date): String {
-        return dateFormatForDay.format(date)
-    }
-
     fun getDate(date: Date): String {
         return dateFormatForMonth.format(date)
     }
-
-    fun getAddDate(): String {
-        if (selectedDay.value == null) return ""
-        return dateFormatForAdd.format(selectedDay.value!!)
-    }
-
 
     fun getEvents(alData: List<HistoryData>): List<Event> {
         val list = arrayListOf<Event>()
@@ -59,10 +50,6 @@ class HistoryViewModel() : ViewModel() {
         return list
     }
 
-    val isAddItem = MutableLiveData(false)
-
-    val selectedDay = MutableLiveData<Date>(Calendar.getInstance().time)
-    val selectedMonth = MutableLiveData<Date>(Calendar.getInstance().time)
     fun getCalendarListener(): CompactCalendarView.CompactCalendarViewListener {
         return object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date?) {
@@ -87,6 +74,4 @@ class HistoryViewModel() : ViewModel() {
         animationSet.duration = ANIM_DURATION
         return animationSet
     }
-
-
 }

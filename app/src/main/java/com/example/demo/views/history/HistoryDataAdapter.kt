@@ -1,7 +1,6 @@
 package com.example.demo.views.history
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import kotlinx.android.synthetic.main.item_history_data.view.*
 import kotlinx.android.synthetic.main.item_history_data.view.ivImage
 import kotlinx.android.synthetic.main.item_history_data.view.tvName
 import kotlinx.android.synthetic.main.item_history_data.view.tvPrice
-import kotlinx.android.synthetic.main.item_recent_data.view.*
 import java.lang.StringBuilder
 
 class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -53,11 +51,11 @@ class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         holder.itemView.tvPrice.text = getPrice(position)
-        if (alHistoryData[position].type == TYPE_INCOME) {
-            holder.itemView.tvName.setTextColor(getDarkColor())
-            holder.itemView.tvSource.setTextColor(getLightColor())
-            holder.itemView.tvPrice.setTextColor(getLightColor())
-        }
+
+        holder.itemView.tvName.setTextColor(getMainColor(alHistoryData[position].type))
+        holder.itemView.tvSource.setTextColor(getSubColor(alHistoryData[position].type))
+        holder.itemView.tvPrice.setTextColor(getSubColor(alHistoryData[position].type))
+
         if (isEditMode) {
             holder.itemView.ivImage.visibility = View.INVISIBLE
             holder.itemView.cbDelete.visibility = View.VISIBLE
@@ -106,22 +104,17 @@ class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setList(list: List<HistoryData>, iconList:List<Int>) {
+    fun setList(list: List<HistoryData>, iconList: List<Int>) {
         alHistoryData = list as ArrayList
         alIcons = iconList as ArrayList
         notifyDataSetChanged()
     }
 
-    fun setType(type: Int) {
-        this.type = type
+    private fun getMainColor(type: String): Int {
+        return if (type == TYPE_INCOME) Color.parseColor("#93513f") else Color.parseColor("#de000000")
     }
 
-    private var type = 0
-    private fun getDarkColor(): Int {
-        return if (type == 0) Color.parseColor("#93513f") else Color.parseColor("#4a7c51")
-    }
-
-    private fun getLightColor(): Int {
-        return if (type == 0) Color.parseColor("#b87463") else Color.parseColor("#77127100")
+    private fun getSubColor(type: String): Int {
+        return if (type == TYPE_INCOME) Color.parseColor("#b87463") else Color.parseColor("#8b000000")
     }
 }

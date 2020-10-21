@@ -30,11 +30,21 @@ class AddItemSourceAdapter(private var list: List<String>) :
         } else {
             holder.itemView.tvSource.alpha = 0.2f
         }
-        holder.itemView.tvSource.text = list[position]
+        if (list[position] == HistoryData.SOURCE_CASH) {
+            holder.itemView.tvSource.text = holder.itemView.context.getString(R.string.cash)
+        } else {
+            holder.itemView.tvSource.text = list[position]
+        }
+
         holder.itemView.setOnClickListener {
             selectSource = list[position]
             notifyDataSetChanged()
-            onItemClickListener?.invoke(list[position])
+            val source: String = if (list[position] == HistoryData.SOURCE_CASH) {
+                holder.itemView.context.getString(R.string.cash)
+            } else {
+                list[position]
+            }
+            onItemClickListener?.invoke(source)
         }
     }
 
@@ -44,7 +54,7 @@ class AddItemSourceAdapter(private var list: List<String>) :
 
     fun setSourceList(list: List<String>) {
         this.list = list
-        for (i in list.indices){
+        for (i in list.indices) {
             CommonUtils.e("source: ${list[i]}")
         }
         notifyDataSetChanged()

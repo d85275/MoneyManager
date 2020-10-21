@@ -35,13 +35,13 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     private lateinit var mainViewModel: MainViewModel
     private lateinit var iconAdapter: AddItemIconAdapter
     private var sourceAdapter =
-        AddItemSourceAdapter(arrayListOf(view.context.getString(R.string.cash)))
+        AddItemSourceAdapter(arrayListOf(HistoryData.SOURCE_CASH))
     private var total = 0L
     private var isShow = MutableLiveData(false)
     private var isKeyboardShow = false
 
     private var curMode = MODE_ADD
-    private val curSource = Variable(view.context.getString(R.string.cash))
+    private val curSource = Variable(HistoryData.SOURCE_CASH)
     private var curType = HistoryData.TYPE_EXPENSE
     private var resumeData: HistoryData? = null
     private val disposableSource: Disposable
@@ -65,7 +65,11 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         setDate(Calendar.getInstance().time)
         setListeners()
         disposableSource = curSource.observable.subscribe { source ->
-            tvSource.text = source
+            if (source == HistoryData.SOURCE_CASH) {
+                tvSource.text = view.context.getString(R.string.cash)
+            } else {
+                tvSource.text = source
+            }
             sourceAdapter.setSelectedSource(source)
         }
     }
@@ -115,14 +119,11 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     fun updateSourceList() {
-        sourceAdapter.setSourceList(mainViewModel.getSourceList(arrayListOf(view.context.getString(R.string.cash))))
+        sourceAdapter.setSourceList(mainViewModel.getSourceList(arrayListOf(HistoryData.SOURCE_CASH)))
     }
 
     fun setSource(source: String) {
-        //tvSource.text = curSource
         curSource.value = source
-        //sourceAdapter.setSelectedSource(source)
-        //this.curSource = source
     }
 
     fun setDate(date: Date?) {
@@ -316,7 +317,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         return isShow
     }
 
-    fun show(source: String){
+    fun show(source: String) {
         curSource.value = source
         show()
     }

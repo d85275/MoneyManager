@@ -78,7 +78,7 @@ class CashFragment : Fragment() {
 
     private fun setListener() {
         ivAdd.setOnClickListener {
-            vAddItem.show(getString(R.string.cash))
+            vAddItem.show(HistoryData.SOURCE_CASH)
         }
         adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
     }
