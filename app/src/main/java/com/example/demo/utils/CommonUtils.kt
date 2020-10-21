@@ -44,7 +44,6 @@ object CommonUtils {
                     e1: MotionEvent, e2: MotionEvent, velocityX: Float,
                     velocityY: Float
                 ): Boolean {
-                    Log.i("Bank", "onFling has been called!")
                     val SWIPE_MIN_DISTANCE = 120
                     val SWIPE_MAX_OFF_PATH = 250
                     val SWIPE_THRESHOLD_VELOCITY = 200
@@ -53,13 +52,11 @@ object CommonUtils {
                         if (e1.x - e2.x > SWIPE_MIN_DISTANCE
                             && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
                         ) {
-                            Log.e("SWIPE", "Right to Left")
                             if (isEnter) action.invoke()
                         } else if (e2.x - e1.x > SWIPE_MIN_DISTANCE
                             && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
                         ) {
                             if (!isEnter) action.invoke()
-                            Log.e("SWIPE", "Left to Right")
                         }
                     } catch (e: Exception) {
                         // nothing

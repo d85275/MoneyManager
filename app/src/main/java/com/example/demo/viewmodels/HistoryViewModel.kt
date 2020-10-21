@@ -32,11 +32,6 @@ class HistoryViewModel() : ViewModel() {
         isEditMode.value = isActivate
     }
 
-    fun onEditModeClicked() {
-        val mode = isEditMode.value ?: false
-        isEditMode.value = !mode
-    }
-
     fun getDate(date: Date): String {
         return dateFormatForMonth.format(date)
     }

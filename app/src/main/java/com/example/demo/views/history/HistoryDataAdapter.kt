@@ -37,13 +37,7 @@ class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.tvName.text = alHistoryData[position].name
         holder.itemView.ivImage.setImageResource(alIcons[alHistoryData[position].iconPosition])
-        /*
-        if (position == 0) {
-            holder.itemView.vUp.visibility = View.INVISIBLE
-        } else if (position == alHistoryData.lastIndex) {
-            holder.itemView.vDown.visibility = View.INVISIBLE
-        }
-         */
+
         if (alHistoryData[position].source == HistoryData.SOURCE_CASH) {
             holder.itemView.tvSource.text = holder.itemView.context.getString(R.string.cash)
         } else {
@@ -72,12 +66,10 @@ class HistoryDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         holder.itemView.cbDelete.isChecked = false
         holder.itemView.cbDelete.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                CommonUtils.e("add $position to the set")
                 val set = selectedId.value!!
                 set.add(position)
                 selectedId.value = set
             } else {
-                CommonUtils.e("remove $position to the set")
                 val set = selectedId.value!!
                 set.remove(position)
                 selectedId.value = set

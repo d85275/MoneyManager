@@ -17,6 +17,9 @@ import com.example.demo.viewmodels.MainVMFactory
 import com.example.demo.viewmodels.MainViewModel
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_history.*
+import kotlinx.android.synthetic.main.activity_history.vAddItem
+import kotlinx.android.synthetic.main.activity_history.vBlocker
+import kotlinx.android.synthetic.main.fragment_cash.*
 import java.util.*
 
 
@@ -36,12 +39,13 @@ class HistoryActivity : AppCompatActivity() {
         initViews()
         setListeners()
         initObservers()
-        mainViewModel.loadHistoryData()
-        mainViewModel.loadTotalBalance()
+        loadData()
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun loadData() {
+        mainViewModel.loadBankListData()
+        mainViewModel.loadHistoryData()
+        mainViewModel.loadTotalBalance()
     }
 
     private fun startAnimation() {
@@ -150,6 +154,9 @@ class HistoryActivity : AppCompatActivity() {
         mainViewModel.dailyBalance.observe(this, Observer { dailyBalance ->
             tvDailyBalance.text = dailyBalance
         })
+        mainViewModel.bankList.observe(this, Observer {
+            vAddItem.updateSourceList()
+        })
     }
 
     private fun disableToolbarScroll() {
@@ -207,14 +214,14 @@ class HistoryActivity : AppCompatActivity() {
             vAddItem.show()
         }
         adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
-        ivEdit.setOnClickListener { historyViewModel.onEditModeClicked() }
+        ivEdit.setOnClickListener { historyViewModel.setEditMode(true) }
         btDelete.setOnClickListener {
             if (!adapter.getSelectedId().value.isNullOrEmpty()) {
                 mainViewModel.deleteHistoryData(adapter.getSelectedId().value!!)
             }
         }
         tvCancel.setOnClickListener {
-            historyViewModel.onEditModeClicked()
+            historyViewModel.setEditMode(false)
         }
     }
 

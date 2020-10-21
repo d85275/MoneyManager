@@ -15,7 +15,6 @@ import com.example.demo.utils.CommonUtils
 import com.example.demo.R
 import com.example.demo.model.HistoryData
 import com.example.demo.viewmodels.AddItemViewModel
-import com.example.demo.viewmodels.CashViewModel
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.views.main.MainActivity
 import com.example.demo.views.main.RecentDataAdapter
@@ -24,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_cash.vAddItem
 
 
 class CashFragment : Fragment() {
-    private lateinit var cashViewModel: CashViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var addItemViewModel: AddItemViewModel
     private lateinit var animHandler: AnimHandler
@@ -84,7 +82,6 @@ class CashFragment : Fragment() {
     }
 
     private fun getViewModel() {
-        cashViewModel = ViewModelProvider(this).get(CashViewModel::class.java)
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
     }

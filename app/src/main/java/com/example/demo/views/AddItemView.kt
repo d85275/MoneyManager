@@ -43,6 +43,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     private var curMode = MODE_ADD
     private val curSource = Variable(HistoryData.SOURCE_CASH)
     private var curType = HistoryData.TYPE_EXPENSE
+    private var curIconPosition = 0
     private var resumeData: HistoryData? = null
     private val disposableSource: Disposable
 
@@ -97,6 +98,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         ivIcon.setImageResource(mainViewModel.getIconList()[0])
         iconAdapter.setOnItemClickListener { icon ->
             ivIcon.setImageResource(icon)
+            curIconPosition = mainViewModel.getIconPosition(icon)
         }
         setRecyclerView(rvIcons, iconAdapter)
 
@@ -170,17 +172,21 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             dismiss()
         }
         llIcon.setOnClickListener {
+            dismissKeyboard()
             if (elIcons.isExpanded) {
                 elIcons.collapse()
             } else {
                 elIcons.expand()
+                rvIcons.scrollToPosition(curIconPosition)
             }
         }
         llSource.setOnClickListener {
+            dismissKeyboard()
             if (elSources.isExpanded) {
                 elSources.collapse()
             } else {
                 elSources.expand()
+                rvSource.smoothScrollToPosition(mainViewModel.getSourcePosition(curSource.value))
             }
         }
 
@@ -192,10 +198,12 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         })
         setKeyboardListener()
         btIncome.setOnClickListener {
+            dismissKeyboard()
             curType = HistoryData.TYPE_INCOME
             setTypeBackground(btIncome, btExpense)
         }
         btExpense.setOnClickListener {
+            dismissKeyboard()
             curType = HistoryData.TYPE_EXPENSE
             setTypeBackground(btExpense, btIncome)
         }
@@ -283,6 +291,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         tvPrice.text = formatter.format(historyData.price)
         etName.setText(historyData.name)
         ivIcon.setImageResource(mainViewModel.getIconList()[historyData.iconPosition])
+        curIconPosition = historyData.iconPosition
         iconAdapter.setSelectedIdx(historyData.iconPosition)
         show()
     }
@@ -356,6 +365,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         tvPrice.text = ""
         iconAdapter.setSelectedIdx(0)
         ivIcon.setImageResource(mainViewModel.getIconList()[0])
+        curIconPosition = 0
         setTypeBackground(btExpense, btIncome)
         curType = HistoryData.TYPE_EXPENSE
     }

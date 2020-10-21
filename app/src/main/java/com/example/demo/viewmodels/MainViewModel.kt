@@ -63,6 +63,18 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         return 0
     }
 
+    fun getSourcePosition(source: String): Int {
+        val list = getSourceList(arrayListOf())
+        if (!list.contains(source)) return 0
+        for (i in list.indices) {
+            if (source == list[i]) {
+                return i + 1
+            }
+        }
+
+        return 0
+    }
+
     fun getSourceList(list: ArrayList<String>): ArrayList<String> {
         val bankList = bankList.value
         if (!bankList.isNullOrEmpty()) {
@@ -72,6 +84,14 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             }
         }
         return list
+    }
+
+    fun getIconPosition(icon: Int): Int {
+        val list = getIconList()
+        for (i in list.indices){
+            if (icon == list[i]) return i
+        }
+        return 0
     }
 
     fun getIconList() = arrayListOf(

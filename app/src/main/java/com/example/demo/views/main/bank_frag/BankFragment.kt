@@ -1,5 +1,6 @@
 package com.example.demo.views.main.bank_frag
 
+import BankCardTransformer
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,11 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.demo.R
-import com.example.demo.model.HistoryData
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
 import com.example.demo.viewmodels.AddItemViewModel
-import com.example.demo.viewmodels.BankViewModel
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.views.main.MainActivity
 import com.example.demo.views.main.RecentDataAdapter
@@ -26,12 +25,10 @@ import kotlinx.android.synthetic.main.fragment_bank.ivMoney
 import kotlinx.android.synthetic.main.fragment_bank.rvRecent
 import kotlinx.android.synthetic.main.fragment_bank.tvBalanced
 import kotlinx.android.synthetic.main.fragment_bank.vAddItem
-import kotlinx.android.synthetic.main.fragment_cash.*
 
 class BankFragment : Fragment() {
 
     private lateinit var addItemViewModel: AddItemViewModel
-    private lateinit var bankViewModel: BankViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var animHandler: AnimHandler
     private lateinit var adapter: RecentDataAdapter
@@ -90,7 +87,7 @@ class BankFragment : Fragment() {
         vpBank.orientation = ViewPager2.ORIENTATION_VERTICAL
         vpBank.adapter = bankAdapter
         vpBank.offscreenPageLimit = 3
-        vpBank.setPageTransformer(bankViewModel.getTransformer())
+        vpBank.setPageTransformer(BankCardTransformer())
         vAddItem.init(mainViewModel, activity as MainActivity)
         /*
         rvBank.layoutManager =
@@ -155,7 +152,6 @@ class BankFragment : Fragment() {
     }
 
     private fun getViewModel() {
-        bankViewModel = ViewModelProvider(this).get(BankViewModel::class.java)
         addItemViewModel = ViewModelProvider(this).get(AddItemViewModel::class.java)
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
