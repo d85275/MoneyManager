@@ -71,7 +71,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 return i + 1
             }
         }
-
         return 0
     }
 
@@ -88,7 +87,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     fun getIconPosition(icon: Int): Int {
         val list = getIconList()
-        for (i in list.indices){
+        for (i in list.indices) {
             if (icon == list[i]) return i
         }
         return 0
@@ -170,7 +169,10 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     fun updateItem(historyData: HistoryData) {
         repository.updateHistory(historyData).doOnComplete {
-            loadRecentHistoryData(historyData.source)
+            loadRecentHistoryData(HistoryData.SOURCE_CASH)
+            if (getCurrentBank() != null) {
+                loadRecentHistoryData(getCurrentBank()!!.name)
+            }
             loadHistoryData()
             loadTotalBalance()
         }.subscribeOn(Schedulers.io())
