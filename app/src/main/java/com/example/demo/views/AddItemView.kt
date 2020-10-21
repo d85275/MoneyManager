@@ -12,12 +12,15 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.HistoryData
+import com.example.demo.model.Variable
 import com.example.demo.utils.CommonUtils
 import com.example.demo.utils.OnSwipeTouchListener
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.views.main.MainActivity
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.view_add_item.view.*
 import java.lang.StringBuilder
 import java.text.DecimalFormat
@@ -31,12 +34,17 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     private var mainActivity: MainActivity? = null
     private lateinit var mainViewModel: MainViewModel
     private lateinit var iconAdapter: AddItemIconAdapter
-    private lateinit var sourceAdapter: AddItemSourceAdapter
+    private var sourceAdapter =
+        AddItemSourceAdapter(arrayListOf(view.context.getString(R.string.cash)))
     private var total = 0L
+    private var isShow = MutableLiveData(false)
+    private var isKeyboardShow = false
+
     private var curMode = MODE_ADD
-    private var resumeData: HistoryData? = null
-    private var curSource = view.context.getString(R.string.cash)
+    private val curSource = Variable(view.context.getString(R.string.cash))
     private var curType = HistoryData.TYPE_EXPENSE
+    private var resumeData: HistoryData? = null
+    private val disposableSource: Disposable
 
     private companion object {
         private const val ADD_ANIM_DURATION = 300L
@@ -47,6 +55,8 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         private const val ZERO = 11
         private const val MODE_ADD = 0
         private const val MODE_EDIT = 1
+        private const val PREVIOUS_DAY = -1
+        private const val NEXT_DAY = 1
     }
 
     private var date: Date? = null
@@ -54,10 +64,14 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     init {
         setDate(Calendar.getInstance().time)
         setListeners()
+        disposableSource = curSource.observable.subscribe { source ->
+            tvSource.text = source
+            sourceAdapter.setSelectedSource(source)
+        }
     }
 
     fun init(source: String, mainViewModel: MainViewModel, mainActivity: MainActivity) {
-        this.curSource = source
+        curSource.value = source
         this.mainViewModel = mainViewModel
         this.mainActivity = mainActivity
         initViews()
@@ -80,23 +94,24 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         iconAdapter.setOnItemClickListener { icon ->
             ivIcon.setImageResource(icon)
         }
-        rvIcons.layoutManager =
-            LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-        rvIcons.setHasFixedSize(true)
-        rvIcons.adapter = iconAdapter
+        setRecyclerView(rvIcons, iconAdapter)
 
-
-        sourceAdapter =
-            AddItemSourceAdapter(arrayListOf(view.context.getString(R.string.cash)))
         sourceAdapter.setOnItemClickListener { source ->
-            tvSource.text = source
+            curSource.value = source
         }
-        CommonUtils.e("curSource: $curSource")
-        tvSource.text = curSource
-        rvSource.layoutManager =
+
+        setRecyclerView(rvSource, sourceAdapter)
+
+    }
+
+    private fun setRecyclerView(
+        recyclerView: RecyclerView,
+        adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
+    ) {
+        recyclerView.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-        rvSource.setHasFixedSize(true)
-        rvSource.adapter = sourceAdapter
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = adapter
     }
 
     fun updateSourceList() {
@@ -104,7 +119,10 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     fun setSource(source: String) {
-        this.curSource = source
+        //tvSource.text = curSource
+        curSource.value = source
+        //sourceAdapter.setSelectedSource(source)
+        //this.curSource = source
     }
 
     fun setDate(date: Date?) {
@@ -116,26 +134,21 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         return total
     }
 
-    private fun goPreDay() {
-        if (date == null) return
-        val calendar = Calendar.getInstance()
-        calendar.time = date!!
-        calendar.add(Calendar.DAY_OF_YEAR, -1)
-        setDate(calendar.time)
-    }
+    /**
+     * amount: -1 go previous day, 1 go next day
+     */
 
-    private fun goNextDay() {
+    private fun goDay(amount: Int) {
         if (date == null) return
         val calendar = Calendar.getInstance()
         calendar.time = date!!
-        calendar.add(Calendar.DAY_OF_YEAR, 1)
-        date = calendar.time
+        calendar.add(Calendar.DAY_OF_YEAR, amount)
         setDate(calendar.time)
     }
 
     private fun setListeners() {
-        ivPreDay.setOnClickListener { goPreDay() }
-        ivNextDay.setOnClickListener { goNextDay() }
+        ivPreDay.setOnClickListener { goDay(PREVIOUS_DAY) }
+        ivNextDay.setOnClickListener { goDay(NEXT_DAY) }
 
         etName.setOnClickListener {
             dismissKeyboard()
@@ -224,7 +237,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         val name = etName.text.toString().trim()
         val price = tvPrice.text.toString().trim().replace(",", "").toDouble()
         val type = curType
-        val source = this.curSource
+        val source = this.curSource.value
         val date = tvAddItemDate.text.toString()
         val iconPosition = iconAdapter.getSelectedPosition()
         if (curMode == MODE_ADD) {
@@ -255,17 +268,12 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         return true
     }
 
-    private fun clearData() {
-        curMode = MODE_ADD
-        etName.setText("")
-        tvPrice.text = ""
-    }
-
     fun resumeData(historyData: HistoryData) {
         //tvAddItemDate.text = historyData.date
         curMode = MODE_EDIT
         resumeData = historyData
-        curSource = historyData.source
+        //curSource = historyData.source
+        curSource.value = historyData.source
         curType = historyData.type
         if (curType == HistoryData.TYPE_INCOME) {
             setTypeBackground(btIncome, btExpense)
@@ -273,7 +281,6 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         setDate(CommonUtils.addItemDate().parse(historyData.date))
         tvPrice.text = formatter.format(historyData.price)
         etName.setText(historyData.name)
-        CommonUtils.e("icon position: ${historyData.iconPosition}")
         ivIcon.setImageResource(mainViewModel.getIconList()[historyData.iconPosition])
         iconAdapter.setSelectedIdx(historyData.iconPosition)
         show()
@@ -305,11 +312,13 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         tvAddItemDate.text = date
     }
 
-    private var isShow = MutableLiveData(false)
-    private var isKeyboardShow = false
-
     fun isShow(): LiveData<Boolean> {
         return isShow
+    }
+
+    fun show(source: String){
+        curSource.value = source
+        show()
     }
 
     fun show() {
@@ -340,6 +349,16 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         }
     }
 
+    private fun clearData() {
+        curMode = MODE_ADD
+        etName.setText("")
+        tvPrice.text = ""
+        iconAdapter.setSelectedIdx(0)
+        ivIcon.setImageResource(mainViewModel.getIconList()[0])
+        setTypeBackground(btExpense, btIncome)
+        curType = HistoryData.TYPE_EXPENSE
+    }
+
     fun dismiss() {
         mainActivity?.showIndicator()
         isShow.value = false
@@ -354,40 +373,18 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             .setDuration(ADD_ANIM_DURATION)
             .start()
         clearData()
-        iconAdapter.setSelectedIdx(0)
-        ivIcon.setImageResource(mainViewModel.getIconList()[0])
-        setTypeBackground(btExpense, btIncome)
-        curType = HistoryData.TYPE_EXPENSE
+        //disposableSource.dispose()
     }
 
     private fun dismissKeyboard() {
         isKeyboardShow = false
-        /*
-        vKeyboard.animate()
-            .alpha(0f)
-            .setDuration(300)
-            .withEndAction {
-                vKeyboard.visibility = View.INVISIBLE
-
-            }.start()
-         */
         elKeyboard.collapse()
-        //btConfirm.visibility = View.VISIBLE
     }
 
     private fun showKeyboard() {
         hideSoftKeyboard()
         isKeyboardShow = true
         elKeyboard.expand()
-        //btConfirm.visibility = View.INVISIBLE
-        /*
-        vKeyboard.visibility = View.VISIBLE
-        vKeyboard.alpha = 0f
-        vKeyboard.animate()
-            .alpha(1f)
-            .setDuration(300)
-            .start()
-         */
     }
 
     private fun View.hideSoftKeyboard() {

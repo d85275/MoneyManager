@@ -24,11 +24,6 @@ import kotlinx.android.synthetic.main.fragment_cash.vAddItem
 
 
 class CashFragment : Fragment() {
-
-    private companion object {
-        private const val ANIM_DELAY: Long = 2 * 1000
-    }
-
     private lateinit var cashViewModel: CashViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var addItemViewModel: AddItemViewModel
@@ -39,7 +34,6 @@ class CashFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_cash, container, false)
         val gesture =
             CommonUtils.getGesture(requireActivity(), {
@@ -84,7 +78,7 @@ class CashFragment : Fragment() {
 
     private fun setListener() {
         ivAdd.setOnClickListener {
-            vAddItem.show()
+            vAddItem.show(getString(R.string.cash))
         }
         adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
     }
