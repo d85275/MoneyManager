@@ -191,9 +191,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun getDataByDay(date: Date) {
         if (historyData.value == null) return
         val curDate = CommonUtils.addItemDate().format(date)
-        CommonUtils.e("current date: $curDate")
         val list = historyData.value!!.filter { it.date == curDate }
-        CommonUtils.e("current date data: ${list.size}")
         dayData.value = list
     }
 
@@ -204,7 +202,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 AndroidSchedulers.mainThread()
             ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
                 .subscribe { list ->
-                    CommonUtils.e("load history data. size: ${list.size}")
                     list.reversed()
                     historyData.postValue(list)
                 }
@@ -214,7 +211,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun deleteHistoryData(selectedId: Set<Int>) {
         val deletedData = arrayListOf<Int>()
         for (key in selectedId) {
-            CommonUtils.e("position: $key")
             deletedData.add(dayData.value!![key].id)
         }
         repository.deleteFromIds(deletedData).doOnComplete {

@@ -77,7 +77,6 @@ class HistoryActivity : AppCompatActivity() {
     private var selectedDate: Date? = null
     private fun initObservers() {
         historyViewModel.selectedDay.observe(this, Observer { day ->
-            CommonUtils.e("on day selected")
             mainViewModel.getDataByDay(day)
             selectedDate = day
         })
