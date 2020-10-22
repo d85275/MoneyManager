@@ -88,8 +88,15 @@ class CashFragment : Fragment() {
 
     private fun initObservers() {
         mainViewModel.recentCashData.observe(viewLifecycleOwner, Observer { recentData ->
-            rvRecent.visibility = View.VISIBLE
-            adapter.setList(recentData, mainViewModel.getIconList())
+            if (recentData.isNullOrEmpty()) {
+                rvRecent.visibility = View.GONE
+                llEmpty.visibility = View.VISIBLE
+            } else {
+                rvRecent.visibility = View.VISIBLE
+                llEmpty.visibility = View.GONE
+                adapter.setList(recentData, mainViewModel.getIconList())
+            }
+
         })
         vAddItem.isShow().observe(viewLifecycleOwner, Observer { isShow ->
             if (isShow) {

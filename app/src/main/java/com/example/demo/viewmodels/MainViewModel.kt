@@ -31,7 +31,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val recentCashData = MutableLiveData<List<HistoryData>>()
     val dbErrorMsg = MutableLiveData<Int>()
     val bankList = MutableLiveData<List<BankData?>>()
-    val curBankPosition = MutableLiveData(-1)
+    val curBankPosition = MutableLiveData(0)
 
     fun getCurrentBank(): BankData? {
         if (curBankPosition.value == null || curBankPosition.value == -1) {

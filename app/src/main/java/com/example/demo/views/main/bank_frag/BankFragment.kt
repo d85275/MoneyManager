@@ -66,6 +66,10 @@ class BankFragment : Fragment() {
             AnimHandler.ANIM_DELAY
         )
 
+        CommonUtils.e("getCurrentBank: ${mainViewModel.getCurrentBank()}")
+        if (mainViewModel.getCurrentBank() == null) {
+            addItemViewModel.hideAddBtn(ivAdd)
+        }
     }
 
     override fun onPause() {
@@ -99,18 +103,22 @@ class BankFragment : Fragment() {
 
     private fun initObservers() {
         mainViewModel.recentBankData.observe(viewLifecycleOwner, Observer { recentData ->
-            rvRecent.visibility = View.VISIBLE
-            adapter.setList(recentData, mainViewModel.getIconList())
+            if (recentData.isNullOrEmpty()) {
+                setRecentDataVisibility(false)
+            } else {
+                setRecentDataVisibility(true)
+                adapter.setList(recentData, mainViewModel.getIconList())
+            }
         })
         mainViewModel.bankList.observe(viewLifecycleOwner, Observer { bankData ->
             vpBank.visibility = View.VISIBLE
             bankAdapter.setList(bankData)
             if (bankData.size == 1) {
-                ivAdd.visibility = View.GONE
+                addItemViewModel.hideAddBtn(ivAdd)
             } else {
                 val curBank = mainViewModel.getCurrentBank()
                 mainViewModel.loadRecentHistoryData(curBank?.name)
-                if (curBank != null) ivAdd.visibility = View.VISIBLE
+                if (curBank != null) addItemViewModel.showAddBtn(ivAdd)
             }
             vAddItem.updateSourceList()
         })
@@ -123,8 +131,10 @@ class BankFragment : Fragment() {
         })
         mainViewModel.curBankPosition.observe(viewLifecycleOwner, Observer {
             if (mainViewModel.getCurrentBank() == null) {
-                hideRecentData()
+                setRecentDataVisibility(false)
+                addItemViewModel.hideAddBtn(ivAdd)
             } else {
+                addItemViewModel.showAddBtn(ivAdd)
                 getRecentData()
             }
         })
@@ -138,14 +148,20 @@ class BankFragment : Fragment() {
         })
     }
 
-    private fun hideRecentData() {
-        rvRecent.visibility = View.INVISIBLE
-        ivAdd.visibility = View.INVISIBLE
+    private fun setRecentDataVisibility(isVisible: Boolean) {
+        setVisible(rvRecent, isVisible)
+        setVisible(llEmpty, !isVisible)
+    }
+
+    private fun setVisible(view: View, isVisible: Boolean) {
+        if (isVisible && view.visibility != View.VISIBLE) {
+            view.visibility = View.VISIBLE
+        } else if (!isVisible && view.visibility != View.GONE) {
+            view.visibility = View.GONE
+        }
     }
 
     private fun getRecentData() {
-        rvRecent.visibility = View.VISIBLE
-        ivAdd.visibility = View.VISIBLE
         val curBank = mainViewModel.getCurrentBank() ?: return
         vAddItem.setSource(curBank.name)
         mainViewModel.loadRecentHistoryData(curBank.name)
