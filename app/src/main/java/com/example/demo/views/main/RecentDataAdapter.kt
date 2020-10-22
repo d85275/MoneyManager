@@ -3,12 +3,17 @@ package com.example.demo.views.main
 import android.graphics.Color
 import android.graphics.drawable.Icon
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo.R
 import com.example.demo.model.HistoryData
 import com.example.demo.model.HistoryData.Companion.TYPE_INCOME
 import kotlinx.android.synthetic.main.item_recent_data.view.*
+import kotlinx.android.synthetic.main.item_recent_data.view.ivImage
+import kotlinx.android.synthetic.main.item_recent_data.view.tvName
+import kotlinx.android.synthetic.main.item_recent_data.view.tvPrice
+import kotlinx.android.synthetic.main.item_recent_data.view.tvSource
 import java.lang.StringBuilder
 
 class RecentDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -30,6 +35,11 @@ class RecentDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         holder.itemView.tvDate.text = alHistoryData[position].date
         holder.itemView.ivImage.setImageResource(alIcons[alHistoryData[position].iconPosition])
         val price = StringBuilder().append("$")
+        if (alHistoryData[position].source == HistoryData.SOURCE_CASH) {
+            holder.itemView.tvSource.text = holder.itemView.context.getString(R.string.cash)
+        } else {
+            holder.itemView.tvSource.text = alHistoryData[position].source
+        }
         if (alHistoryData[position].type == HistoryData.TYPE_EXPENSE) {
             price.append(" -")
         }
@@ -40,9 +50,24 @@ class RecentDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.itemView.tvDate.setTextColor(getLightColor())
             holder.itemView.tvPrice.setTextColor(getLightColor())
         }
-        holder.itemView.setOnClickListener {
+
+        setListeners(holder.itemView, position)
+    }
+
+    private fun setListeners(itemView: View, position: Int) {
+        itemView.setOnClickListener {
             onItemClick?.invoke(alHistoryData[position])
         }
+        itemView.ivMore.setOnClickListener {
+            if (itemView.elMore.isExpanded) {
+                itemView.elMore.collapse()
+                itemView.ivMore.rotation = 0f
+            } else {
+                itemView.ivMore.rotation = 90f
+                itemView.elMore.expand()
+            }
+        }
+        itemView.ivDelete.setOnClickListener { }
     }
 
     fun setList(list: List<HistoryData>, iconList: List<Int>) {
