@@ -66,7 +66,6 @@ class BankFragment : Fragment() {
             AnimHandler.ANIM_DELAY
         )
 
-        CommonUtils.e("getCurrentBank: ${mainViewModel.getCurrentBank()}")
         if (mainViewModel.getCurrentBank() == null) {
             addItemViewModel.hideAddBtn(ivAdd)
         }
