@@ -206,6 +206,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 .subscribe { list ->
                     list.reversed()
                     historyData.postValue(list)
+                    loadTotalBalance()
                 }
         )
     }
