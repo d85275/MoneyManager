@@ -160,7 +160,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         repository.addHistory(historyData).doOnComplete {
             loadRecentHistoryData(source)
             loadHistoryData()
-            loadTotalBalance()
+            //loadTotalBalance()
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 {}, { dbErrorMsg.postValue(1) }
@@ -174,7 +174,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 loadRecentHistoryData(getCurrentBank()!!.name)
             }
             loadHistoryData()
-            loadTotalBalance()
+            //loadTotalBalance()
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
@@ -206,7 +206,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 .subscribe { list ->
                     list.reversed()
                     historyData.postValue(list)
-                    loadTotalBalance()
+                    getTotalBalance(list)
                 }
         )
     }
@@ -230,7 +230,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun removeBank(bankData: BankData) {
         repository.removeBank(bankData).doOnComplete {
             loadBankListData()
-            loadTotalBalance()
+            loadHistoryData()
         }.doOnError {
             Log.e("123", "remove bank error, ${it.toString()}")
         }.subscribeOn(Schedulers.io())
@@ -260,6 +260,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val totalBalanceForBank = MutableLiveData<String>("0.0")
     val dailyBalance = MutableLiveData<String>("0.0")
     val monthlyBalance = MutableLiveData<String>("0.0")
+    /*
     fun loadTotalBalance() {
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(
@@ -271,6 +272,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 }
         )
     }
+     */
 
     private fun getTotalBalance(alData: List<HistoryData>) {
         var total: Double = 0.0

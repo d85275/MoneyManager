@@ -81,7 +81,6 @@ class HistoryActivity : AppCompatActivity() {
     private fun loadData() {
         mainViewModel.loadBankListData()
         mainViewModel.loadHistoryData()
-        mainViewModel.loadTotalBalance()
     }
 
     private fun startAnimation() {
@@ -93,7 +92,6 @@ class HistoryActivity : AppCompatActivity() {
 
 
     private fun initViews() {
-        //collapsingToolbar.title = " "
         adapter = HistoryDataAdapter()
         tvCurrentDate.text = historyViewModel.getDate(compactcalendar_view.firstDayOfCurrentMonth)
         recyclerView.layoutManager = LinearLayoutManager(this)
