@@ -59,7 +59,9 @@ class HistoryActivity : AppCompatActivity() {
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN && vAddItem.isShow().value == false) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN && vAddItem.isShow().value == false
+                    && historyViewModel.isEditMode.value == false
+                ) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
             }
@@ -251,7 +253,10 @@ class HistoryActivity : AppCompatActivity() {
             vAddItem.show()
         }
         adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
-        ivEdit.setOnClickListener { historyViewModel.setEditMode(true) }
+        ivEdit.setOnClickListener {
+            historyViewModel.setEditMode(true)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
         btDelete.setOnClickListener {
             if (!adapter.getSelectedId().value.isNullOrEmpty()) {
                 mainViewModel.deleteHistoryData(adapter.getSelectedId().value!!)
@@ -259,6 +264,9 @@ class HistoryActivity : AppCompatActivity() {
         }
         tvCancel.setOnClickListener {
             historyViewModel.setEditMode(false)
+            bottomSheetBehavior.state =
+                if (isBottomSheetExpanded) BottomSheetBehavior.STATE_EXPANDED
+                else BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 
