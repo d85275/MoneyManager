@@ -46,12 +46,25 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private var isBottomSheetExpanded = false
-    private lateinit var bottomSheetBehavior:BottomSheetBehavior<ConstraintLayout>
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private fun initBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(clBottomSheet)
         bottomSheetBehavior.peekHeight = resources.getDimension(R.dimen.bottom_sheet_peek).toInt()
-        bottomSheetBehavior.isHideable = false
+        bottomSheetBehavior.isHideable = true
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN && vAddItem.isShow().value == false) {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }
+            }
+
+        })
         clBottomSheet.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -140,15 +153,14 @@ class HistoryActivity : AppCompatActivity() {
                 disableToolbarScroll()
                 vBlocker.visibility = View.VISIBLE
                 addItemViewModel.hideAddBtn(btAdd)
-                bottomSheetBehavior.isHideable = true
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             } else {
                 enableToolbarScroll()
                 vBlocker.visibility = View.GONE
                 addItemViewModel.showAddBtn(btAdd)
-                bottomSheetBehavior.isHideable = false
-                bottomSheetBehavior.state = if (isBottomSheetExpanded)BottomSheetBehavior.STATE_EXPANDED
-                else BottomSheetBehavior.STATE_COLLAPSED
+                bottomSheetBehavior.state =
+                    if (isBottomSheetExpanded) BottomSheetBehavior.STATE_EXPANDED
+                    else BottomSheetBehavior.STATE_COLLAPSED
             }
         })
         historyViewModel.isEditMode.observe(this, Observer { isEditMode ->
