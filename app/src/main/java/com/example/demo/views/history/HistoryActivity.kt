@@ -212,6 +212,7 @@ class HistoryActivity : AppCompatActivity() {
         adapter.setIsEditMode(true)
         compactcalendar_view.setOnTouchListener { _, _ -> true }
         addItemViewModel.hideAddBtn(btAdd)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
     private fun deactivateEditMode() {
@@ -221,6 +222,9 @@ class HistoryActivity : AppCompatActivity() {
         adapter.setIsEditMode(false)
         compactcalendar_view.setOnTouchListener(null)
         addItemViewModel.showAddBtn(btAdd)
+        bottomSheetBehavior.state =
+            if (isBottomSheetExpanded) BottomSheetBehavior.STATE_EXPANDED
+            else BottomSheetBehavior.STATE_COLLAPSED
     }
 
     private fun setListeners() {
@@ -253,7 +257,6 @@ class HistoryActivity : AppCompatActivity() {
         adapter.onItemClick = { historyData -> vAddItem.resumeData(historyData) }
         ivEdit.setOnClickListener {
             historyViewModel.setEditMode(true)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
         btDelete.setOnClickListener {
             if (!adapter.getSelectedId().value.isNullOrEmpty()) {
@@ -262,9 +265,6 @@ class HistoryActivity : AppCompatActivity() {
         }
         tvCancel.setOnClickListener {
             historyViewModel.setEditMode(false)
-            bottomSheetBehavior.state =
-                if (isBottomSheetExpanded) BottomSheetBehavior.STATE_EXPANDED
-                else BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 
