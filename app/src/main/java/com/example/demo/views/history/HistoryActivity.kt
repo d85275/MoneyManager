@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.LayoutAnimationController
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.example.demo.viewmodels.HistoryViewModel
 import com.example.demo.viewmodels.MainVMFactory
 import com.example.demo.viewmodels.MainViewModel
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.activity_history.vAddItem
 import kotlinx.android.synthetic.main.activity_history.vBlocker
@@ -40,6 +42,25 @@ class HistoryActivity : AppCompatActivity() {
         setListeners()
         initObservers()
         loadData()
+        initBottomSheet()
+    }
+
+    private var isBottomSheetExpanded = false
+    private lateinit var bottomSheetBehavior:BottomSheetBehavior<ConstraintLayout>
+    private fun initBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(clBottomSheet)
+        bottomSheetBehavior.peekHeight = resources.getDimension(R.dimen.bottom_sheet_peek).toInt()
+        bottomSheetBehavior.isHideable = false
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        clBottomSheet.setOnClickListener {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                isBottomSheetExpanded = false
+            } else {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                isBottomSheetExpanded = true
+            }
+        }
     }
 
     private fun loadData() {
@@ -119,10 +140,15 @@ class HistoryActivity : AppCompatActivity() {
                 disableToolbarScroll()
                 vBlocker.visibility = View.VISIBLE
                 addItemViewModel.hideAddBtn(btAdd)
+                bottomSheetBehavior.isHideable = true
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             } else {
                 enableToolbarScroll()
                 vBlocker.visibility = View.GONE
                 addItemViewModel.showAddBtn(btAdd)
+                bottomSheetBehavior.isHideable = false
+                bottomSheetBehavior.state = if (isBottomSheetExpanded)BottomSheetBehavior.STATE_EXPANDED
+                else BottomSheetBehavior.STATE_COLLAPSED
             }
         })
         historyViewModel.isEditMode.observe(this, Observer { isEditMode ->

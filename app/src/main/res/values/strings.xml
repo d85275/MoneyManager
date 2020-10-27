@@ -32,4 +32,5 @@
     <string name="item_icon">品項圖示</string>
     <string name="item_type">品項收支</string>
     <string name="no_data">目前沒有任何資料</string>
+    <string name="empty_balance">$ 0</string>
 </resources>
