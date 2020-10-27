@@ -58,16 +58,6 @@ class RecentDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         itemView.setOnClickListener {
             onItemClick?.invoke(alHistoryData[position])
         }
-        itemView.ivMore.setOnClickListener {
-            if (itemView.elMore.isExpanded) {
-                itemView.elMore.collapse()
-                itemView.ivMore.rotation = 0f
-            } else {
-                itemView.ivMore.rotation = 90f
-                itemView.elMore.expand()
-            }
-        }
-        itemView.ivDelete.setOnClickListener { }
     }
 
     fun setList(list: List<HistoryData>, iconList: List<Int>) {
