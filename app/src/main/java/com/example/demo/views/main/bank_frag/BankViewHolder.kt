@@ -15,7 +15,6 @@ class BankViewHolder(itemView: View, mainViewModel: MainViewModel) :
         )
         itemView.tvName.text = list[position]?.name
         itemView.vEdit.setOnClickListener {
-            //showRemoveBankDialog()
             CommonUtils.showEditBankDialog(
                 itemView,
                 mainViewModel,

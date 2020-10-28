@@ -132,7 +132,7 @@ class MainActivity : FragmentActivity() {
             }
         }
         ivHistory.setOnClickListener {
-            CommonUtils.goHistory(this, 0)
+            CommonUtils.goHistory(this)
         }
         viewPager.registerOnPageChangeCallback(viewModel.getChangeCallback())
 
@@ -148,7 +148,7 @@ class MainActivity : FragmentActivity() {
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
-                0 -> CashFragment()
+                CASH -> CashFragment()
                 else -> BankFragment()
             }
         }

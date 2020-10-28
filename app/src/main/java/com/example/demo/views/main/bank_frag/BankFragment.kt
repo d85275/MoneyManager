@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.demo.Constants
 import com.example.demo.R
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
@@ -34,21 +35,11 @@ class BankFragment : Fragment() {
     private lateinit var adapter: RecentDataAdapter
     private lateinit var bankAdapter: BankAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_bank, container, false)
-        val gesture =
-            CommonUtils.getGesture(requireActivity(), { findNavController().popBackStack() }, false)
-        view.setOnTouchListener { _, event -> gesture.onTouchEvent(event) }
-        return view
+        return inflater.inflate(R.layout.fragment_bank, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,10 +52,7 @@ class BankFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        animHandler.sendEmptyMessageDelayed(
-            0,
-            AnimHandler.ANIM_DELAY
-        )
+        animHandler.startAnim()
 
         if (mainViewModel.getCurrentBank() == null) {
             addItemViewModel.hideAddBtn(ivAdd)
@@ -73,14 +61,14 @@ class BankFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        animHandler.removeMessages(0)
+        animHandler.stopAnim()
         vAddItem.dismiss()
     }
 
     private fun initView() {
         animHandler = AnimHandler(ivMoney)
         adapter = RecentDataAdapter()
-        adapter.setType(1)
+        adapter.setType(Constants.TYPE_BANK)
         rvRecent.layoutManager = LinearLayoutManager(requireContext())
         rvRecent.setHasFixedSize(true)
         rvRecent.adapter = adapter
@@ -92,12 +80,6 @@ class BankFragment : Fragment() {
         vpBank.offscreenPageLimit = 3
         vpBank.setPageTransformer(BankCardTransformer())
         vAddItem.init(mainViewModel, activity as MainActivity)
-        /*
-        rvBank.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvBank.setHasFixedSize(true)
-        rvBank.adapter = bankAdapter
-         */
     }
 
     private fun initObservers() {

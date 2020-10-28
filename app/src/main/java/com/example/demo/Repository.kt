@@ -1,7 +1,6 @@
 package com.example.demo
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import com.example.demo.database.AppDatabase
 import com.example.demo.model.BankData
@@ -27,9 +26,6 @@ class Repository(context: Context) {
     fun updateBank(bankData: BankData): Completable {
         return db.bankDao().updateBank(bankData)
     }
-    //fun getRecentCashData(): Single<List<HistoryData>> {
-    //    return db.historyDao().loadCashRecent()
-    //}
 
     fun getHistoryData(): Single<List<HistoryData>> {
         return db.historyDao().getAll()
@@ -56,7 +52,6 @@ class Repository(context: Context) {
     }
 
     fun updateSourceName(newName: String, oldName: String): Completable {
-        Log.e("123", "update name. new: $newName, old: $oldName")
         return db.historyDao().updateSourceName(newName, oldName)
     }
 }

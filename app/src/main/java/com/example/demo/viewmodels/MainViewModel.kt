@@ -174,7 +174,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 loadRecentHistoryData(getCurrentBank()!!.name)
             }
             loadHistoryData()
-            //loadTotalBalance()
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe()
     }
@@ -260,19 +259,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val totalBalanceForBank = MutableLiveData<String>("0.0")
     val dailyBalance = MutableLiveData<String>("0.0")
     val monthlyBalance = MutableLiveData<String>("0.0")
-    /*
-    fun loadTotalBalance() {
-        val compositeDisposable = CompositeDisposable()
-        compositeDisposable.add(
-            repository.getHistoryData().subscribeOn(Schedulers.io()).observeOn(
-                AndroidSchedulers.mainThread()
-            ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
-                .subscribe { list ->
-                    getTotalBalance(list)
-                }
-        )
-    }
-     */
 
     private fun getTotalBalance(alData: List<HistoryData>) {
         var total: Double = 0.0

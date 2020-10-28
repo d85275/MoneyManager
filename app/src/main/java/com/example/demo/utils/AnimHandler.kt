@@ -30,4 +30,11 @@ class AnimHandler(private val v: View) : Handler() {
             ANIM_DELAY
         )
     }
+    fun startAnim(){
+        sendEmptyMessageDelayed(0, AnimHandler.ANIM_DELAY)
+    }
+
+    fun stopAnim(){
+        removeMessages(0)
+    }
 }

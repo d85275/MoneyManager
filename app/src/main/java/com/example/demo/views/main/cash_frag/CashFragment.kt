@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.demo.Constants
 import com.example.demo.utils.AnimHandler
 import com.example.demo.utils.CommonUtils
 import com.example.demo.R
@@ -28,17 +29,10 @@ class CashFragment : Fragment() {
     private lateinit var animHandler: AnimHandler
     private lateinit var adapter: RecentDataAdapter
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_cash, container, false)
-        val gesture =
-            CommonUtils.getGesture(requireActivity(), {
-                findNavController().navigate(R.id.action_cashFragment_to_bankFragment2)
-            }, true)
-        view.setOnTouchListener { _, event -> gesture.onTouchEvent(event) }
-        return view
+        return inflater.inflate(R.layout.fragment_cash, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,22 +45,19 @@ class CashFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        animHandler.sendEmptyMessageDelayed(
-            0,
-            AnimHandler.ANIM_DELAY
-        )
+        animHandler.startAnim()
     }
 
     override fun onPause() {
         super.onPause()
         vAddItem.dismiss()
-        animHandler.removeMessages(0)
+        animHandler.stopAnim()
     }
 
     private fun initView() {
         animHandler = AnimHandler(ivMoney)
         adapter = RecentDataAdapter()
-        adapter.setType(0)
+        adapter.setType(Constants.TYPE_CASH)
         rvRecent.layoutManager = LinearLayoutManager(requireContext())
         rvRecent.setHasFixedSize(true)
         rvRecent.adapter = adapter

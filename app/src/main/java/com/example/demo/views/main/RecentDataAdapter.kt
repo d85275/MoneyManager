@@ -1,11 +1,11 @@
 package com.example.demo.views.main
 
 import android.graphics.Color
-import android.graphics.drawable.Icon
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.demo.Constants
 import com.example.demo.R
 import com.example.demo.model.HistoryData
 import com.example.demo.model.HistoryData.Companion.TYPE_INCOME
@@ -70,12 +70,12 @@ class RecentDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         this.type = type
     }
 
-    private var type = 0
+    private var type = Constants.TYPE_CASH
     private fun getDarkColor(): Int {
-        return if (type == 0) Color.parseColor("#93513f") else Color.parseColor("#4a7c51")
+        return if (type == Constants.TYPE_CASH) Color.parseColor("#93513f") else Color.parseColor("#4a7c51")
     }
 
     private fun getLightColor(): Int {
-        return if (type == 0) Color.parseColor("#b87463") else Color.parseColor("#77127100")
+        return if (type == Constants.TYPE_CASH) Color.parseColor("#b87463") else Color.parseColor("#77127100")
     }
 }

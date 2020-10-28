@@ -20,6 +20,8 @@ import com.example.demo.model.BankData
 import com.example.demo.viewmodels.MainViewModel
 import com.example.demo.views.main.bank_frag.BankCardColorAdapter
 import com.example.demo.views.history.HistoryActivity
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -31,49 +33,15 @@ object CommonUtils {
     }
 
     fun addItemDate(): SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd - EEE", Locale.getDefault())
+    fun getPriceFormat(): NumberFormat = DecimalFormat("#,###.##")
+    fun getEventDateFormat(): SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+    fun getCalendarDateFormat(): SimpleDateFormat =
+        SimpleDateFormat("MMM - yyyy", Locale.getDefault())
 
-    fun getGesture(activity: Activity, action: () -> Unit, isEnter: Boolean): GestureDetector {
-        return GestureDetector(
-            activity,
-            object : GestureDetector.SimpleOnGestureListener() {
-                override fun onDown(e: MotionEvent): Boolean {
-                    return true
-                }
-
-                override fun onFling(
-                    e1: MotionEvent, e2: MotionEvent, velocityX: Float,
-                    velocityY: Float
-                ): Boolean {
-                    val SWIPE_MIN_DISTANCE = 120
-                    val SWIPE_MAX_OFF_PATH = 250
-                    val SWIPE_THRESHOLD_VELOCITY = 200
-                    try {
-                        if (abs(e1.y - e2.y) > SWIPE_MAX_OFF_PATH) return false
-                        if (e1.x - e2.x > SWIPE_MIN_DISTANCE
-                            && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
-                        ) {
-                            if (isEnter) action.invoke()
-                        } else if (e2.x - e1.x > SWIPE_MIN_DISTANCE
-                            && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
-                        ) {
-                            if (!isEnter) action.invoke()
-                        }
-                    } catch (e: Exception) {
-                        // nothing
-                    }
-                    return super.onFling(e1, e2, velocityX, velocityY)
-                }
-            })
-    }
-
-    const val FROM_CASH = 0
-    const val FROM_BANK = 1
-    const val KEY_FROM = "KEY_FROM"
-    fun goHistory(context: Context, from: Int) {
+    fun goHistory(context: Context) {
         val intent = Intent()
         val bundle = Bundle()
         intent.setClass(context, HistoryActivity::class.java)
-        bundle.putInt(KEY_FROM, from)
         intent.putExtras(bundle)
         context.startActivity(intent)
     }

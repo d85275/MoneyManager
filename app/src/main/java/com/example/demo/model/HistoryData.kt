@@ -29,4 +29,20 @@ data class HistoryData(
             return HistoryData(0, name, type, price, date, source, iconPosition)
         }
     }
+
+    fun set(
+        name: String,
+        type: String,
+        price: Double,
+        date: String,
+        source: String,
+        iconPosition: Int
+    ) {
+        this.name = name
+        this.type = type
+        this.price = price
+        this.date = date
+        this.source = source
+        this.iconPosition = iconPosition
+    }
 }

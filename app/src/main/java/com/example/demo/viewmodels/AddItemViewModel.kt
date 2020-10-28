@@ -19,7 +19,6 @@ class AddItemViewModel : ViewModel() {
     }
 
     fun showAddBtn(btAdd: View) {
-        val x = btAdd.width.toFloat()
         btAdd.animate()
             .translationX(0 - OFFSET)
             .setDuration(ADD_ANIM_DURATION)

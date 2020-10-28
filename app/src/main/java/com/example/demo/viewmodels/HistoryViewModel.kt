@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.demo.Repository
 import com.example.demo.model.HistoryData
+import com.example.demo.utils.CommonUtils
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
 import java.text.SimpleDateFormat
@@ -19,12 +20,7 @@ class HistoryViewModel() : ViewModel() {
         private const val ANIM_DURATION = 250L
     }
 
-    private val dateFormatForMonth: SimpleDateFormat =
-        SimpleDateFormat("MMM - yyyy", Locale.getDefault())
-    private val dateFormatForAdd: SimpleDateFormat =
-        SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
     val isEditMode = MutableLiveData(false)
-    val isAddItem = MutableLiveData(false)
     val selectedDay = MutableLiveData<Date>(Calendar.getInstance().time)
     val selectedMonth = MutableLiveData<Date>(Calendar.getInstance().time)
 
@@ -33,13 +29,13 @@ class HistoryViewModel() : ViewModel() {
     }
 
     fun getDate(date: Date): String {
-        return dateFormatForMonth.format(date)
+        return CommonUtils.getCalendarDateFormat().format(date)
     }
 
     fun getEvents(alData: List<HistoryData>): List<Event> {
         val list = arrayListOf<Event>()
         for (i in alData.indices) {
-            val timestamp = dateFormatForAdd.parse(alData[i].date)
+            val timestamp = CommonUtils.getEventDateFormat().parse(alData[i].date)
             list.add(Event(Color.GRAY, timestamp.time))
         }
         return list

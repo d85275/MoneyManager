@@ -12,4 +12,8 @@
     <color name="main_text_colour">#64B5F6</color>
     <color name="brown">#B96139</color>
     <color name="add_item_selected">#535353</color>
+    <color name="cash_income_main">#93513f</color>
+    <color name="cash_income_sub">#b87463</color>
+    <color name="bank_income_main">#4a7c51</color>
+    <color name="bank_income_sub">#77127100</color>
 </resources>

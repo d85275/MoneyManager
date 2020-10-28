@@ -23,8 +23,6 @@ import com.example.demo.views.main.MainActivity
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.view_add_item.view.*
 import java.lang.StringBuilder
-import java.text.DecimalFormat
-import java.text.NumberFormat
 import java.util.*
 
 class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
@@ -36,7 +34,6 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     private lateinit var iconAdapter: AddItemIconAdapter
     private var sourceAdapter =
         AddItemSourceAdapter(arrayListOf(HistoryData.SOURCE_CASH))
-    private var total = 0L
     private var isShow = MutableLiveData(false)
     private var isKeyboardShow = false
 
@@ -67,19 +64,12 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         setListeners()
         disposableSource = curSource.observable.subscribe { source ->
             if (source == HistoryData.SOURCE_CASH) {
-                tvSource.text = view.context.getString(R.string.cash)
+                tvSource.text = context.getString(R.string.cash)
             } else {
                 tvSource.text = source
             }
             sourceAdapter.setSelectedSource(source)
         }
-    }
-
-    fun init(source: String, mainViewModel: MainViewModel, mainActivity: MainActivity) {
-        curSource.value = source
-        this.mainViewModel = mainViewModel
-        this.mainActivity = mainActivity
-        initViews()
     }
 
     fun init(mainViewModel: MainViewModel, mainActivity: MainActivity) {
@@ -105,9 +95,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         sourceAdapter.setOnItemClickListener { source ->
             curSource.value = source
         }
-
         setRecyclerView(rvSource, sourceAdapter)
-
     }
 
     private fun setRecyclerView(
@@ -115,7 +103,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
     ) {
         recyclerView.layoutManager =
-            LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
     }
@@ -131,10 +119,6 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     fun setDate(date: Date?) {
         this.date = date
         if (date != null) tvAddItemDate.text = CommonUtils.addItemDate().format(date)
-    }
-
-    fun getTotal(): Long {
-        return total
     }
 
     /**
@@ -233,14 +217,13 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
                         tvPrice.text = sb.deleteCharAt(tmp.lastIndex)
                     }
                 }
-                //if (total > 0) tvPrice.text = formatter.format(total)
-                //else tvPrice.text = "請輸入價格"
             }
         }
     }
 
     private fun addItem() {
         if (!isInputValid()) {
+            CommonUtils.showToast(context, context.getString(R.string.invalid_input))
             return
         }
         val name = etName.text.toString().trim()
@@ -253,12 +236,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             val historyData = HistoryData.create(name, type, price, date, source, iconPosition)
             mainViewModel.addItem(historyData, source)
         } else if (resumeData != null) {
-            resumeData!!.name = name
-            resumeData!!.price = price
-            resumeData!!.type = type
-            resumeData!!.source = source
-            resumeData!!.date = date
-            resumeData!!.iconPosition = iconPosition
+            resumeData!!.set(name, type, price, date, source, iconPosition)
             mainViewModel.updateItem(resumeData!!)
             dismiss()
         }
@@ -278,17 +256,15 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
     }
 
     fun resumeData(historyData: HistoryData) {
-        //tvAddItemDate.text = historyData.date
         curMode = MODE_EDIT
         resumeData = historyData
-        //curSource = historyData.source
         curSource.value = historyData.source
         curType = historyData.type
         if (curType == HistoryData.TYPE_INCOME) {
             setTypeBackground(btIncome, btExpense)
         }
         setDate(CommonUtils.addItemDate().parse(historyData.date))
-        tvPrice.text = formatter.format(historyData.price)
+        tvPrice.text = CommonUtils.getPriceFormat().format(historyData.price)
         etName.setText(historyData.name)
         ivIcon.setImageResource(mainViewModel.getIconList()[historyData.iconPosition])
         curIconPosition = historyData.iconPosition
@@ -298,7 +274,7 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
 
     private fun setPrice(sb: StringBuilder, num: Int) {
         if (sb.toString().length > 10) {
-            Toast.makeText(context, "the number is too large", Toast.LENGTH_SHORT)
+            Toast.makeText(context, context.getString(R.string.invalid_number), Toast.LENGTH_SHORT)
                 .show()
             return
         }
@@ -316,11 +292,6 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
         }
     }
 
-    private val formatter: NumberFormat = DecimalFormat("#,###.##")
-
-    fun setDate(date: String) {
-        tvAddItemDate.text = date
-    }
 
     fun isShow(): LiveData<Boolean> {
         return isShow
@@ -384,7 +355,6 @@ class AddItemView(context: Context, attrs: AttributeSet?) : LinearLayout(context
             .setDuration(ADD_ANIM_DURATION)
             .start()
         clearData()
-        //disposableSource.dispose()
     }
 
     private fun dismissKeyboard() {

@@ -32,6 +32,8 @@ class HistoryActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var addItemViewModel: AddItemViewModel
     private lateinit var adapter: HistoryDataAdapter
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private var isBottomSheetExpanded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +47,6 @@ class HistoryActivity : AppCompatActivity() {
         initBottomSheet()
     }
 
-    private var isBottomSheetExpanded = false
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private fun initBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(clBottomSheet)
         bottomSheetBehavior.peekHeight = resources.getDimension(R.dimen.bottom_sheet_peek).toInt()
@@ -143,11 +143,7 @@ class HistoryActivity : AppCompatActivity() {
             mainViewModel.getMonthlyBalance(monthData)
         })
 
-        historyViewModel.isAddItem.observe(this, Observer { isAdded ->
-            if (isAdded) {
-                //recyclerView.smoothScrollToPosition(adapter.itemCount)
-            }
-        })
+
         vAddItem.isShow().observe(this, Observer { isShow ->
             if (isShow) {
                 disableToolbarScroll()
@@ -267,8 +263,7 @@ class HistoryActivity : AppCompatActivity() {
             historyViewModel.setEditMode(false)
         }
     }
-
-
+    
     override fun onBackPressed() {
         if (vAddItem.isShow().value == true) {
             vAddItem.dismiss()
